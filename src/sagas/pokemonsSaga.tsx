@@ -1,12 +1,15 @@
-import { put, call, takeEvery ,take,fork} from 'redux-saga/effects';
+import { put, call, takeEvery ,take,fork,select} from 'redux-saga/effects';
 import {POKEMONS} from "../constants/pokemonsTypes";
 import {fetchPokemons,fetchPokemonDeatils} from "../api/apiPokemon";
 import {setPokemons,setPokemonsError,setPokemonDetailsError,
     loadPokemonDetails,setPokemonDetails} from "../actions/pokemonActions";
 
+export const getPage = (state:any) => state.pokemons.page;
+
 function* handlePokemonsLoad(){
     try {
-        const pokemonsGenerated = yield call(fetchPokemons);
+        const page = yield select(getPage);
+        const pokemonsGenerated = yield call(fetchPokemons,page);
         yield put(setPokemons(pokemonsGenerated));
     } catch (error) {
         yield put(setPokemonsError(error.toString()))

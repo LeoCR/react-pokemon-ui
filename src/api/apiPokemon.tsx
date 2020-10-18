@@ -3,7 +3,7 @@ export const apiPokemon= axios.create({
     baseURL:'https://pokeapi.co/',
     responseType: 'json' 
 }) 
-export const fetchPokemons=async(page:number=0)=>{
+export const fetchPokemons=async(page:number)=>{
     let pokemons='';
     await apiPokemon.get('/api/v2/pokemon',{
         params:{
@@ -30,7 +30,7 @@ export const fetchPokemonDeatils=async(name:string='pikachu')=>{
     .catch((err:any)=>{
         throw new Error(err); 
     })
-    console.log(pokemonDetails);
+    //console.log(pokemonDetails);
     
     return pokemonDetails;
 }

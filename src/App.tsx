@@ -1,6 +1,7 @@
 import React from 'react'; 
-import './App.css';
-/* import {BrowserRouter as Router,Route,Switch } from "react-router-dom";
+import './App.css'; 
+ import {BrowserRouter as Router,Route,Switch } from "react-router-dom";
+ /*
 import {setJWTToken} from "./utils/setJWTToken"
 const jwtToken=localStorage.getItem('jwtToken');
  */
@@ -32,9 +33,14 @@ export const App: React.FC<Props> = (props) => {
   }) */
   return (
     <div className="app">
-      <ShowPokemons/>
+      <Router>
+        <Switch>
+            <Route exact path="/" render={() =>  <ShowPokemons/>}/>
+            <Route path="/pokemons/:page"  component={ShowPokemons}/>
+        </Switch>
+      </Router>
     </div>
   );
 }
 
-export default App;
+export default  React.memo(App);;

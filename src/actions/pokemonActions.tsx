@@ -1,7 +1,10 @@
 import { POKEMONS,POKEMON_DETAILS} from "../constants/pokemonsTypes";
-
-export const loadPokemons = () => ({
+export const clearPokemons=()=>({
+    type: POKEMONS.CLEAR_POKEMONS,
+})
+export const loadPokemons = (page:number) => ({
     type: POKEMONS.LOAD,
+    page
 });
 
 export const setPokemons = (pokemons:any) => ({
@@ -28,3 +31,6 @@ export const setPokemonDetailsError = (name:string) => ({
     type: POKEMON_DETAILS.LOAD_FAIL,
     name,
 });
+export const clearPokemonDetails=()=>({
+    type:POKEMON_DETAILS.CLEAR_POKEMON_DETAILS
+})
