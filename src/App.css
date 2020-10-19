@@ -1,3 +1,7 @@
+body{
+    background: #f2f2e5;
+}
+
 .pokemon_name{
     text-transform: capitalize; 
 }
@@ -30,4 +34,29 @@
     text-align: start;
     margin: -38px 0 0 0;
     position: relative;
+}
+#container_login .MuiFormControl-root{
+    width: 100%;
+    float: left;
+}
+#container_login .MuiFormLabel-root.Mui-focused{
+    color: #000000 !important;
+}
+#container_login .MuiInput-underline::after{
+    border-bottom: 2px solid #a00606 !important;
+}
+#container_login .MuiButton-containedPrimary{
+    background: #a00606 !important;
+}
+#container_login {
+    margin-top: 15%;
+    padding: 30px;
+    background: #ffffff;
+    min-height: 300px;
+}
+.error_msg{
+    color: darkred;
+    width: 100%;
+    position: relative;
+    float: left;
 }
