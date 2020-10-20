@@ -12,7 +12,10 @@ interface LoginProps {
     button:any,
     onLogin:()=>void,
     loginByEmail:(LoginRequest:any)=>void,
-    loginByUsername:(LoginRequest:any)=>void
+    loginByUsername:(LoginRequest:any)=>void,
+    history:{
+        push:(url:string)=>void
+    }
  }
  
  interface LoginState {
@@ -112,7 +115,18 @@ class Login extends React.Component<LoginProps, LoginState>  {
                 console.log('loginByUsername');
                this.props.loginByUsername(LoginRequestByUsername);
             }
+            setTimeout(() => { 
+                if(this.props.user.validToken){
+                    this.props.history.push("/dashboard")
+                }
+            }, 2200);
+            
         }
+    } 
+    componentDidMount(){ 
+        if(this.props.user.validToken){
+            this.props.history.push("/dashboard")
+        } 
     } 
     render() {   
         return ( 
@@ -149,6 +163,6 @@ class Login extends React.Component<LoginProps, LoginState>  {
     }
 } 
 const mapStateToProps=(state:any)=>({
-    user:state.user.user
+    user:state.user
 })
 export default connect(mapStateToProps,{loginByEmail,loginByUsername})(Login);

@@ -1,5 +1,5 @@
-import {LOGIN_BY_EMAIL, LOGIN_BY_USERNAME, SET_CURRENT_USER} from "../constants/userTypes";
-
+import {LOGIN_BY_EMAIL, LOGIN_BY_USERNAME, LOGOUT, SET_CURRENT_USER} from "../constants/userTypes";
+import {setJWTToken} from "../utils/setJWTToken";
 const initialState={
     user:{},
     validToken:false,
@@ -7,7 +7,8 @@ const initialState={
 };
 
 const booleanActionPayload=(payload:any)=>{
-    if(payload){
+    const currentTime = Date.now()/1000;
+    if(payload.exp<currentTime&& payload){
         return true;
     }
     else{
@@ -23,13 +24,15 @@ export default function(state=initialState,action:any){
             
             return { 
                 ...state,  
-                user:action.response
+                user:action.response,
+                validToken:true
             };
         case LOGIN_BY_USERNAME.FAIL:
             console.log('LOGIN_BY_USERNAME.FAIL action=');
             console.log(action);
             return { 
                 ...state, 
+                validToken:false,
                 error:action.error.message 
             };
         case LOGIN_BY_EMAIL.SUCCESS:
@@ -37,13 +40,15 @@ export default function(state=initialState,action:any){
             console.log(action);
             return { 
                 ...state,  
-                user:action.response
+                user:action.response,
+                validToken:true
             };
         case LOGIN_BY_EMAIL.FAIL: 
             console.log('LOGIN_BY_EMAIL.FAIL action=');
             console.log(action);
             return { 
                 ...state, 
+                validToken:false,
                 error:action.error.message 
             };
         case SET_CURRENT_USER:
@@ -52,7 +57,15 @@ export default function(state=initialState,action:any){
                 user:action.payload,
                 validToken:booleanActionPayload(action.payload)
             }
+        case LOGOUT:
+            localStorage.removeItem("jwtToken");
+            setJWTToken(false);
+            return{
+                ...state,
+                user:{},
+                validToken:false
+            }
         default:
-            return state;
+            return {...state};
     }
 }

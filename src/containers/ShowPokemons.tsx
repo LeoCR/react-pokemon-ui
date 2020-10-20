@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import Pokemon from "../components/Pokemon/Pokemon";
 import $ from 'jquery'; 
 import { Link ,withRouter} from 'react-router-dom';
+import {logout} from "../actions/securityActions";
 
 interface ShowPokemonsProps {
     pokemons:any,
@@ -16,7 +17,9 @@ interface ShowPokemonsProps {
             page:number
         }
     },
-    history:any
+    history:any,
+    user:any,
+    logout:()=>void
    // history:any
  }
 interface PokemonInterface{
@@ -30,7 +33,8 @@ interface ShowPokemonsState {
     pokemonsToShow:Array<PokemonInterface>,
     totalPagination:Array<number>,
     pokemonsDetails:any,
-    isLoading:boolean
+    isLoading:boolean,
+    currentTime:number
 }
  
 class ShowPokemons extends React.PureComponent<ShowPokemonsProps, ShowPokemonsState>  {
@@ -39,6 +43,7 @@ class ShowPokemons extends React.PureComponent<ShowPokemonsProps, ShowPokemonsSt
         this.state={
             currentPage:1,
             totalItems:0,
+            currentTime: Date.now(),
             isLoading:true,
             maxItemsPerPage:4,
             pokemonsDetails:[],
@@ -119,13 +124,13 @@ class ShowPokemons extends React.PureComponent<ShowPokemonsProps, ShowPokemonsSt
         this.props.clearPokemonDetails();
         setTimeout(() => {
             this.props.loadPokemons(page*10);
-        }, 250);
+        }, 450);
         setTimeout(() => {
             this.setState({
                 pokemonsDetails:this.props.pokemonsDetails,
                 isLoading:false
             })
-        },1000);
+        },1300);
     } 
     componentDidMount(){
         try { 
@@ -136,13 +141,13 @@ class ShowPokemons extends React.PureComponent<ShowPokemonsProps, ShowPokemonsSt
                     this.setPokemons(page2);
                     setTimeout(() => {    
                         $("#page-item-"+page2).addClass("active");
-                    }, 1300);
+                    }, 1400);
                 }
                 else{
                     this.setPokemons(0);
                     setTimeout(() => {    
                         $("#page-item-1").addClass("active");
-                    }, 1300);
+                    }, 1400);
                 }
             }
             else{
@@ -160,6 +165,13 @@ class ShowPokemons extends React.PureComponent<ShowPokemonsProps, ShowPokemonsSt
             this.setState({
                 totalPagination:tempItems
             }); 
+            setInterval(()=>{ 
+                const currentTime = Date.now()/1000;
+                if(this.props.user.user.exp<currentTime){ 
+                        this.props.logout()
+                        window.location.href="/login";
+                }
+              },28800000)
         } catch (error) {
             console.log('An error occurs in ShowPokemons.componentDidMount()');
             console.log(error);
@@ -167,8 +179,9 @@ class ShowPokemons extends React.PureComponent<ShowPokemonsProps, ShowPokemonsSt
     }
     render() { 
         const {pokemonsDetails}=this.state;
+        let currentTime= this.state.currentTime;
         const renderedPokemons=(pokemonsDetails.length>0)&& pokemonsDetails.map((pokemon:any,index:number)=>
-                <React.Fragment key={pokemon.name+pokemon.id}>
+                <React.Fragment key={(pokemon.name+pokemon.id+'_'+currentTime+Math.random())}>
                      <Pokemon details={pokemonsDetails[index]} /> 
                 </React.Fragment>
         ) 
@@ -182,6 +195,7 @@ class ShowPokemons extends React.PureComponent<ShowPokemonsProps, ShowPokemonsSt
 }
 const mapStateToProps=(state:any)=>({
     pokemons:state.pokemons.pokemons,
-    pokemonsDetails:state.pokemonsDetails.pokemonsDetails
+    pokemonsDetails:state.pokemonsDetails.pokemonsDetails,
+    user:state.user
 })
-export default withRouter(connect(mapStateToProps,{loadPokemons,clearPokemons,clearPokemonDetails})(ShowPokemons)); 
+export default withRouter(connect(mapStateToProps,{loadPokemons,clearPokemons,clearPokemonDetails,logout})(ShowPokemons)); 

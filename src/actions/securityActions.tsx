@@ -1,5 +1,4 @@
-import {setJWTToken} from "../utils/setJWTToken";
-import {SET_CURRENT_USER,CLEAR_USER_ERRORS,GET_USER_ERRORS,LOGIN_BY_EMAIL,LOGIN_BY_USERNAME} from "../constants/userTypes";
+import {LOGOUT,SET_CURRENT_USER,CLEAR_USER_ERRORS,GET_USER_ERRORS,LOGIN_BY_EMAIL,LOGIN_BY_USERNAME} from "../constants/userTypes";
 import { Dispatch } from "redux";
 import {api} from "../api/api";
 
@@ -43,17 +42,14 @@ export const loginByUsername = (LoginRequest:any) => {
       user:LoginRequest
     }
 };
-export const setUserData=(tokenDecoded:any)=>(dispatch:Dispatch)=>{
-    dispatch({
+export const setUserData=(tokenDecoded:any)=>{
+    return{
         type:SET_CURRENT_USER,
         payload:tokenDecoded
-    })
+    }
 }
-export const logout=()=>(dispatch:Dispatch)=>{
-    localStorage.removeItem("jwtToken");
-    setJWTToken(false);
-    dispatch({
-        type:SET_CURRENT_USER,
-        payload:{}
-    })
+export const logout=()=>{
+    return{
+        type:LOGOUT
+    }
 }
