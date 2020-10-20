@@ -5,6 +5,7 @@ import {setJWTToken} from "./utils/setJWTToken"
 import ShowPokemons from "./containers/ShowPokemons";
 import jwt_decode from "jwt-decode";
 import Login from './components/UserManagement/Login';
+import Header from './components/Layout/Header';
 import { logout, setUserData } from './actions/securityActions'; 
 import { connect, useDispatch } from 'react-redux';
 import { setInterval } from 'timers';
@@ -35,7 +36,8 @@ export const App: React.FC<Props> = (props:any) => {
   })
   return (
     <div className="app">
-      <Router>
+      <Router> 
+        <Header/>
         <Switch>
             <Route exact path="/" render={() => <React.Fragment></React.Fragment>}/>
             <Route exact path="/login" component={Login}/>
