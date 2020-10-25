@@ -1,5 +1,6 @@
  import { all,fork } from 'redux-saga/effects'; 
 import pokemonsSaga from './pokemonsSaga';
+import pokemonsDetailsSaga from './pokemonsDetailsSaga';
 import {watchUserAuthenticationByUsername,watchUserAuthenticationByEmail} from './watchUserAuthentication';
 /*import abilitySaga from './abilitySaga';
 import placeSaga from './placeSaga';
@@ -9,7 +10,7 @@ const rootSaga= function* root()  {
     
     yield fork(watchUserAuthenticationByUsername);
     yield fork(watchUserAuthenticationByEmail);
-    yield all([pokemonsSaga()]);
+    yield all([pokemonsSaga(),pokemonsDetailsSaga()]);
     
 }
 export default rootSaga;

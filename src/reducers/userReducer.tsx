@@ -2,13 +2,12 @@ import {LOGIN_BY_EMAIL, LOGIN_BY_USERNAME, LOGOUT, SET_CURRENT_USER} from "../co
 import {setJWTToken} from "../utils/setJWTToken";
 const initialState={
     user:{},
-    validToken:false,
+    validToken:true,
     error:null
 };
 
 const booleanActionPayload=(payload:any)=>{
-    const currentTime = Date.now()/1000;
-    if(payload.exp<currentTime&& payload){
+    if(payload){
         return true;
     }
     else{

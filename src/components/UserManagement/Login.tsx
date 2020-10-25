@@ -1,10 +1,11 @@
-import React from 'react';  
-import TextField from "@material-ui/core/TextField";
+import React from 'react';   
 import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import Container from '@material-ui/core/Container';
+import FormControl from '@material-ui/core/FormControl';
 import { loginByEmail,loginByUsername } from "../../actions/securityActions";  
 import isEmail from "../../utils/isEmail"; 
+import Field from '../Layout/Field'; 
 
 interface LoginProps {
     user:any,
@@ -24,9 +25,7 @@ interface LoginProps {
     errorsUsernameOrEmail:string,
     errorsPassword:string,
     formSent:boolean
- }
- 
-
+}
  
 class Login extends React.Component<LoginProps, LoginState>  {
     constructor(props:any) {
@@ -39,17 +38,6 @@ class Login extends React.Component<LoginProps, LoginState>  {
             formSent:false
         };
     } 
-    static getDerivedStateFromProps(nextProps:any, prevState:any) {
-        if (nextProps.errors) {
-          return { errors: nextProps.errors }; // <- this is setState equivalent
-        }
-        return null;
-    } /* 
-    componentDidUpdate(prevProps:any) {
-        if(this.props.user.validToken&& !prevProps.user.validToken){
-            this.props.history.push("/dashboard");
-        }
-    } */
     onTexFieldChange=(e: any)=>{
         var inputName=e.target.name;
         if(inputName==='usernameOrEmail'){
@@ -119,7 +107,7 @@ class Login extends React.Component<LoginProps, LoginState>  {
                 if(this.props.user.validToken){
                     this.props.history.push("/dashboard")
                 }
-            }, 2200);
+            }, 1000);
             
         }
     } 
@@ -131,33 +119,35 @@ class Login extends React.Component<LoginProps, LoginState>  {
     render() {   
         return ( 
                 <Container maxWidth="sm" id="container_login">
-                    <TextField 
-                        label="Username or Email"
-                        margin="normal"
-                        name="usernameOrEmail"
-                        onChange={this.onTexFieldChange}  
-                    />
-                    {
-                        (this.state.errorsUsernameOrEmail!=="")?<span className="error_msg">{this.state.errorsUsernameOrEmail}</span>:''
-                    }
-                    <TextField
-                        label="Password"
-                        type="password"
-                        margin="normal"
-                        name="password"
-                        onChange={this.onTexFieldChange}  
-                    />
-                    {
-                        (this.state.errorsPassword!=="")?<span className="error_msg">{this.state.errorsPassword}</span>:''
-                    }
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className="login_button"  
-                        onClick={this.onLogin}
-                    >
-                        Login
-                    </Button>
+                    <FormControl>
+                        <Field 
+                            label="Username or Email"
+                            margin="normal"
+                            name="usernameOrEmail"
+                            onChange={this.onTexFieldChange}  
+                        />
+                        {
+                            (this.state.errorsUsernameOrEmail!=="")?<span className="error_msg">{this.state.errorsUsernameOrEmail}</span>:''
+                        }
+                        <Field
+                            label="Password"
+                            type="password"
+                            margin="normal"
+                            name="password"
+                            onChange={this.onTexFieldChange}  
+                        />
+                        {
+                            (this.state.errorsPassword!=="")?<span className="error_msg">{this.state.errorsPassword}</span>:''
+                        }
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className="login_button"  
+                            onClick={this.onLogin}
+                        >
+                            Login
+                        </Button>
+                    </FormControl> 
                 </Container> 
         );
     }

@@ -19,8 +19,7 @@ export const setPokemonsError = (error:any) => ({
 export const loadPokemonDetails = (name:string) => ({
     type: POKEMON_DETAILS.LOAD,
     name,
-});
-
+}); 
 export const setPokemonDetails = (name:string, details:any) => ({
     type: POKEMON_DETAILS.LOAD_SUCCESS,
     name,

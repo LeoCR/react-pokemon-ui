@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { logout } from '../../actions/securityActions'; 
+import { logout } from '../../actions/securityActions';
+import './Header.css';
 const Header=(props:any)=>{
     const {user} = props;
     const logOut=()=>{

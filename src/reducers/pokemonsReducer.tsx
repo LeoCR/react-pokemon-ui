@@ -5,12 +5,12 @@ const initialState={
     page:0
 };
 export default function(state=initialState,action:any){
-    switch (action.type) {
+    switch (action.type) { 
         case POKEMONS.LOAD:
             return{
                 ...state,
+                page:action.page,
                 isLoading:true,
-                page:action.page
             }
         case POKEMONS.CLEAR_POKEMONS:
             return{

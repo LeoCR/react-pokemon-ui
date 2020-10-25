@@ -13,7 +13,7 @@
     "@types/react-dom": "^16.9.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "^3.4.4",
     "typescript": "~3.7.2"
   },
   "scripts": {
@@ -51,5 +51,5 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-saga": "^1.1.3"
-  }
+  } 
 }
