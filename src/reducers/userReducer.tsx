@@ -2,7 +2,7 @@ import {LOGIN_BY_EMAIL, LOGIN_BY_USERNAME, LOGOUT, SET_CURRENT_USER} from "../co
 import {setJWTToken} from "../utils/setJWTToken";
 const initialState={
     user:{},
-    validToken:true,
+    validToken:false,
     error:null
 };
 

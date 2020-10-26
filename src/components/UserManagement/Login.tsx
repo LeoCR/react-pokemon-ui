@@ -113,7 +113,7 @@ class Login extends React.Component<LoginProps, LoginState>  {
     } 
     componentDidMount(){ 
         if(this.props.user.validToken){
-            this.props.history.push("/dashboard")
+            //this.props.history.push("/dashboard")
         } 
     } 
     render() {   
@@ -129,6 +129,9 @@ class Login extends React.Component<LoginProps, LoginState>  {
                         {
                             (this.state.errorsUsernameOrEmail!=="")?<span className="error_msg">{this.state.errorsUsernameOrEmail}</span>:''
                         }
+                    
+                    </FormControl>
+                    <FormControl>
                         <Field
                             label="Password"
                             type="password"
@@ -139,6 +142,7 @@ class Login extends React.Component<LoginProps, LoginState>  {
                         {
                             (this.state.errorsPassword!=="")?<span className="error_msg">{this.state.errorsPassword}</span>:''
                         }
+                    </FormControl>
                         <Button
                             variant="contained"
                             color="primary"
@@ -147,7 +151,6 @@ class Login extends React.Component<LoginProps, LoginState>  {
                         >
                             Login
                         </Button>
-                    </FormControl> 
                 </Container> 
         );
     }

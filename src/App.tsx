@@ -1,6 +1,6 @@
 import React, { useEffect} from 'react'; 
 import './App.css'; 
-import {BrowserRouter as Router,Route,Switch ,Redirect} from "react-router-dom";
+import {BrowserRouter as Router,Route,Switch } from "react-router-dom";
 import {setJWTToken} from "./utils/setJWTToken";
 import jwt_decode from "jwt-decode";
 import Login from './components/UserManagement/Login';
@@ -8,7 +8,7 @@ import Header from './components/Layout/Header';
 import { logout, setUserData } from './actions/securityActions'; 
 import { connect, useDispatch } from 'react-redux'; 
 import { ShowPokemonsContainer } from './containers/ShowPokemonsContainer';
-
+import SecureRoute from "./components/Security/SecureRoute";
 interface Props {   
   
 }
@@ -38,30 +38,17 @@ export const App: React.FC<Props> = (props:any) => {
         }
       },28800000)
     } 
-  },[])
+  },[]) 
   return (
     <div className="app">
       <Router> 
-        <Header/>
+        <Header/> 
         <Switch>
             <Route exact path="/" render={() => <React.Fragment></React.Fragment>}/>
             <Route exact path="/login" component={Login}/>
-            {
-              (props.user.validToken===true)?
-                  (<Route exact path="/dashboard"  render={(props)=><ShowPokemonsContainer {...props}/>}/>):
-                  (<Redirect to="/login"/>)
-            }
-                        {
-              (props.user.validToken===true)?
-                  (<Route exact path="/pokemons/"  render={(props)=><ShowPokemonsContainer {...props}/>}/>) :
-                  (<Redirect to="/login"/>)
-            }
-            {
-              (props.user.validToken===true)?
-                  (<Route exact path="/pokemons/:page" component={ShowPokemonsContainer}  render={(props)=><ShowPokemonsContainer {...props}/>}/>) :
-                  (<Redirect to="/login"/>)
-            }
-            
+            <SecureRoute path="/dashboard" exact component={ShowPokemonsContainer}/>
+            <SecureRoute path="/pokemons/" exact component={ShowPokemonsContainer}/>
+            <SecureRoute path="/pokemons/:page" exact component={ShowPokemonsContainer}/>
         </Switch>
       </Router>
     </div>

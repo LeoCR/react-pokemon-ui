@@ -4,11 +4,18 @@ import createSagaMiddleware from "redux-saga";
 import rootReducer from "../reducers";
 import rootSaga from "../sagas";
 
-export default function store(initialState:any={}) {
+let storageState:any = JSON.parse(localStorage.getItem('pokedex_app') || '{}');;
+  
+export const store=()=> {
     const sagaMiddleware = createSagaMiddleware();
     const middleware = [sagaMiddleware];
-
-    const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(...middleware)));
+    const store = createStore(rootReducer, storageState, composeWithDevTools(applyMiddleware(...middleware)));
     sagaMiddleware.run(rootSaga);
+  
+    store.subscribe(() => {
+      localStorage.setItem('pokedex_app', JSON.stringify(store.getState()))
+    })
     return store;
 }
+
+export default store;

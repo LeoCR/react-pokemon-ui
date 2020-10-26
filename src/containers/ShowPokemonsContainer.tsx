@@ -1,14 +1,14 @@
 import React,{useEffect, useState,useCallback} from 'react';
 import $ from 'jquery'; 
 import { Link ,withRouter} from 'react-router-dom';
-import {logout} from "../actions/securityActions"; 
+import {logout,setUserData} from "../actions/securityActions"; 
 import {useSelector,useDispatch} from "react-redux";
 import Pokemon from "../components/Pokemon/Pokemon";
 import {loadPokemons,clearPokemons,clearPokemonDetails} from "../actions/pokemonActions";
 
 interface Props {   
   
-}
+} 
 export const ShowPokemonsContainer : React.FC<Props> = (props:any) =>  {
     const [pokemonsDetails,setPokemonsDetails]=useState([]);
     const [isLoading,setIsLoading]=useState(true); 
@@ -40,8 +40,7 @@ export const ShowPokemonsContainer : React.FC<Props> = (props:any) =>  {
             else{
                 $("#page-item-1").addClass("active");
                 setPokemonsCallback(page2);
-            }   
-            //setPokemonsCallback(0);
+            }
                 setInterval(()=>{ 
                     const currentTime = Date.now()/1000;
                     if(user.user.exp<currentTime){ 
@@ -65,10 +64,7 @@ export const ShowPokemonsContainer : React.FC<Props> = (props:any) =>  {
             if(pokemonsDetailsProps.length>9){
                 setPokemonsDetails(pokemonsDetailsProps);
                 setIsLoading(false);
-            }/*  
-            else{
-                setPokemonsCallback(page);
-            } */
+            }
         },1500);
     },[]);
     const getPage=(key:number,index:number)=>{
