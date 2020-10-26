@@ -113,7 +113,7 @@ class Login extends React.Component<LoginProps, LoginState>  {
     } 
     componentDidMount(){ 
         if(this.props.user.validToken){
-            //this.props.history.push("/dashboard")
+            this.props.history.push("/dashboard")
         } 
     } 
     render() {   
