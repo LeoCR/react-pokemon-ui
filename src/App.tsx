@@ -9,6 +9,7 @@ import { logout, setUserData } from './actions/securityActions';
 import { connect, useDispatch } from 'react-redux'; 
 import { ShowPokemonsContainer } from './containers/ShowPokemonsContainer';
 import SecureRoute from "./components/Security/SecureRoute";
+import ViewPokemonDetailsContainer from './containers/ViewPokemonDetailsContainer';
 interface Props {   
   
 }
@@ -49,6 +50,7 @@ export const App: React.FC<Props> = (props:any) => {
             <SecureRoute path="/dashboard" exact component={ShowPokemonsContainer}/>
             <SecureRoute path="/pokemons/" exact component={ShowPokemonsContainer}/>
             <SecureRoute path="/pokemons/:page" exact component={ShowPokemonsContainer}/>
+            <SecureRoute path="/pokemon/:pokemon" exact component={ViewPokemonDetailsContainer}/>
         </Switch>
       </Router>
     </div>

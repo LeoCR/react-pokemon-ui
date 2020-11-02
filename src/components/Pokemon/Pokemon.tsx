@@ -11,10 +11,10 @@ const Pokemon: React.FC<Props> = props =>{
             )
         }
         return (
-            <div className="pokemon_container">
+            <React.Fragment>
                 <h4 className="pokemon_name">{props.details.name}</h4>
                 <img src={props.details.sprites.front_default} alt={props.details.name}/>
-            </div>
+            </React.Fragment>
         );
 }
 export default Pokemon;
