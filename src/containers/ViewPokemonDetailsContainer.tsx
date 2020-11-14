@@ -61,6 +61,7 @@ const ViewPokemonDetailsContainer = (props: any) => {
           (res: any) => {
             fetchPokemonEvolutions(res)
               .then((resChainURL: any) => {
+                console.log(resChainURL);
                 setTimeout(() => {
                   let pokemons = [];
                   if (resChainURL.chain !== undefined) {
@@ -78,18 +79,26 @@ const ViewPokemonDetailsContainer = (props: any) => {
                                 evolution.evolves_to[0].species.name
                               );
                             }
+                          } catch (error) {
+                            console.log(
+                              "An error occurs inside resChainURL.chain.evolves_to.map",
+                              error
+                            );
+                          } finally {
                             if (evolution.species.name !== undefined) {
                               pokemons.push(evolution.species.name);
                             }
-                          } catch (error) {
-                            console.log(
-                              "An error occurs inside resChainURL.chain.evolves_to.map"
-                            );
-                            console.log(error);
                           }
                         });
-                        if (resChainURL.chain.species.name !== undefined) {
-                          pokemons.push(resChainURL.chain.species.name);
+                        try {
+                          if (resChainURL.chain.species.name !== undefined) {
+                            pokemons.push(resChainURL.chain.species.name);
+                          }
+                        } catch (error) {
+                          console.log(
+                            "An error occurs inside fetchPokemonEvolutions",
+                            error
+                          );
                         }
                         let tempPokemons: any = [];
                         for (
@@ -141,7 +150,7 @@ const ViewPokemonDetailsContainer = (props: any) => {
         >
           Back
         </Button>
-        <Paper>
+        <Paper className={classes.paperDetails}>
           <Container maxWidth="sm" style={{ padding: "30px 0px" }}>
             {pokemonDetails !== null &&
             pokemonDetails.sprites.front_default !== undefined ? (
@@ -181,6 +190,9 @@ const ViewPokemonDetailsContainer = (props: any) => {
                     Item Three
                   </TabPanel>
                 </SwipeableViews>
+                <Button className={classes.btnAddToMyFavorites}>
+                  Add to My Favorites
+                </Button>
               </React.Fragment>
             ) : (
               "Loading..."
@@ -201,7 +213,7 @@ const ViewPokemonDetailsContainer = (props: any) => {
             Back
           </Button>
         </Link>
-        <Paper style={{ padding: "30px 90px" }}>An Error Occurs</Paper>
+        <Paper style={{ padding: "30px 90px" }}>An Error Occurs. {error}</Paper>
       </React.Fragment>
     );
   }

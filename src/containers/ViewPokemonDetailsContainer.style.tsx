@@ -7,6 +7,11 @@ const useStyles = makeStyles({
   btnAddToMyFavorites: {
     background: "#4caf50",
     color: "#FFFFFF",
+    float: "right",
+    margin: "30px 10px",
+  },
+  paperDetails: {
+    minHeight: "650px",
   },
 });
 
