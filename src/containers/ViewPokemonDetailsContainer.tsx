@@ -62,7 +62,7 @@ const ViewPokemonDetailsContainer = (props: any) => {
             fetchPokemonEvolutions(res)
               .then((resChainURL: any) => {
                 setTimeout(() => {
-                  let pokemons: Array<any> = [];
+                  let pokemons = [];
                   if (resChainURL.chain !== undefined) {
                     if (resChainURL.chain.evolves_to !== undefined) {
                       if (
@@ -78,8 +78,8 @@ const ViewPokemonDetailsContainer = (props: any) => {
                                 evolution.evolves_to[0].species.name
                               );
                             }
-                            if (evolution.chain.species.name !== undefined) {
-                              pokemons.push(evolution.chain.species.name);
+                            if (evolution.species.name !== undefined) {
+                              pokemons.push(evolution.species.name);
                             }
                           } catch (error) {
                             console.log(
@@ -87,11 +87,10 @@ const ViewPokemonDetailsContainer = (props: any) => {
                             );
                             console.log(error);
                           }
-                          if (evolution.species.name !== undefined) {
-                            pokemons.push(evolution.species.name);
-                          }
                         });
-
+                        if (resChainURL.chain.species.name !== undefined) {
+                          pokemons.push(resChainURL.chain.species.name);
+                        }
                         let tempPokemons: any = [];
                         for (
                           let indexPokemon = 0;
