@@ -63,15 +63,11 @@ export const ShowPokemonsContainer: React.FC<Props> = (props: any) => {
     setIsLoading(true);
     dispatch(clearPokemons());
     dispatch(clearPokemonDetails());
-    setTimeout(() => {
-      dispatch(loadPokemons(page * 10));
-    }, 450);
-    setTimeout(() => {
-      if (pokemonsDetailsProps.length > 9) {
-        setPokemonsDetails(pokemonsDetailsProps);
-        setIsLoading(false);
-      }
-    }, 1500);
+    dispatch(loadPokemons(page * 10));
+    if (pokemonsDetailsProps.length > 9) {
+      setPokemonsDetails(pokemonsDetailsProps);
+      setIsLoading(false);
+    }
   }, []);
   const getPage = (key: number, index: number) => {
     try {
