@@ -1,15 +1,12 @@
 import { combineReducers } from "redux";
 import userReducer from "./userReducer";
 import pokemonsReducer from "./pokemonsReducer";
-import placeReducer from "./placeReducer";
-import abilityReducer from "./abilityReducer";
 import pokemonsDetailsReducer from "./pokemonsDetailsReducer";
 
 export const rootReducer = combineReducers({
     user: userReducer,
     pokemons: pokemonsReducer,
-    pokemonsDetails:pokemonsDetailsReducer,
-    place: placeReducer,
-    ability: abilityReducer,
+    pokemonsDetails:pokemonsDetailsReducer, 
 });
+export type RootState = ReturnType<typeof rootReducer>
 export default rootReducer;

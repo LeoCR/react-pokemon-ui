@@ -1,30 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { fetchPokemonDeatils } from "../../api/apiPokemon";
+import { PokemonDetailsResponse } from "../../interfaces/PokemonDetails.interface";
 import TabPanel from "../Layout/TabPane";
-
-const PokemonEvolutions = (props: any) => {
+interface PokemonEvolutionsProps{
+  pokemonEvolutions:PokemonDetailsResponse[]
+  value:number
+  isLoading:boolean
+}
+const PokemonEvolutions = (props: PokemonEvolutionsProps) => {
   const [evolutions, setEvolutions] = useState(props.pokemonEvolutions);
   useEffect(() => {
     setEvolutions(props.pokemonEvolutions);
   }, [props]);
-  let pokemonsEvolvedLenght = evolutions.length + 1;
   return (
     <TabPanel value={props.value} index={0} dir={"ltr"}>
       <ul style={{ listStyle: "none" }}>
-        {props.isLoading === false
-          ? evolutions.map((pokemon: any, index: number) => {
-              pokemonsEvolvedLenght--;
-              return (
+        {(evolutions&& props.isLoading === false)
+          ? evolutions.map((pokemon: PokemonDetailsResponse, index: number) => {
+            const frontDefaultImage=(pokemon.sprites&&pokemon.sprites.front_default)?pokemon.sprites.front_default:'';
+            const pokemonName=(pokemon.name)?pokemon.name:''
+            return (
                 <li
-                  key={pokemon.name + "-" + pokemon.id}
+                  key={pokemonName + "-" + (pokemon.id )?pokemon.id:0+ "-" + index}
                   style={{
                     float: "left",
                     width: "100%",
                   }}
                 >
                   <img
-                    src={pokemon.sprites.front_default}
-                    alt={pokemon.name}
+                    src={frontDefaultImage}
+                    alt={pokemonName}
                     style={{
                       float: "left",
                     }}
@@ -37,10 +41,7 @@ const PokemonEvolutions = (props: any) => {
                       margin: "20px 10px",
                     }}
                   >
-                    {"0" +
-                      pokemonsEvolvedLenght.toString() +
-                      "-" +
-                      pokemon.name}
+                    {pokemonName}
                   </h3>
                 </li>
               );

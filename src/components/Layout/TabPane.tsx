@@ -5,8 +5,8 @@ import React from "react";
 interface TabPanelProps {
   children?: React.ReactNode;
   dir?: string;
-  index: any;
-  value: any;
+  index: number;
+  value: number;
 }
 
 export const TabPanel = (props: TabPanelProps) => {

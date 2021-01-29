@@ -1,8 +1,15 @@
+import { Action } from 'redux';
 import { put, call } from 'redux-saga/effects';
 import { loginByUsernameRequest,loginByEmailRequest } from '../api/api';
 import { LOGIN_BY_EMAIL, LOGIN_BY_USERNAME } from '../constants/userTypes';
-
-export function* loginByEmailSaga(payload:any) {
+import { LoginRequestByEmail,LoginRequestByUsername } from '../interfaces/Security.interface';
+export interface PayloadUserByEmail extends Action{
+    user:LoginRequestByEmail
+}
+export interface PayloadUserByUsername extends Action{
+    user:LoginRequestByUsername
+}
+export function* loginByEmailSaga(payload: PayloadUserByEmail) {
     try {
         const response = yield call(loginByEmailRequest(payload.user));
         yield put({ type: LOGIN_BY_EMAIL.SUCCESS, response });
@@ -12,7 +19,7 @@ export function* loginByEmailSaga(payload:any) {
     }
 }
 
-export function* loginByUsernameSaga(payload:any) {
+export function* loginByUsernameSaga(payload:PayloadUserByUsername) {
     try {
         const response = yield call(loginByUsernameRequest(payload.user));
         yield put({ type: LOGIN_BY_USERNAME.SUCCESS, response });

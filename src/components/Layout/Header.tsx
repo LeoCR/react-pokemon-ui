@@ -1,13 +1,19 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { connect,useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../../actions/securityActions';
+import { User } from '../../interfaces/Security.interface';
+import { IStore } from '../../store/store';
 import './Header.css';
-const Header=(props:any)=>{
+interface HeaderProps{
+    user?:User
+}
+const Header=(props:HeaderProps)=>{
     const {user} = props;
+    const dispatch = useDispatch()
     const logOut=()=>{
-        props.logout();
-        window.location.href="/";
+        dispatch(logout());
+        window.location.replace("/");
     }
     const userIsNotAuthenticated=(
         <div className="collapse navbar-collapse" id="mobile-nav">
@@ -38,7 +44,7 @@ const Header=(props:any)=>{
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
                     <Link className="nav-link " to="/dashboard">
-                        <i className="fas.fa-user-circle.mr-1"/>{user.fullName}
+                        <i className="fas.fa-user-circle.mr-1"/>{user?.fullName}
                     </Link>
                 </li>
                 <li className="nav-item">
@@ -50,7 +56,7 @@ const Header=(props:any)=>{
         </div>
     )
     let headerLinks;     
-    if( user.validToken){
+    if( user?.validToken){
         headerLinks=userIsAuthenticated
     }
     else{
@@ -70,7 +76,7 @@ const Header=(props:any)=>{
         </React.Fragment>
     )
 }
-const mapStateToProps=(state:any)=>({
+const mapStateToProps=(state:IStore)=>({
     user:state.user
   })
-  export default connect(mapStateToProps,{logout})(React.memo(Header))
+  export default connect(mapStateToProps,null)(React.memo(Header))

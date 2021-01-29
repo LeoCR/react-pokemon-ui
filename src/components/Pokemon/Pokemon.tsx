@@ -1,6 +1,7 @@
 import React from 'react';
+import { PokemonDetailsResponse } from '../../interfaces/PokemonDetails.interface';
 type Props = {
-    details:any;
+    details:PokemonDetailsResponse;
 };
 const Pokemon: React.FC<Props> = props =>{
         if(!props.details){
@@ -10,10 +11,12 @@ const Pokemon: React.FC<Props> = props =>{
                 </React.Fragment>
             )
         }
+        const frontDefaultImage=(props.details&& props.details.sprites&&props.details.sprites.front_default)?props.details.sprites.front_default:''
+        const PokemonName=(props.details&&props.details.name)?props.details.name:'';
         return (
             <React.Fragment>
-                <h4 className="pokemon_name">{props.details.name}</h4>
-                <img src={props.details.sprites.front_default} alt={props.details.name}/>
+                <h4 className="pokemon_name">{PokemonName}</h4>
+                <img src={frontDefaultImage} alt={PokemonName}/>
             </React.Fragment>
         );
 }

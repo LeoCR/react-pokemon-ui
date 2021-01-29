@@ -10,21 +10,25 @@ import { connect, useDispatch } from 'react-redux';
 import { ShowPokemonsContainer } from './containers/ShowPokemonsContainer';
 import SecureRoute from "./components/Security/SecureRoute";
 import ViewPokemonDetailsContainer from './containers/ViewPokemonDetailsContainer';
-interface Props {   
-  
+import { IStore } from './store/store';
+interface AppProps {   
+}
+interface AuthToken {
+  name: string;
+  exp: number;
 }
 const jwtToken=(localStorage.getItem('jwtToken')!==undefined)?localStorage.getItem('jwtToken'):null;
 
 
-export const App: React.FC<Props> = (props:any) => {  
+export const App: React.FC<AppProps> = (props:AppProps) => {  
   const dispatch = useDispatch();
   useEffect(()=>{
-     if(jwtToken!==null){
+     if(jwtToken){
       setJWTToken(jwtToken); 
-      const decoded_jwtToken:any=jwt_decode(jwtToken);
-      dispatch(setUserData(decoded_jwtToken));
+      const decoded_jwtToken:AuthToken=jwt_decode<AuthToken>(jwtToken);
+      dispatch(setUserData((decoded_jwtToken).toString()));
       const currentTime = Date.now()/1000;
-      if(decoded_jwtToken.exp<currentTime){ 
+      if(decoded_jwtToken&& decoded_jwtToken.exp<currentTime){ 
           dispatch(
               logout()
           );
@@ -56,7 +60,7 @@ export const App: React.FC<Props> = (props:any) => {
     </div>
   );
 }
-const mapStateToProps=(state:any)=>({
+const mapStateToProps=(state:IStore)=>({
   user:state.user,
   pokemons:state.pokemons.pokemons,
   pokemonsDetails:state.pokemonsDetails.pokemonsDetails,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import $ from "jquery";
-import { Link, withRouter } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter ,useHistory} from "react-router-dom";
 import { logout } from "../actions/securityActions";
 import { useSelector, useDispatch } from "react-redux";
 import Pokemon from "../components/Pokemon/Pokemon";
@@ -11,29 +11,36 @@ import {
   setPokemon,
 } from "../actions/pokemonActions";
 import { Button } from "@material-ui/core";
+import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
+import { IStore } from "../store/store"
 
-interface Props {}
-export const ShowPokemonsContainer: React.FC<Props> = (props: any) => {
-  const [pokemonsDetails, setPokemonsDetails] = useState([]);
+type ShowPokemonsContainerParams = {
+  page: string
+};
+type ShowPokemonsContainerProps = RouteComponentProps<ShowPokemonsContainerParams>;
+export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
+  match,
+  history
+}) => {
+  const [pokemonsDetails, setPokemonsDetails] = useState<PokemonDetailsResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const totalPagination = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const dispatch = useDispatch();
   const pokemonsDetailsProps = useSelector(
-    (state: any) => state.pokemonsDetails.pokemonsDetails
+    (state: IStore) => state.pokemonsDetails.pokemonsDetails
   );
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: IStore) => state.user);
 
   useEffect(() => {
     try {
       let page2 = 0;
       if (
-        isNaN(props.match.params.page) === false &&
-        props.match.params !== undefined
+        match.params.page
       ) {
-        page2 = props.match.params.page;
+        page2 = parseInt(match.params.page);
         if (isNaN(page2) === false && page2 > 1) {
           setPokemonsCallback(page2);
-          props.history.push("/pokemons/" + page2);
+          history.push("/pokemons/" + page2);
           setTimeout(() => {
             $("#page-item-" + page2).addClass("active");
           }, 1400);
@@ -49,14 +56,13 @@ export const ShowPokemonsContainer: React.FC<Props> = (props: any) => {
       }
       setInterval(() => {
         const currentTime = Date.now() / 1000;
-        if (user.user.exp < currentTime) {
+        if (user&&user.user&&user.user.exp&&user.user.exp < currentTime) {
           dispatch(logout());
           window.location.href = "/login";
         }
       }, 28800000);
     } catch (error) {
-      console.log("An error occurs in ShowPokemonsContainer.useEffect()");
-      console.log(error);
+      console.error("An error occurs in ShowPokemonsContainer.useEffect()",error);
     }
   }, []);
   const setPokemonsCallback = useCallback((page: number) => {
@@ -64,7 +70,7 @@ export const ShowPokemonsContainer: React.FC<Props> = (props: any) => {
     dispatch(clearPokemons());
     dispatch(clearPokemonDetails());
     dispatch(loadPokemons(page * 10));
-    if (pokemonsDetailsProps.length > 9) {
+    if (pokemonsDetailsProps&&pokemonsDetailsProps.length > 9) {
       setPokemonsDetails(pokemonsDetailsProps);
       setIsLoading(false);
     }
@@ -79,30 +85,21 @@ export const ShowPokemonsContainer: React.FC<Props> = (props: any) => {
       }, 300);
       setPokemonsCallback(key);
     } catch (error) {
-      console.log(
-        "An error occurs in ShowDesserts.getPage() , but dont worry about it"
-      );
-      console.log(error);
+      console.error(
+        "An error occurs in ShowDesserts.getPage() , but dont worry about it",error);
     }
   };
   useEffect(() => {
     setIsLoading(true);
-    setPokemonsDetails(pokemonsDetailsProps);
+    setPokemonsDetails(pokemonsDetailsProps as PokemonDetailsResponse[]);
     setIsLoading(false);
   }, [pokemonsDetails, isLoading, pokemonsDetailsProps]);
 
   const getPrevPage = () => {};
   const getNextPage = () => {};
-  const viewPokemon = (pokemon: any) => {
-    //e.preventDefault();
-    dispatch(setPokemon(pokemon));
-    console.log("setPokemon");
-    props.history.push({
-      pathname: "/pokemon/" + pokemon.name,
-      state: {
-        from: props.location.pathname,
-      },
-    });
+  const viewPokemon = (pokemon: PokemonDetailsResponse) => { 
+    dispatch(setPokemon(pokemon as PokemonDetailsResponse)); 
+    history.push("/pokemon/" + pokemon.name)
   };
   const getPagination = () => {
     return (
@@ -158,10 +155,10 @@ export const ShowPokemonsContainer: React.FC<Props> = (props: any) => {
   let currentTime = Date.now();
   const renderedPokemons =
     pokemonsDetails.length > 0 &&
-    pokemonsDetails.map((pokemon: any, index: number) => (
+    pokemonsDetails.map((pokemon: PokemonDetailsResponse, index: number) => (
       <div
         className="pokemon_container"
-        key={pokemon.name + pokemon.id + "_" + currentTime + Math.random()}
+        key={(pokemon.name as string) + pokemon.id + "_" + currentTime + Math.random()}
       >
         <Pokemon details={pokemonsDetails[index]} />
         <Button

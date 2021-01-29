@@ -1,39 +1,72 @@
 import { Paper, Container, AppBar, Tabs, Tab, Button } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter,useLocation } from "react-router-dom";
 import { setPokemon, setPokemonEvolutions } from "../actions/pokemonActions";
 import {
-  fetchPokemonDeatils,
+  fetchPokemonDetails,
   fetchPokemonEvolutionsChainURL,
   fetchPokemonEvolutions,
+  fetchPokemonAreas,
 } from "../api/apiPokemon";
 import SwipeableViews from "react-swipeable-views";
 import { useStyles } from "./ViewPokemonDetailsContainer.style";
 import TabPanel from "../components/Layout/TabPane";
 import PokemonEvolutions from "../components/Pokemon/PokemonEvolutions";
+import PokemonAreas from "../components/Pokemon/PokemonAreas";
+import { RouteComponentProps } from 'react-router';
+import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
+import { PokemonLocationAreasResponse } from "../interfaces/PokemonLocationAreas.interface";
+import { PokemonEvolutionChain,Chain,EvolvesTo } from "../interfaces/PokemonEvolutions.interface";
+import { IStore } from "../store/store";
 
-const a11yProps = (index: any) => {
+const a11yProps = (index: number) => {
   return {
     id: `full-width-tab-${index}`,
     "aria-controls": `full-width-tabpanel-${index}`,
   };
 };
-const ViewPokemonDetailsContainer = (props: any) => {
+
+type ViewPokemonDetailsContainerParams = {
+  pokemon: string
+};
+type ViewPokemonDetailsContainerProps = RouteComponentProps<ViewPokemonDetailsContainerParams>;
+const ViewPokemonDetailsContainer : React.FC<ViewPokemonDetailsContainerProps> = ({
+  match,
+  location,
+  history
+}) => {
   const dispatch = useDispatch();
   const pokemonDetailsProps = useSelector(
-    (state: any) => state.pokemons.pokemon
-  );
+    (state: IStore) => state.pokemons.pokemon
+  ); 
   const classes = useStyles();
-  const [pokemonDetails, setPokemonState] = useState({
-    name: null,
+  const [pokemonDetails, setPokemonState] = useState<PokemonDetailsResponse>({
+    name: '',
+    id:1,
     sprites: {
       front_default: null,
     },
   });
-  const [pokemonEvolutionsState, setPokemonEvolutionsState] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [value, setValue] = React.useState(0);
+  let [pokemonEvolutionsState, setPokemonEvolutionsState] = useState<PokemonDetailsResponse[]>([]);
+  let [isLoading, setIsLoading] = useState(true);
+  let [pokemonAreas, setPokemonAreas] = useState<PokemonLocationAreasResponse[]>();
+  let [value, setValue] = React.useState(0);
+  useEffect(() => {
+    try {
+      if (pokemonDetailsProps&&pokemonDetailsProps.name) {
+        const pokemonName=(pokemonDetailsProps.name as string).toString().toLowerCase();
+        fetchPokemonAreas(pokemonName).then((res) => { 
+          setPokemonAreas(res as PokemonLocationAreasResponse[]);
+        });
+      }
+    } catch (error) {
+      console.error(
+        "An error occurs in ViewPokemonDetailsContainer useEffect(()=>{},[pokemonDetailsProps])",
+        error
+      );
+    }
+  }, [pokemonDetailsProps]);
   const handleChangeIndex = (index: number) => {
     setValue(index);
   };
@@ -41,105 +74,105 @@ const ViewPokemonDetailsContainer = (props: any) => {
     setValue(newValue);
   };
   const onClickBack = () => {
-    props.history.push({
-      pathname: props.location.state.from,
-    });
+    history.go(-1);
   };
-  useEffect(() => {
-    if (props.match.params.pokemon !== null) {
-      try {
-        fetchPokemonDeatils(props.match.params.pokemon)
-          .then((res: any) => {
-            dispatch(setPokemon(res));
-            setPokemonState(res);
-          })
-          .catch((error: any) => {
-            console.log("An error occurs fetchPokemonDeatils");
-            console.log(error);
-          });
-        fetchPokemonEvolutionsChainURL(props.match.params.pokemon).then(
-          (res: any) => {
-            fetchPokemonEvolutions(res)
-              .then((resChainURL: any) => {
-                console.log(resChainURL);
-                setTimeout(() => {
-                  let pokemons = [];
-                  if (resChainURL.chain !== undefined) {
-                    if (resChainURL.chain.evolves_to !== undefined) {
-                      if (
-                        Array.isArray(resChainURL.chain.evolves_to) &&
-                        resChainURL.chain.evolves_to.length
-                      ) {
-                        resChainURL.chain.evolves_to.map((evolution: any) => {
-                          try {
-                            if (
-                              evolution.evolves_to[0].species.name !== undefined
-                            ) {
-                              pokemons.push(
-                                evolution.evolves_to[0].species.name
+  const fetchPokemonDetailsCallback= useCallback(async()=>{
+    try {
+      await fetchPokemonDetails(match.params.pokemon)
+        .then((res) => {
+          dispatch(setPokemon(res as PokemonDetailsResponse));
+          setPokemonState(res as PokemonDetailsResponse);
+        })
+        .catch((error: Error) => {
+          console.error("An error occurs fetchPokemonDeatils",error);
+        });
+        await fetchPokemonEvolutionsChainURL(match.params.pokemon).then(
+        async(res) => {
+        await fetchPokemonEvolutions(res)
+            .then((resChainURL: PokemonEvolutionChain) => {
+              console.log('resChainURL',resChainURL)
+              setTimeout(async() => {
+                let pokemons = [];
+                if (resChainURL.chain !== undefined) {
+                  if (resChainURL.chain.evolves_to !== undefined) {
+                    if (
+                      Array.isArray(resChainURL.chain.evolves_to) &&
+                      resChainURL.chain.evolves_to.length
+                    ) {
+                      if(resChainURL&&resChainURL.chain&&resChainURL.chain.evolves_to){
+                        const chainEvolves:EvolvesTo[]=resChainURL.chain.evolves_to;
+                        chainEvolves.map((evolution: EvolvesTo) => { 
+                            try {
+                              if (evolution.evolves_to&&evolution.evolves_to[0]&&evolution.evolves_to[0].species&&evolution.evolves_to[0].species.name ) {
+                                pokemons.push(
+                                  evolution.evolves_to[0].species.name
+                                );
+                              }
+                            } catch (error) {
+                              console.error(
+                                "An error occurs inside resChainURL.chain.evolves_to.map",
+                                error
                               );
-                            }
-                          } catch (error) {
-                            console.log(
-                              "An error occurs inside resChainURL.chain.evolves_to.map",
-                              error
-                            );
-                          } finally {
-                            if (evolution.species.name !== undefined) {
-                              pokemons.push(evolution.species.name);
-                            }
-                          }
+                            } finally {
+                              if (evolution.species&&evolution.species.name) {
+                                pokemons.push(evolution.species.name);
+                              }
+                            } 
                         });
-                        try {
-                          if (resChainURL.chain.species.name !== undefined) {
-                            pokemons.push(resChainURL.chain.species.name);
-                          }
-                        } catch (error) {
-                          console.log(
-                            "An error occurs inside fetchPokemonEvolutions",
-                            error
-                          );
-                        }
-                        let tempPokemons: any = [];
-                        for (
-                          let indexPokemon = 0;
-                          indexPokemon < pokemons.length;
-                          indexPokemon++
-                        ) {
-                          fetchPokemonDeatils(pokemons[indexPokemon])
-                            .then((res) => {
-                              tempPokemons.push(res);
-                            })
-                            .catch((err) => {
-                              console.log(err);
-                            });
-                        }
-                        dispatch(setPokemonEvolutions(tempPokemons));
-                        setPokemonEvolutionsState(tempPokemons);
                       }
+                      
+                      try {
+                        if (resChainURL&&resChainURL.chain&&resChainURL.chain.species&&resChainURL.chain.species.name) {
+                          pokemons.push(resChainURL.chain.species.name);
+                        }
+                      } catch (error) {
+                        console.error(
+                          "An error occurs inside fetchPokemonEvolutions",
+                          error
+                        );
+                      }
+                      let tempPokemons: PokemonDetailsResponse[] = [];
+                      for (
+                        let indexPokemon = 0;
+                        indexPokemon < pokemons.length;
+                        indexPokemon++
+                      ) {
+                        await fetchPokemonDetails(pokemons[indexPokemon])
+                          .then((res) => {
+                            tempPokemons.push(res as PokemonDetailsResponse);
+                          })
+                          .catch((err) => {
+                            console.error("An error occurs in useEffect(()=>{ fetchPokemonEvolutionsChainURL.fetchPokemonDetails },[])",err);
+                          });
+                      }
+                      dispatch(setPokemonEvolutions(tempPokemons));
+                      setPokemonEvolutionsState(tempPokemons);
                     }
-                    setTimeout(() => {
-                      setIsLoading(false);
-                    }, 700);
                   }
-                }, 300);
-              })
-              .catch((e: any) => {
-                console.log(
-                  "An error occurs inside ViewPokemonDetailsContainer Components in fetchPokemonEvolutions"
-                );
-                console.log(e);
-              });
-          }
-        );
-      } catch (error) {
-        console.log(
-          "An error occurs inside ViewPokemonDetailsContainer in useEffect "
-        );
-      }
+                  setTimeout(() => {
+                    setIsLoading(false);
+                  }, 700);
+                }
+              }, 300);
+            })
+            .catch((e: Error) => {
+              console.error(
+                "An error occurs inside ViewPokemonDetailsContainer Components in fetchPokemonEvolutions",e);
+            });
+        }
+      );
+    } catch (error) {
+      console.error(
+        "An error occurs inside ViewPokemonDetailsContainer in useEffect ",error)
     }
-  }, []);
+  },[])
+  useEffect(() => {
+    if (match&&match.params&&match.params.pokemon) {
+      fetchPokemonDetailsCallback()
+    }
+  }, [fetchPokemonDetailsCallback]);
   try {
+    const hasPokemons=(pokemonDetails&& pokemonDetailsProps&&pokemonDetailsProps.sprites && pokemonDetailsProps.sprites.front_default&& pokemonDetailsProps.name && pokemonDetails.sprites && pokemonDetails.sprites.front_default);
     return (
       <React.Fragment>
         <Button
@@ -152,8 +185,7 @@ const ViewPokemonDetailsContainer = (props: any) => {
         </Button>
         <Paper className={classes.paperDetails}>
           <Container maxWidth="sm" style={{ padding: "30px 0px" }}>
-            {pokemonDetails !== null &&
-            pokemonDetails.sprites.front_default !== undefined ? (
+            {(hasPokemons&&pokemonDetailsProps&&pokemonDetailsProps.sprites&&pokemonDetailsProps.sprites.front_default&&pokemonDetailsProps.name) ? (
               <React.Fragment>
                 <h2 style={{ textTransform: "capitalize" }}>
                   {pokemonDetails.name}
@@ -183,9 +215,16 @@ const ViewPokemonDetailsContainer = (props: any) => {
                     isLoading={isLoading}
                     pokemonEvolutions={pokemonEvolutionsState}
                   />
-                  <TabPanel value={value} index={1} dir={"rtl"}>
-                    Item Two
+                  {
+                    (pokemonAreas)?(<PokemonAreas
+                      value={value}
+                      isLoading={isLoading}
+                      pokemonAreas={pokemonAreas}
+                    />):<TabPanel value={value} index={1} dir={"rtl"}>
+                    Loading Pokemon Areas 
                   </TabPanel>
+                  }
+                  
                   <TabPanel value={value} index={2} dir={"rtl"}>
                     Item Three
                   </TabPanel>

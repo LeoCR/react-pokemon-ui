@@ -1,13 +1,13 @@
 import { put, call, take,fork} from 'redux-saga/effects';
 import {POKEMONS} from "../constants/pokemonsTypes";
-import {fetchPokemonDeatils} from "../api/apiPokemon";
+import {fetchPokemonDetails} from "../api/apiPokemon";
 import {setPokemonDetailsError,loadPokemonDetails,setPokemonDetails} from "../actions/pokemonActions";
 
 export function* handlePokemonDetailsRequest(name:string) { 
     for (let i = 0; i < 10; i++) {
         try {
             yield put(loadPokemonDetails(name));
-            const res = yield call(fetchPokemonDeatils, name); 
+            const res = yield call(fetchPokemonDetails, name); 
             yield put(setPokemonDetails(name, res));
             // pokemon was loaded so we exit the generator
             return true;
