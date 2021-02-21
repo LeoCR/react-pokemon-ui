@@ -17,8 +17,9 @@ import PokemonAreas from "../components/Pokemon/PokemonAreas";
 import { RouteComponentProps } from 'react-router';
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 import { PokemonLocationAreasResponse } from "../interfaces/PokemonLocationAreas.interface";
-import { PokemonEvolutionChain,Chain,EvolvesTo } from "../interfaces/PokemonEvolutions.interface";
+import { PokemonEvolutionChain,EvolvesTo } from "../interfaces/PokemonEvolutions.interface";
 import { IStore } from "../store/store";
+import PokemonAbilities from "../components/Pokemon/PokemonAbilities";
 
 const a11yProps = (index: number) => {
   return {
@@ -224,10 +225,7 @@ const ViewPokemonDetailsContainer : React.FC<ViewPokemonDetailsContainerProps> =
                     Loading Pokemon Areas 
                   </TabPanel>
                   }
-                  
-                  <TabPanel value={value} index={2} dir={"rtl"}>
-                    Item Three
-                  </TabPanel>
+                  <PokemonAbilities value={value} abilities={pokemonDetailsProps.abilities}/>
                 </SwipeableViews>
                 <Button className={classes.btnAddToMyFavorites}>
                   Add to My Favorites
