@@ -7,7 +7,7 @@
       "esnext"
     ],
     "typeRoots": [
-            "node_modules/@types"
+      "node_modules/@types"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -20,7 +20,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src"

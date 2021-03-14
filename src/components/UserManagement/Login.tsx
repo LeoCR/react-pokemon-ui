@@ -1,18 +1,20 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
-import Container from "@material-ui/core/Container";
-import FormControl from "@material-ui/core/FormControl";
+import { Container, FormControl, Button } from "@material-ui/core";
 import { loginByEmail, loginByUsername } from "../../actions/securityActions";
 import isEmail from "../../utils/isEmail";
 import Field from "../Layout/Field";
-import { LoginRequestByEmail, LoginRequestByUsername, User } from "../../interfaces/Security.interface";
+import {
+  LoginRequestByEmail,
+  LoginRequestByUsername,
+  User,
+} from "../../interfaces/Security.interface";
 import { IStore } from "../../store/store";
 
 interface LoginProps {
-  user?: User; 
+  user?: User;
   onLogin?: () => void;
-  loginByEmail: (LoginRequest: (LoginRequestByEmail)) => void;
+  loginByEmail: (LoginRequest: LoginRequestByEmail) => void;
   loginByUsername: (LoginRequest: LoginRequestByUsername) => void;
   history: {
     push: (url: string) => void;
@@ -70,7 +72,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
     const LoginRequestByEmail = {
       email: this.state.usernameOrEmail,
       password: this.state.password,
-    }; 
+    };
     if (this.state.usernameOrEmail.length > 5) {
       this.setState({
         errorsUsernameOrEmail: "",
@@ -94,21 +96,21 @@ export class Login extends React.Component<LoginProps, LoginState> {
       this.state.errorsPassword === "" &&
       this.state.errorsUsernameOrEmail === ""
     ) {
-      if (isEmail(this.state.usernameOrEmail)) { 
+      if (isEmail(this.state.usernameOrEmail)) {
         this.props.loginByEmail(LoginRequestByEmail);
-      } else { 
+      } else {
         this.props.loginByUsername(LoginRequestByUsername);
       }
       setTimeout(() => {
-        if (this.props.user&&this.props.user.validToken) {
-          this.props.history.push("/dashboard");
+        if (this.props.user && this.props.user.validToken) {
+          this.props.history.push("/pokemons");
         }
-      }, 1000);
+      }, 300);
     }
   };
   componentDidMount() {
-    if (this.props.user&&this.props.user.validToken) {
-      this.props.history.push("/dashboard");
+    if (this.props.user && this.props.user.validToken) {
+      this.props.history.push("/pokemons");
     }
   }
   render() {
@@ -159,5 +161,5 @@ const mapStateToProps = (state: IStore) => ({
   user: state.user,
 });
 export default connect(mapStateToProps, { loginByEmail, loginByUsername })(
-  Login 
+  Login
 );

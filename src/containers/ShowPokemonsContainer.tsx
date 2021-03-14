@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import $ from "jquery";
-import { Link, RouteComponentProps, withRouter ,useHistory} from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { logout } from "../actions/securityActions";
 import { useSelector, useDispatch } from "react-redux";
 import Pokemon from "../components/Pokemon/Pokemon";
@@ -12,17 +12,19 @@ import {
 } from "../actions/pokemonActions";
 import { Button } from "@material-ui/core";
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
-import { IStore } from "../store/store"
+import { IStore } from "../store/store";
 
 type ShowPokemonsContainerParams = {
-  page: string
+  page: string;
 };
 type ShowPokemonsContainerProps = RouteComponentProps<ShowPokemonsContainerParams>;
 export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   match,
-  history
+  history,
 }) => {
-  const [pokemonsDetails, setPokemonsDetails] = useState<PokemonDetailsResponse[]>([]);
+  const [pokemonsDetails, setPokemonsDetails] = useState<
+    PokemonDetailsResponse[]
+  >([]);
   const [isLoading, setIsLoading] = useState(true);
   const totalPagination = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const dispatch = useDispatch();
@@ -34,9 +36,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   useEffect(() => {
     try {
       let page2 = 0;
-      if (
-        match.params.page
-      ) {
+      if (match.params.page) {
         page2 = parseInt(match.params.page);
         if (isNaN(page2) === false && page2 > 1) {
           setPokemonsCallback(page2);
@@ -56,13 +56,16 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
       }
       setInterval(() => {
         const currentTime = Date.now() / 1000;
-        if (user&&user.user&&user.user.exp&&user.user.exp < currentTime) {
+        if (user && user.user && user.user.exp && user.user.exp < currentTime) {
           dispatch(logout());
           window.location.href = "/login";
         }
       }, 28800000);
     } catch (error) {
-      console.error("An error occurs in ShowPokemonsContainer.useEffect()",error);
+      console.error(
+        "An error occurs in ShowPokemonsContainer.useEffect()",
+        error
+      );
     }
   }, []);
   const setPokemonsCallback = useCallback((page: number) => {
@@ -70,7 +73,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
     dispatch(clearPokemons());
     dispatch(clearPokemonDetails());
     dispatch(loadPokemons(page * 10));
-    if (pokemonsDetailsProps&&pokemonsDetailsProps.length > 9) {
+    if (pokemonsDetailsProps && pokemonsDetailsProps.length > 9) {
       setPokemonsDetails(pokemonsDetailsProps);
       setIsLoading(false);
     }
@@ -86,7 +89,9 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
       setPokemonsCallback(key);
     } catch (error) {
       console.error(
-        "An error occurs in ShowDesserts.getPage() , but dont worry about it",error);
+        "An error occurs in ShowDesserts.getPage() , but dont worry about it",
+        error
+      );
     }
   };
   useEffect(() => {
@@ -97,9 +102,9 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
 
   const getPrevPage = () => {};
   const getNextPage = () => {};
-  const viewPokemon = (pokemon: PokemonDetailsResponse) => { 
-    dispatch(setPokemon(pokemon as PokemonDetailsResponse)); 
-    history.push("/pokemon/" + pokemon.name)
+  const viewPokemon = (pokemon: PokemonDetailsResponse) => {
+    dispatch(setPokemon(pokemon as PokemonDetailsResponse));
+    history.push("/pokemon/" + pokemon.name);
   };
   const getPagination = () => {
     return (
@@ -158,7 +163,13 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
     pokemonsDetails.map((pokemon: PokemonDetailsResponse, index: number) => (
       <div
         className="pokemon_container"
-        key={(pokemon.name as string) + pokemon.id + "_" + currentTime + Math.random()}
+        key={
+          (pokemon.name as string) +
+          pokemon.id +
+          "_" +
+          currentTime +
+          Math.random()
+        }
       >
         <Pokemon details={pokemonsDetails[index]} />
         <Button
@@ -181,7 +192,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
     return (
       <React.Fragment>
         <h1>An error occurs</h1>
-        <Link to={`/dashboard`} className="page-link">
+        <Link to={`/pokemons`} className="page-link">
           Dashboard
         </Link>
       </React.Fragment>
