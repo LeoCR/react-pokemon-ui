@@ -1,7 +1,7 @@
 import { Paper, Container, AppBar, Tabs, Tab, Button } from "@material-ui/core";
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { setPokemon, setPokemonEvolutions } from "../actions/pokemonActions";
 import {
   fetchPokemonDetails,
@@ -14,7 +14,6 @@ import { useStyles } from "./ViewPokemonDetailsContainer.style";
 import TabPanel from "../components/Layout/TabPane";
 import PokemonEvolutions from "../components/Pokemon/PokemonEvolutions";
 import PokemonAreas from "../components/Pokemon/PokemonAreas";
-import { RouteComponentProps } from "react-router";
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 import { PokemonLocationAreasResponse } from "../interfaces/PokemonLocationAreas.interface";
 import {
@@ -23,6 +22,7 @@ import {
 } from "../interfaces/PokemonEvolutions.interface";
 import { IStore } from "../store/store";
 import PokemonAbilities from "../components/Pokemon/PokemonAbilities";
+import { ViewPokemonDetailsContainerProps } from "../types/ViewPokemonDetailsContainer.types";
 
 const a11yProps = (index: number) => {
   return {
@@ -31,13 +31,8 @@ const a11yProps = (index: number) => {
   };
 };
 
-type ViewPokemonDetailsContainerParams = {
-  pokemon: string;
-};
-type ViewPokemonDetailsContainerProps = RouteComponentProps<ViewPokemonDetailsContainerParams>;
 const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = ({
   match,
-  location,
   history,
 }) => {
   const dispatch = useDispatch();
@@ -52,14 +47,16 @@ const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = 
       front_default: null,
     },
   });
-  let [pokemonEvolutionsState, setPokemonEvolutionsState] = useState<
+  const [pokemonEvolutionsState, setPokemonEvolutionsState] = useState<
     PokemonDetailsResponse[]
   >([]);
-  let [isLoading, setIsLoading] = useState(true);
-  let [pokemonAreas, setPokemonAreas] = useState<
+  const [isLoading, setIsLoading] = useState(true);
+  const [pokemonAreas, setPokemonAreas] = useState<
     PokemonLocationAreasResponse[]
   >();
-  let [value, setValue] = React.useState(0);
+  const [tabValue, setTabValue] = React.useState(0);
+  const { pokemon } = useSelector((state: IStore) => state.search);
+
   useEffect(() => {
     try {
       if (pokemonDetailsProps && pokemonDetailsProps.name) {
@@ -78,10 +75,10 @@ const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = 
     }
   }, [pokemonDetailsProps]);
   const handleChangeIndex = (index: number) => {
-    setValue(index);
+    setTabValue(index);
   };
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+    setTabValue(newValue);
   };
   const onClickBack = () => {
     history.go(-1);
@@ -197,14 +194,16 @@ const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = 
         error
       );
     }
-  }, []);
+  }, [match.params.pokemon]);
   useEffect(() => {
     if (match && match.params && match.params.pokemon) {
       fetchPokemonDetailsCallback();
     }
   }, [fetchPokemonDetailsCallback]);
+
+  let hasPokemons;
   try {
-    const hasPokemons =
+    hasPokemons =
       pokemonDetails &&
       pokemonDetailsProps &&
       pokemonDetailsProps.sprites &&
@@ -212,16 +211,20 @@ const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = 
       pokemonDetailsProps.name &&
       pokemonDetails.sprites &&
       pokemonDetails.sprites.front_default;
-    return (
-      <React.Fragment>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.btnBack}
-          onClick={() => onClickBack()}
-        >
-          Back
-        </Button>
+  } catch (error) {
+    console.error("An error occurs ViewPokemonDetailsContainer", error);
+  }
+  return (
+    <React.Fragment>
+      <Button
+        variant="contained"
+        color="secondary"
+        className={classes.btnBack}
+        onClick={() => onClickBack()}
+      >
+        Back
+      </Button>
+      {
         <Paper className={classes.paperDetails}>
           <Container maxWidth="sm" style={{ padding: "30px 0px" }}>
             {hasPokemons &&
@@ -240,7 +243,7 @@ const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = 
                 />
                 <AppBar position="static" color="default">
                   <Tabs
-                    value={value}
+                    value={tabValue}
                     onChange={handleChange}
                     indicatorColor="secondary"
                     textColor="primary"
@@ -252,25 +255,28 @@ const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = 
                     <Tab label="Abilities" {...a11yProps(2)} />
                   </Tabs>
                 </AppBar>
-                <SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
+                <SwipeableViews
+                  index={tabValue}
+                  onChangeIndex={handleChangeIndex}
+                >
                   <PokemonEvolutions
-                    value={value}
+                    value={tabValue}
                     isLoading={isLoading}
                     pokemonEvolutions={pokemonEvolutionsState}
                   />
                   {pokemonAreas ? (
                     <PokemonAreas
-                      value={value}
+                      value={tabValue}
                       isLoading={isLoading}
                       pokemonAreas={pokemonAreas}
                     />
                   ) : (
-                    <TabPanel value={value} index={1} dir={"rtl"}>
+                    <TabPanel value={tabValue} index={1} dir={"rtl"}>
                       Loading Pokemon Areas
                     </TabPanel>
                   )}
                   <PokemonAbilities
-                    value={value}
+                    value={tabValue}
                     abilities={pokemonDetailsProps.abilities}
                   />
                 </SwipeableViews>
@@ -283,23 +289,8 @@ const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = 
             )}
           </Container>
         </Paper>
-      </React.Fragment>
-    );
-  } catch (error) {
-    return (
-      <React.Fragment>
-        <Link to="/pokemons">
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.btnBack}
-          >
-            Back
-          </Button>
-        </Link>
-        <Paper style={{ padding: "30px 90px" }}>An Error Occurs. {error}</Paper>
-      </React.Fragment>
-    );
-  }
+      }
+    </React.Fragment>
+  );
 };
-export default withRouter(ViewPokemonDetailsContainer);
+export default withRouter(React.memo(ViewPokemonDetailsContainer));

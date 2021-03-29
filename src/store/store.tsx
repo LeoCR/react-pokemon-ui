@@ -30,6 +30,10 @@ export interface IStore {
     pokemonsDetails?: PokemonDetailsResponse[];
     error?: boolean | null | string;
   };
+  search: {
+    pokemon?: PokemonDetailsResponse;
+    error?: boolean | Error | null;
+  };
 }
 
 let storageState = JSON.parse(localStorage.getItem("pokedex_app") || "{}");

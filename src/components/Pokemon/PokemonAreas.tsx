@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import TabPanel from "../Layout/TabPane";
 import { useSelector } from "react-redux";
-import { PokemonLocationAreasResponse } from "../../interfaces/PokemonLocationAreas.interface";
+import {
+  PokemonAreasProps,
+  PokemonLocationAreasResponse,
+} from "../../interfaces/PokemonLocationAreas.interface";
 import { IStore } from "../../store/store";
 
-interface PokemonAreasProps {
-  pokemonAreas: PokemonLocationAreasResponse[];
-  value: number;
-  isLoading: boolean;
-}
 const PokemonAreas = (props: PokemonAreasProps) => {
   const [pokemonAreasState, setPokemonAreas] = useState<
     PokemonLocationAreasResponse[]
@@ -72,4 +70,4 @@ const PokemonAreas = (props: PokemonAreasProps) => {
   );
 };
 
-export default React.memo(PokemonAreas);
+export default PokemonAreas;

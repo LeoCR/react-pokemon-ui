@@ -1,13 +1,13 @@
 import React from "react";
 import { connect, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { logout } from "../../actions/securityActions";
 import { User } from "../../interfaces/Security.interface";
 import { IStore } from "../../store/store";
 import SearchForm from "./SearchForm";
 import "./Header.scss";
 
-interface HeaderProps {
+interface HeaderProps extends RouteComponentProps {
   user?: User;
 }
 const Header = (props: HeaderProps) => {
@@ -66,7 +66,7 @@ const Header = (props: HeaderProps) => {
   let searchForm = <React.Fragment></React.Fragment>;
   if (user?.validToken) {
     headerLinks = userIsAuthenticated;
-    searchForm = <SearchForm />;
+    searchForm = <SearchForm {...props} />;
   } else {
     headerLinks = userIsNotAuthenticated;
   }
@@ -92,4 +92,4 @@ const Header = (props: HeaderProps) => {
 const mapStateToProps = (state: IStore) => ({
   user: state.user,
 });
-export default connect(mapStateToProps, null)(React.memo(Header));
+export default connect(mapStateToProps, null)(withRouter(Header));

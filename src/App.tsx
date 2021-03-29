@@ -6,11 +6,14 @@ import jwt_decode from "jwt-decode";
 import Login from "./components/UserManagement/Login";
 import Header from "./components/Layout/Header";
 import { logout, setUserData } from "./actions/securityActions";
-import { connect, useDispatch } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { ShowPokemonsContainer } from "./containers/ShowPokemonsContainer";
 import SecureRoute from "./components/Security/SecureRoute";
 import ViewPokemonDetailsContainer from "./containers/ViewPokemonDetailsContainer";
 import { IStore } from "./store/store";
+import { Snackbar } from "@material-ui/core";
+import { Alert } from "./components/Layout/Alert";
+import SearchContainer from "./containers/SearchContainer";
 interface AppProps {}
 interface AuthToken {
   name: string;
@@ -23,6 +26,20 @@ const jwtToken =
 
 export const App: React.FC<AppProps> = (props: AppProps) => {
   const dispatch = useDispatch();
+  const { error } = useSelector((state: IStore) => state.search);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+  useEffect(() => {
+    if (error) {
+      setOpen(true);
+    }
+  }, [error]);
   useEffect(() => {
     if (jwtToken) {
       setJWTToken(jwtToken);
@@ -43,6 +60,16 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
   }, []);
   return (
     <div className="app">
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={handleClose} severity="success">
+          This is a success message!
+        </Alert>
+      </Snackbar>
       <Router>
         <Header />
         <Switch>
@@ -67,6 +94,7 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
             exact
             component={ViewPokemonDetailsContainer}
           />
+          <SecureRoute path="/search" exact component={SearchContainer} />
         </Switch>
       </Router>
     </div>

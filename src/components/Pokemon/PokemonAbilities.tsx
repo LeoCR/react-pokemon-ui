@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import TabPanel from "../Layout/TabPane";
-import { ability } from "../../interfaces/PokemonDetails.interface";
+import {
+  ability,
+  IPokemonAbilities,
+} from "../../interfaces/PokemonDetails.interface";
 import IconAttack from "../../assets/img/icon_attack.svg";
-export interface IPokemonAbilities {
-  value: number;
-  abilities?: ability[];
-}
+
 const PokemonAbilities: React.FC<IPokemonAbilities> = (
   props: IPokemonAbilities
 ) => {
@@ -15,7 +15,7 @@ const PokemonAbilities: React.FC<IPokemonAbilities> = (
     if (props.abilities) {
       setPokemonAbilities(props.abilities);
     }
-  }, []);
+  }, [props.abilities]);
   const abilities =
     pokemonAbilities.length > 0 ? (
       pokemonAbilities.map((ability: ability, index: number) => {

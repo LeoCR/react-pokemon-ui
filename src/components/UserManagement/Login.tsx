@@ -64,7 +64,6 @@ export class Login extends React.Component<LoginProps, LoginState> {
     }
   };
   onLogin = (e: React.FormEvent) => {
-    e.preventDefault();
     const LoginRequestByUsername = {
       username: this.state.usernameOrEmail,
       password: this.state.password,

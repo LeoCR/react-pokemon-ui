@@ -5,18 +5,21 @@ const useStyle = makeStyles({
   inputTextField: {
     width: "100%",
     float: "left",
-    background: "#ececec",
-    "& .MuiFormLabel-root.Mui-focused": {
-      color: "#000000",
-    },
-    "& .MuiInput-underline::after": {
-      borderBottom: "2px solid #a00606",
+    background: "#fff",
+    "&::-ms-clear": {
+      display: "none",
     },
   },
 });
 
 export const Field = (props: TextFieldProps) => {
   const classes = useStyle();
-  return <TextField {...props} className={classes.inputTextField} />;
+  return (
+    <TextField
+      {...props}
+      className={classes.inputTextField}
+      variant="outlined"
+    />
+  );
 };
 export default Field;
