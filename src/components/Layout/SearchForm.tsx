@@ -11,7 +11,7 @@ import { SearchFormProps } from "../../types/SearchForm.types";
 import { IStore } from "../../store/store";
 
 const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
-  const { pokemon } = useSelector((state: IStore) => state.search);
+  const { pokemon, error } = useSelector((state: IStore) => state.search);
   const [pokemonName, setPokemonName] = useState<string>("");
   const dispatch = useDispatch();
   const findPokemon = (pkmnName: string) => {
@@ -28,12 +28,11 @@ const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
       setPokemonName(newPokemonName);
     }
   };
-  const clearInput = () => {
-    setPokemonName("");
-    if (pokemon && "name" in pokemon) {
-      history.go(-2);
-    }
+  const clearInput = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
     dispatch(clearSearchPokemonResults());
+    setPokemonName("");
+    history.push('/pokemons')
   };
   const submitSearchForm = (event: React.FormEvent) => {
     event.preventDefault();
@@ -71,7 +70,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
           variant="contained"
           color="secondary"
           style={{ minHeight: "55px", float: "right" }}
-          onClick={() => clearInput()}
+          onClick={(e: React.MouseEvent<HTMLElement>) => clearInput(e)}
         >
           <ClearIcon />
         </Button>

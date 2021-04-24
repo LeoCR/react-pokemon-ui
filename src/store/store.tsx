@@ -32,7 +32,9 @@ export interface IStore {
   };
   search: {
     pokemon?: PokemonDetailsResponse;
-    error?: boolean | Error | null;
+    error?: Error | null;
+    severity?: "error" | "warning" | "success";
+    message: null | string;
   };
 }
 

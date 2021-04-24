@@ -26,7 +26,9 @@ const jwtToken =
 
 export const App: React.FC<AppProps> = (props: AppProps) => {
   const dispatch = useDispatch();
-  const { error } = useSelector((state: IStore) => state.search);
+  const { error, severity, message } = useSelector(
+    (state: IStore) => state.search
+  );
   const [open, setOpen] = React.useState(false);
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
@@ -36,10 +38,14 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
     setOpen(false);
   };
   useEffect(() => {
-    if (error) {
-      setOpen(true);
+    if (message) {
+      if (severity === "error" || severity === "success") {
+        setOpen(true);
+      } else {
+        setOpen(false);
+      }
     }
-  }, [error]);
+  }, [message, error]);
   useEffect(() => {
     if (jwtToken) {
       setJWTToken(jwtToken);
@@ -61,13 +67,13 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
   return (
     <div className="app">
       <Snackbar
-        open={open}
+        open={severity === "warning" ? false : open}
         autoHideDuration={6000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <Alert onClose={handleClose} severity="success">
-          This is a success message!
+        <Alert onClose={handleClose} severity={severity}>
+          {message}
         </Alert>
       </Snackbar>
       <Router>
