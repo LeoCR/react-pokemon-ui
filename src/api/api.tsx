@@ -1,17 +1,18 @@
 import axios from 'axios';  
 import {setJWTToken} from "../utils/setJWTToken";
 import jwt_decode from "jwt-decode";
+import { LoginRequestByEmail, LoginRequestByUsername } from '../interfaces/Security.interface';
 
 export const api= axios.create({
     baseURL:'http://localhost:49840',
     responseType: 'json' 
 }) 
 
-export const loginByEmailRequest=(LoginRequest:any)=>async ()=>{
+export const loginByEmailRequest=(LoginRequest:LoginRequestByEmail)=>async ()=>{
     let response;
     //post => Login Request 
     await api.post("/api/login/byEmail",LoginRequest)
-    .then((res:any)=>{
+    .then((res)=>{
         //extract token from res.data
         const {token}=res.data;
         //store the token in the localStorage
@@ -23,18 +24,16 @@ export const loginByEmailRequest=(LoginRequest:any)=>async ()=>{
         //dispatch to our securityReducer
         return response;
     })
-    .catch((err:any)=>{
-        console.log('An error occurs loginByEmail await.post.catch');
-        console.log(err);
-        throw new Error(err);
-    })
+    .catch((err: Error) => {
+        return err;
+    });
     return response;
 }
-export const loginByUsernameRequest=(LoginRequest:any)=>async()=>{
+export const loginByUsernameRequest=(LoginRequest:LoginRequestByUsername)=>async()=>{
         let response;
         //post => Login Request
         await api.post("/api/login/byUsername",LoginRequest)
-        .then((res:any)=>{
+        .then((res)=>{
             //extract token from res.data
             const {token}=res.data;
              //store the token in the localStorage
@@ -45,10 +44,8 @@ export const loginByUsernameRequest=(LoginRequest:any)=>async()=>{
             response=jwt_decode(token);
             return response;
         })
-        .catch((err:any)=>{
-            console.log('An error occurs loginByUsername api.post.catch');
-            console.log(err);
-            throw new Error(err);
-        })
+        .catch((err: Error) => {
+            return err;
+        });
         return response;
 }
