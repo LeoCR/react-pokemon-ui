@@ -1,23 +1,18 @@
 import React, { useEffect, useState, useCallback } from "react";
 import $ from "jquery";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import { logout } from "../actions/securityActions";
+import { Link, withRouter } from "react-router-dom"; 
 import { useSelector, useDispatch } from "react-redux";
-import Pokemon from "../components/Pokemon/Pokemon";
 import {
   loadPokemons,
   clearPokemons,
   clearPokemonDetails,
   setPokemon,
 } from "../actions/pokemonActions";
-import { Button } from "@material-ui/core";
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 import { IStore } from "../store/store";
+import PokemonOverview from "../components/Pokemon/PokemonOverview";
+import { ShowPokemonsContainerProps } from "../types/ShowPoemonsContainer.types";
 
-type ShowPokemonsContainerParams = {
-  page: string;
-};
-type ShowPokemonsContainerProps = RouteComponentProps<ShowPokemonsContainerParams>;
 export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   match,
   history,
@@ -30,9 +25,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   const dispatch = useDispatch();
   const pokemonsDetailsProps = useSelector(
     (state: IStore) => state.pokemonsDetails.pokemonsDetails
-  );
-  const user = useSelector((state: IStore) => state.user);
-
+  );  
   useEffect(() => {
     try {
       let page2 = 0;
@@ -54,13 +47,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
         $("#page-item-1").addClass("active");
         setPokemonsCallback(page2);
       }
-      setInterval(() => {
-        const currentTime = Date.now() / 1000;
-        if (user && user.user && user.user.exp && user.user.exp < currentTime) {
-          dispatch(logout());
-          window.location.href = "/login";
-        }
-      }, 28800000);
+       
     } catch (error) {
       console.error(
         "An error occurs in ShowPokemonsContainer.useEffect()",
@@ -104,7 +91,9 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   const getNextPage = () => {};
   const viewPokemon = (pokemon: PokemonDetailsResponse) => {
     dispatch(setPokemon(pokemon as PokemonDetailsResponse));
-    history.push("/pokemon/" + pokemon.name);
+    if (pokemon.name) {
+      history.push("/pokemon/" + pokemon.name);
+    }
   };
   const getPagination = () => {
     return (
@@ -158,46 +147,27 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
     );
   };
   let currentTime = Date.now();
+
   const renderedPokemons =
-    pokemonsDetails.length > 0 &&
-    pokemonsDetails.map((pokemon: PokemonDetailsResponse, index: number) => (
-      <div
-        className="pokemon_container"
-        key={
-          (pokemon.name as string) +
-          pokemon.id +
-          "_" +
-          currentTime +
-          Math.random()
-        }
-      >
-        <Pokemon details={pokemonsDetails[index]} />
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => viewPokemon(pokemonsDetails[index])}
-        >
-          View Details
-        </Button>
-      </div>
-    ));
-  try {
-    return (
-      <div className="pokemons_container">
-        {isLoading === false ? renderedPokemons : "Loading,please wait..."}
-        {isLoading === false ? getPagination() : ""}
-      </div>
-    );
-  } catch (error) {
-    return (
-      <React.Fragment>
-        <h1>An error occurs</h1>
-        <Link to={`/pokemons`} className="page-link">
-          Dashboard
-        </Link>
-      </React.Fragment>
-    );
-  }
+    pokemonsDetails.length > 0
+      ? pokemonsDetails.map(
+          (pokemon: PokemonDetailsResponse, index: number) => (
+            <PokemonOverview
+              pokemon={pokemonsDetails[index]}
+              viewPokemon={() =>
+                viewPokemon(pokemonsDetails[index] as PokemonDetailsResponse)
+              }
+              currentTime={currentTime}
+            />
+          )
+        )
+      : "";
+  return (
+    <div className="pokemons_container">
+      {isLoading === false ? renderedPokemons : "Loading,please wait..."}
+      {isLoading === false ? getPagination() : ""}
+    </div>
+  );
 };
 
 export default withRouter(ShowPokemonsContainer);

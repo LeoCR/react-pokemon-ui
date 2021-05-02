@@ -10,7 +10,7 @@ import {
   User,
 } from "../../interfaces/Security.interface";
 import { IStore } from "../../store/store";
-
+import {  Redirect } from "react-router-dom";
 interface LoginProps {
   user?: User;
   onLogin?: () => void;
@@ -41,7 +41,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
     };
   }
   onTexFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    var inputName = e.target.name;
+    const inputName = e.target.name;
     if (inputName === "usernameOrEmail") {
       this.setState({
         usernameOrEmail: e.target.value,
@@ -101,59 +101,55 @@ export class Login extends React.Component<LoginProps, LoginState> {
       } else {
         this.props.loginByUsername(LoginRequestByUsername);
       }
-      setTimeout(() => {
-        if (this.props.user && this.props.user.validToken) {
-          this.props.history.push("/pokemons");
-        }
-      }, 300);
     }
-  };
-  componentDidMount() {
-    if (this.props.user && this.props.user.validToken) {
-      this.props.history.push("/pokemons");
-    }
-  }
+  }; 
   render() {
     return (
-      <Container maxWidth="sm" id="container_login">
-        <FormControl>
-          <Field
-            label="Username or Email"
-            margin="normal"
-            name="usernameOrEmail"
-            onChange={this.onTexFieldChange}
-          />
-          {this.state.errorsUsernameOrEmail !== "" ? (
-            <span className="error_msg">
-              {this.state.errorsUsernameOrEmail}
-            </span>
-          ) : (
-            ""
-          )}
-        </FormControl>
-        <FormControl>
-          <Field
-            label="Password"
-            type="password"
-            margin="normal"
-            name="password"
-            onChange={this.onTexFieldChange}
-          />
-          {this.state.errorsPassword !== "" ? (
-            <span className="error_msg">{this.state.errorsPassword}</span>
-          ) : (
-            ""
-          )}
-        </FormControl>
-        <Button
-          variant="contained"
-          color="secondary"
-          className="login_button"
-          onClick={this.onLogin}
-        >
-          Login
-        </Button>
-      </Container>
+      <React.Fragment>
+        {this.props.user && this.props.user.validToken===false ? (
+          <Container maxWidth="sm" id="container_login">
+            <FormControl>
+              <Field
+                label="Username or Email"
+                margin="normal"
+                name="usernameOrEmail"
+                onChange={this.onTexFieldChange}
+              />
+              {this.state.errorsUsernameOrEmail !== "" ? (
+                <span className="error_msg">
+                  {this.state.errorsUsernameOrEmail}
+                </span>
+              ) : (
+                ""
+              )}
+            </FormControl>
+            <FormControl>
+              <Field
+                label="Password"
+                type="password"
+                margin="normal"
+                name="password"
+                onChange={this.onTexFieldChange}
+              />
+              {this.state.errorsPassword !== "" ? (
+                <span className="error_msg">{this.state.errorsPassword}</span>
+              ) : (
+                ""
+              )}
+            </FormControl>
+            <Button
+              variant="contained"
+              color="secondary"
+              className="login_button"
+              onClick={this.onLogin}
+            >
+              Login
+            </Button>
+          </Container>
+        ) : (
+          <Redirect to={'/pokemons'} />
+        )}
+      </React.Fragment>
     );
   }
 }

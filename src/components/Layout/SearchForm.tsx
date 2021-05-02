@@ -2,11 +2,25 @@ import React, { useState } from "react";
 import { Button } from "@material-ui/core";
 import Field from "./Field";
 import ClearIcon from "@material-ui/icons/Clear";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  searchPokemon,
+  clearSearchPokemonResults,
+} from "../../actions/pokemonActions";
+import { SearchFormProps } from "../../types/SearchForm.types";
+import { IStore } from "../../store/store";
 
-const SearchForm = () => {
+const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
+  const { pokemon, error } = useSelector((state: IStore) => state.search);
   const [pokemonName, setPokemonName] = useState<string>("");
-  const searchPokemon = (pkmnName: string) => {
+  const dispatch = useDispatch();
+  const findPokemon = (pkmnName: string) => {
     console.log("pkmnName", pkmnName);
+    history.push({
+      pathname: "/search",
+      search: "?pokemon=" + pkmnName,
+    });
+    dispatch(searchPokemon(pkmnName.toLowerCase()));
   };
   const onChagePokemonName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPokemonName = e.target.value;
@@ -14,12 +28,15 @@ const SearchForm = () => {
       setPokemonName(newPokemonName);
     }
   };
-  const clearInput = () => {
+  const clearInput = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    dispatch(clearSearchPokemonResults());
     setPokemonName("");
+    history.push('/pokemons')
   };
   const submitSearchForm = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Submitting Form", pokemonName);
+    findPokemon(pokemonName);
   };
 
   return (
@@ -28,12 +45,12 @@ const SearchForm = () => {
         variant="contained"
         color="primary"
         style={{ minHeight: "55px", float: "left" }}
-        onClick={() => searchPokemon(pokemonName)}
+        onClick={() => findPokemon(pokemonName)}
       >
         Search
       </Button>
       <Field
-        id="outlined-basic"
+        id="standard-basic"
         label="Search Pokemon"
         type="search"
         variant="outlined"
@@ -41,6 +58,11 @@ const SearchForm = () => {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           onChagePokemonName(e)
         }
+        InputProps={{
+          startAdornment: <React.Fragment></React.Fragment>,
+          endAdornment: <React.Fragment></React.Fragment>,
+          type: "text",
+        }}
         style={{ maxWidth: "443px", float: "left" }}
       />
       {pokemonName !== "" ? (
@@ -48,7 +70,7 @@ const SearchForm = () => {
           variant="contained"
           color="secondary"
           style={{ minHeight: "55px", float: "right" }}
-          onClick={() => clearInput()}
+          onClick={(e: React.MouseEvent<HTMLElement>) => clearInput(e)}
         >
           <ClearIcon />
         </Button>

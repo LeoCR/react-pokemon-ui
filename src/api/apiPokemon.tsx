@@ -1,6 +1,9 @@
 import axios from "axios";
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
-import { PokemonEvolutionChain, PokemonEvolutionsChainURLResponse } from "../interfaces/PokemonEvolutions.interface";
+import {
+  PokemonEvolutionChain,
+  PokemonEvolutionsChainURLResponse,
+} from "../interfaces/PokemonEvolutions.interface";
 import { PokemonLocationAreasResponse } from "../interfaces/PokemonLocationAreas.interface";
 export const apiPokemon = axios.create({
   baseURL: "https://pokeapi.co/",
@@ -18,23 +21,15 @@ export const fetchPokemons = async (page: number) => {
     .then((res) => {
       pokemons = res.data;
       return res.data;
-    })
-    .catch((err: Error) => {
-      return err;
     });
   return pokemons;
 };
 export const fetchPokemonDetails = async (name: string = "pikachu") => {
-  let pokemonDetails:PokemonDetailsResponse={};
-  await apiPokemon
-    .get("/api/v2/pokemon/" + name.toLowerCase())
-    .then((res) => {
-      pokemonDetails = res.data;
-      return res.data;
-    })
-    .catch((err: Error) => {
-      return err;
-    });  
+  let pokemonDetails: PokemonDetailsResponse = {};
+  await apiPokemon.get("/api/v2/pokemon/" + name.toLowerCase()).then((res) => {
+    pokemonDetails = res.data;
+    return res.data;
+  });
   return pokemonDetails;
 };
 
@@ -49,30 +44,22 @@ export const fetchPokemonEvolutionsChainURL = async (
         pokemonEvolutionsChainUrl = res.data.evolution_chain.url;
       }
       return res.data;
-    })
-    .catch((err: Error) => {
-      return err;
     });
 
   return pokemonEvolutionsChainUrl;
 };
 export const fetchPokemonEvolutions = async (urlChain: string = "") => {
-  let pokemonEvolutions:PokemonEvolutionChain={};
-  await apiPokemon
-    .get<PokemonEvolutionChain>(urlChain)
-    .then((res) => {
-      pokemonEvolutions = res.data;
-      return res.data;
-    })
-    .catch((err: Error) => {
-      return err;
-    });
+  let pokemonEvolutions: PokemonEvolutionChain = {};
+  await apiPokemon.get<PokemonEvolutionChain>(urlChain).then((res) => {
+    pokemonEvolutions = res.data;
+    return res.data;
+  });
 
   return pokemonEvolutions;
 };
 
 export const fetchPokemonAreas = async (pokemonName: string = "pikachu") => {
-  let pokemonAreas:PokemonLocationAreasResponse[]=[];
+  let pokemonAreas: PokemonLocationAreasResponse[] = [];
   await apiPokemon
     .get("/api/v2/pokemon/" + pokemonName + "/encounters")
     .then((res) => {
@@ -80,9 +67,6 @@ export const fetchPokemonAreas = async (pokemonName: string = "pikachu") => {
         pokemonAreas = res.data;
       }
       return res.data;
-    })
-    .catch((err: Error) => {
-      return err;
     });
 
   return pokemonAreas;
