@@ -9,6 +9,7 @@ import "./Header.scss";
 
 interface HeaderProps extends RouteComponentProps {
   user?: User;
+  validToken:boolean
 }
 const Header = (props: HeaderProps) => {
   const { user } = props;
@@ -64,7 +65,7 @@ const Header = (props: HeaderProps) => {
   );
   let headerLinks;
   let searchForm = <React.Fragment></React.Fragment>;
-  if (user?.validToken) {
+  if (props.validToken) {
     headerLinks = userIsAuthenticated;
     searchForm = <SearchForm {...props} />;
   } else {

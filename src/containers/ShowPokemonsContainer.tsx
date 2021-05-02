@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import $ from "jquery";
-import { Link, withRouter } from "react-router-dom";
-import { logout } from "../actions/securityActions";
+import { Link, withRouter } from "react-router-dom"; 
 import { useSelector, useDispatch } from "react-redux";
 import {
   loadPokemons,
@@ -26,9 +25,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   const dispatch = useDispatch();
   const pokemonsDetailsProps = useSelector(
     (state: IStore) => state.pokemonsDetails.pokemonsDetails
-  );
-  const user = useSelector((state: IStore) => state.user);
-
+  );  
   useEffect(() => {
     try {
       let page2 = 0;
@@ -50,13 +47,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
         $("#page-item-1").addClass("active");
         setPokemonsCallback(page2);
       }
-      setInterval(() => {
-        const currentTime = Date.now() / 1000;
-        if (user && user.user && user.user.exp && user.user.exp < currentTime) {
-          dispatch(logout());
-          window.location.href = "/login";
-        }
-      }, 28800000);
+       
     } catch (error) {
       console.error(
         "An error occurs in ShowPokemonsContainer.useEffect()",

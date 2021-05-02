@@ -10,7 +10,7 @@ import {
   User,
 } from "../../interfaces/Security.interface";
 import { IStore } from "../../store/store";
-
+import {  Redirect } from "react-router-dom";
 interface LoginProps {
   user?: User;
   onLogin?: () => void;
@@ -41,7 +41,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
     };
   }
   onTexFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    var inputName = e.target.name;
+    const inputName = e.target.name;
     if (inputName === "usernameOrEmail") {
       this.setState({
         usernameOrEmail: e.target.value,
@@ -101,22 +101,12 @@ export class Login extends React.Component<LoginProps, LoginState> {
       } else {
         this.props.loginByUsername(LoginRequestByUsername);
       }
-      setTimeout(() => {
-        if (this.props.user && this.props.user.validToken) {
-          this.props.history.push("/pokemons");
-        }
-      }, 300);
     }
-  };
-  componentDidMount() {
-    if (this.props.user && this.props.user.validToken) {
-      this.props.history.push("/pokemons");
-    }
-  }
+  }; 
   render() {
     return (
       <React.Fragment>
-        {this.props.user && !this.props.user.validToken ? (
+        {this.props.user && this.props.user.validToken===false ? (
           <Container maxWidth="sm" id="container_login">
             <FormControl>
               <Field
@@ -157,7 +147,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
             </Button>
           </Container>
         ) : (
-          <p style={{textAlign:'center',width:'100%',margin:'0 auto',paddingTop:'60px'}}>Loading</p>
+          <Redirect to={'/pokemons'} />
         )}
       </React.Fragment>
     );
