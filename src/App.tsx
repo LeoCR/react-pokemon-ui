@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./App.scss";
-import { BrowserRouter as Router, Route, Switch ,useHistory} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { setJWTToken } from "./utils/setJWTToken";
 import jwt_decode from "jwt-decode";
 import Login from "./components/UserManagement/Login";
