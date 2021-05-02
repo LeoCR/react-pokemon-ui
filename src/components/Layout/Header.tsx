@@ -16,7 +16,6 @@ const Header = (props: HeaderProps) => {
   const dispatch = useDispatch();
   const logOut = () => {
     dispatch(logout());
-    window.location.replace("/");
   };
   const userIsNotAuthenticated = (
     <div className="collapse navbar-collapse" id="mobile-nav">
