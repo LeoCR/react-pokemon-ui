@@ -20,8 +20,9 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   const [pokemonsDetails, setPokemonsDetails] = useState<
     PokemonDetailsResponse[]
   >([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const totalPagination = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [currentPage,setCurrentPage]=useState<number>(1)
+  const [totalPagination,setTotalPagination] = useState<Array<number>>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11]);
   const dispatch = useDispatch();
   const pokemonsDetailsProps = useSelector(
     (state: IStore) => state.pokemonsDetails.pokemonsDetails
@@ -33,10 +34,31 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
         page2 = parseInt(match.params.page);
         if (isNaN(page2) === false && page2 > 1) {
           setPokemonsCallback(page2);
-          history.push("/pokemons/" + page2);
-          setTimeout(() => {
-            $("#page-item-" + page2).addClass("active");
-          }, 1400);
+          if(totalPagination.includes(page2)){
+            setTimeout(() => {
+              $("#page-item-" + page2).addClass("active");
+            }, 1400);
+          }
+          else{
+            if(localStorage.getItem('pagination')!==null){
+              const newPagination=[];
+              const tempPagination= JSON.parse(localStorage.getItem('pagination')!)
+              if(tempPagination&&tempPagination.length>0){
+                for (let index = 0; index < tempPagination.length; index++) { 
+                  newPagination.push(Number(tempPagination[index]))
+                } 
+                setTotalPagination(newPagination as Array<number>)
+                setTimeout(() => {
+                  $("#page-item-" + page2).addClass("active");
+                }, 1400);
+              }
+            } 
+            
+          }
+          if(page2>0){ 
+            history.push("/pokemons/" + page2);
+          }
+          
         } else {
           setPokemonsCallback(0);
           setTimeout(() => {
@@ -65,15 +87,42 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
       setIsLoading(false);
     }
   }, []);
-  const getPage = (key: number, index: number) => {
-    try {
+  const setPagination=(index:number)=>{
+    const newPagination=[]
+    if(index===totalPagination[10]){ 
+      newPagination.push(index)
+      let ind=index+1
+      do{
+        newPagination.push(ind)
+        ind++
+      }while(ind<=(totalPagination[10]+10)) 
+      setTotalPagination(newPagination)
+      localStorage.setItem('pagination', JSON.stringify(newPagination));
+    }
+     if(index===totalPagination[0]&&index>=11){
+      for (let newIndex = totalPagination[0]-10; newIndex<= totalPagination[0]; newIndex++) {
+        if(newIndex>0){
+          newPagination.push(newIndex) 
+        }
+      }
+      setTotalPagination(newPagination)
+      localStorage.setItem('pagination', JSON.stringify(newPagination));
+    }
+  }
+  const getPage = ( index: number) => {
+    try {  
+      setPagination(index) 
+      if(index<=0){
+        return;
+      }
       if ($(".page-nav").hasClass("active")) {
         $(".page-nav").removeClass("active");
       }
       setTimeout(() => {
         $("#page-item-" + index).addClass("active");
       }, 300);
-      setPokemonsCallback(key);
+      setCurrentPage(index)
+      setPokemonsCallback(index-1);
     } catch (error) {
       console.error(
         "An error occurs in ShowDesserts.getPage() , but dont worry about it",
@@ -86,9 +135,6 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
     setPokemonsDetails(pokemonsDetailsProps as PokemonDetailsResponse[]);
     setIsLoading(false);
   }, [pokemonsDetails, isLoading, pokemonsDetailsProps]);
-
-  const getPrevPage = () => {};
-  const getNextPage = () => {};
   const viewPokemon = (pokemon: PokemonDetailsResponse) => {
     dispatch(setPokemon(pokemon as PokemonDetailsResponse));
     if (pokemon.name) {
@@ -108,15 +154,15 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
           >
             <ul className="pagination">
               <li className="page-item">
-                <a
-                  className="page-link"
-                  onClick={() => getPrevPage()}
-                  href="#previous"
-                >
-                  Previous
-                </a>
+              <Link
+                    to={`/pokemons/${(currentPage-1)>0?(currentPage-1):1}`}
+                    className="page-link" 
+                    onClick={() => getPage(currentPage-1)}
+                  >
+                    Previous
+                  </Link> 
               </li>
-              {totalPagination.map((index: number, key: number) => (
+              {totalPagination.length>0? totalPagination.map((index: number, key: number) => (
                 <li
                   className="page-item page-nav"
                   id={`page-item-${index}`}
@@ -125,20 +171,21 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
                   <Link
                     to={`/pokemons/${index}`}
                     className="page-link"
-                    onClick={() => getPage(key, index)}
+                    onClick={() => getPage(index)}
                   >
                     {index}
                   </Link>
                 </li>
-              ))}
+              )):''}
               <li className="page-item">
-                <a
-                  className="page-link"
-                  onClick={() => getNextPage()}
-                  href="#next"
-                >
-                  Next
-                </a>
+                
+                <Link
+                    to={`/pokemons/${currentPage+1}`}
+                    className="page-link" 
+                    onClick={() => getPage(currentPage+1)}
+                  >
+                    Next
+                  </Link> 
               </li>
             </ul>
           </nav>
