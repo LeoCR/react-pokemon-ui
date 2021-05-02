@@ -32,7 +32,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
     e.preventDefault();
     dispatch(clearSearchPokemonResults());
     setPokemonName("");
-    history.push('/pokemons')
+    history.go(-2)
   };
   const submitSearchForm = (event: React.FormEvent) => {
     event.preventDefault();

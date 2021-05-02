@@ -16,8 +16,9 @@ import { Alert } from "./components/Layout/Alert";
 import SearchContainer from "./containers/SearchContainer";
 
 interface AppProps  {
-  user: any;
-  
+  user:{
+    validToken:boolean
+  };
 }
 interface AuthToken {
   name: string;
@@ -28,7 +29,7 @@ const jwtToken =
     ? localStorage.getItem("jwtToken")
     : null;
 
-export const App: React.FC<AppProps> = (props: AppProps) => {
+export const App:React.FC<AppProps>= (props: AppProps) => {
   const dispatch = useDispatch(); 
   const { error, severity, message } = useSelector(
     (state: IStore) => state.search
@@ -75,8 +76,7 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
       </Snackbar>
       <Router>
         <Header validToken={props.user.validToken} />
-        <Switch>
-          
+        <Switch> 
           <SecuredRoute
             path="/pokemons/"
             exact
@@ -117,4 +117,4 @@ const mapStateToProps = (state: IStore) => ({
   pokemons: state.pokemons.pokemons,
   pokemonsDetails: state.pokemonsDetails.pokemonsDetails,
 });
-export default connect(mapStateToProps, { logout })(App);
+export default connect(mapStateToProps, { logout })(App as React.FC);
