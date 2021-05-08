@@ -55,17 +55,33 @@ const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = 
     PokemonLocationAreasResponse[]
   >();
   const [tabValue, setTabValue] = React.useState(0);
-  const { pokemon } = useSelector((state: IStore) => state.search);
 
+  const fetchPokemonDetailsCallback = useCallback(async () => {
+    try {
+      await fetchPokemonDetails(match.params.pokemon, setPokemonDetailData); 
+      await fetchPokemonEvolutionsChainURL(
+        match.params.pokemon,
+        setPokemonsEvolutionsChainData
+      );
+    } catch (error) {
+      console.error(
+        "An error occurs inside ViewPokemonDetailsContainer.fetchPokemonDetailsCallback ",
+        error
+      );
+    }
+  }, [match.params.pokemon]);
+  const setPokemonAreasResponse=useCallback(async(pokemonName:string)=>{
+    await fetchPokemonAreas(pokemonName).then((res) => {
+      setPokemonAreas(res as PokemonLocationAreasResponse[]);
+    });
+  },[pokemonDetailsProps])
   useEffect(() => {
     try {
       if (pokemonDetailsProps && pokemonDetailsProps.name) {
         const pokemonName = (pokemonDetailsProps.name as string)
           .toString()
           .toLowerCase();
-        fetchPokemonAreas(pokemonName).then((res) => {
-          setPokemonAreas(res as PokemonLocationAreasResponse[]);
-        });
+        setPokemonAreasResponse(pokemonName)
       }
     } catch (error) {
       console.error(
@@ -73,7 +89,65 @@ const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = 
         error
       );
     }
-  }, [pokemonDetailsProps]);
+  }, [setPokemonAreasResponse]);
+
+  useEffect(() => {
+    if (match && match.params && match.params.pokemon) {
+      fetchPokemonDetailsCallback();
+    }
+  }, [fetchPokemonDetailsCallback]);
+  const setPokemonDetailData = async (pokemonDetailsResponse: PokemonDetailsResponse) => {
+    dispatch(setPokemon(pokemonDetailsResponse as PokemonDetailsResponse));
+    setPokemonState(pokemonDetailsResponse as PokemonDetailsResponse);
+  };
+  const setPokemonsDetailsData = async (pokemons: PokemonDetailsResponse[]) => {
+    let tempPokemons: PokemonDetailsResponse[] = [];
+    for (const pkmn of pokemons) {
+      await fetchPokemonDetails(pkmn as string)
+        .then((res) => {
+          tempPokemons.push(res as PokemonDetailsResponse);
+        })
+        .catch((err) => {
+          console.error("An error occurs in setPokemonsDetailsData", err);
+        });
+    }
+    dispatch(setPokemonEvolutions(tempPokemons));
+    setPokemonEvolutionsState(tempPokemons);
+  };
+  const setPokemonsEvolutionsChainData = async (chainUrl: string) => {
+    await fetchPokemonEvolutions(chainUrl, setPokemonsEvolutionsData);
+  };
+  const setPokemonsEvolutionsData = async (
+    resChainURL: PokemonEvolutionChain
+  ) => {
+    let pokemons: Array<string> = [];
+    if (resChainURL && resChainURL.chain && resChainURL.chain.evolves_to) {
+      if (
+        Array.isArray(resChainURL.chain.evolves_to) &&
+        resChainURL.chain.evolves_to.length
+      ) {
+        const chainEvolves: EvolvesTo[] = resChainURL.chain.evolves_to;
+        chainEvolves.forEach((evolution: EvolvesTo) => {
+          if (
+            evolution.evolves_to &&
+            evolution.evolves_to[0] &&
+            evolution.evolves_to[0].species &&
+            evolution.evolves_to[0].species.name
+          ) {
+            pokemons.push(evolution.evolves_to[0].species.name);
+          }
+          if (evolution && evolution.species && evolution.species.name) {
+            pokemons.push(evolution.species.name);
+          }
+        });
+        if (resChainURL.chain.species && resChainURL.chain.species.name) {
+          pokemons.push(resChainURL.chain.species.name);
+        }
+        await setPokemonsDetailsData(pokemons as PokemonDetailsResponse[]);
+      }
+      setIsLoading(false);
+    }
+  };
   const handleChangeIndex = (index: number) => {
     setTabValue(index);
   };
@@ -83,124 +157,6 @@ const ViewPokemonDetailsContainer: React.FC<ViewPokemonDetailsContainerProps> = 
   const onClickBack = () => {
     history.go(-1);
   };
-  const fetchPokemonDetailsCallback = useCallback(async () => {
-    try {
-      await fetchPokemonDetails(match.params.pokemon)
-        .then((res) => {
-          dispatch(setPokemon(res as PokemonDetailsResponse));
-          setPokemonState(res as PokemonDetailsResponse);
-        })
-        .catch((error: Error) => {
-          console.error("An error occurs fetchPokemonDeatils", error);
-        });
-      await fetchPokemonEvolutionsChainURL(match.params.pokemon).then(
-        async (res) => {
-          await fetchPokemonEvolutions(res)
-            .then((resChainURL: PokemonEvolutionChain) => {
-              console.log("resChainURL", resChainURL);
-              setTimeout(async () => {
-                let pokemons = [];
-                if (resChainURL.chain !== undefined) {
-                  if (resChainURL.chain.evolves_to !== undefined) {
-                    if (
-                      Array.isArray(resChainURL.chain.evolves_to) &&
-                      resChainURL.chain.evolves_to.length
-                    ) {
-                      if (
-                        resChainURL &&
-                        resChainURL.chain &&
-                        resChainURL.chain.evolves_to
-                      ) {
-                        const chainEvolves: EvolvesTo[] =
-                          resChainURL.chain.evolves_to;
-                        chainEvolves.map((evolution: EvolvesTo) => {
-                          try {
-                            if (
-                              evolution.evolves_to &&
-                              evolution.evolves_to[0] &&
-                              evolution.evolves_to[0].species &&
-                              evolution.evolves_to[0].species.name
-                            ) {
-                              pokemons.push(
-                                evolution.evolves_to[0].species.name
-                              );
-                            }
-                          } catch (error) {
-                            console.error(
-                              "An error occurs inside resChainURL.chain.evolves_to.map",
-                              error
-                            );
-                          } finally {
-                            if (evolution.species && evolution.species.name) {
-                              pokemons.push(evolution.species.name);
-                            }
-                          }
-                        });
-                      }
-
-                      try {
-                        if (
-                          resChainURL &&
-                          resChainURL.chain &&
-                          resChainURL.chain.species &&
-                          resChainURL.chain.species.name
-                        ) {
-                          pokemons.push(resChainURL.chain.species.name);
-                        }
-                      } catch (error) {
-                        console.error(
-                          "An error occurs inside fetchPokemonEvolutions",
-                          error
-                        );
-                      }
-                      let tempPokemons: PokemonDetailsResponse[] = [];
-                      for (
-                        let indexPokemon = 0;
-                        indexPokemon < pokemons.length;
-                        indexPokemon++
-                      ) {
-                        await fetchPokemonDetails(pokemons[indexPokemon])
-                          .then((res) => {
-                            tempPokemons.push(res as PokemonDetailsResponse);
-                          })
-                          .catch((err) => {
-                            console.error(
-                              "An error occurs in useEffect(()=>{ fetchPokemonEvolutionsChainURL.fetchPokemonDetails },[])",
-                              err
-                            );
-                          });
-                      }
-                      dispatch(setPokemonEvolutions(tempPokemons));
-                      setPokemonEvolutionsState(tempPokemons);
-                    }
-                  }
-                  setTimeout(() => {
-                    setIsLoading(false);
-                  }, 700);
-                }
-              }, 300);
-            })
-            .catch((e: Error) => {
-              console.error(
-                "An error occurs inside ViewPokemonDetailsContainer Components in fetchPokemonEvolutions",
-                e
-              );
-            });
-        }
-      );
-    } catch (error) {
-      console.error(
-        "An error occurs inside ViewPokemonDetailsContainer in useEffect ",
-        error
-      );
-    }
-  }, [match.params.pokemon]);
-  useEffect(() => {
-    if (match && match.params && match.params.pokemon) {
-      fetchPokemonDetailsCallback();
-    }
-  }, [fetchPokemonDetailsCallback]);
-
   let hasPokemons;
   try {
     hasPokemons =
