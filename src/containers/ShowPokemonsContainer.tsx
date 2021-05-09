@@ -99,7 +99,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
       setTotalPagination(newPagination)
       localStorage.setItem('pagination', JSON.stringify(newPagination));
     }
-     if(index===totalPagination[0]&&index>=11){
+     if(index===totalPagination[0]&&index>=11||(index <totalPagination[0]&&!totalPagination.includes(index))){
       for (let newIndex = totalPagination[0]-10; newIndex<= totalPagination[0]; newIndex++) {
         if(newIndex>0){
           newPagination.push(newIndex) 
