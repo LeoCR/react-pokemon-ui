@@ -19,6 +19,9 @@ interface LoginProps {
   history: {
     push: (url: string) => void;
   };
+  location:{
+    search:string
+  }
 }
 
 interface LoginState {
@@ -26,7 +29,7 @@ interface LoginState {
   password: string;
   errorsUsernameOrEmail: string;
   errorsPassword: string;
-  formSent: boolean;
+  formSent: boolean 
 }
 
 export class Login extends React.Component<LoginProps, LoginState> {
@@ -37,7 +40,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
       password: "",
       errorsUsernameOrEmail: "",
       errorsPassword: "",
-      formSent: false,
+      formSent: false
     };
   }
   onTexFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,6 +106,16 @@ export class Login extends React.Component<LoginProps, LoginState> {
       }
     }
   }; 
+  componentDidMount(){
+    console.log(this.props)
+    if(this.props.location.search&&this.props.location.search==='?isFakeLogin=true'){
+      this.setState({
+          usernameOrEmail:
+            "UserInvited",
+          password:"password1234"
+      });
+    }
+  }
   render() {
     return (
       <React.Fragment>
@@ -114,6 +127,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                 margin="normal"
                 name="usernameOrEmail"
                 onChange={this.onTexFieldChange}
+                value={this.state.usernameOrEmail}
               />
               {this.state.errorsUsernameOrEmail !== "" ? (
                 <span className="error_msg">
@@ -130,6 +144,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                 margin="normal"
                 name="password"
                 onChange={this.onTexFieldChange}
+                value={this.state.password}
               />
               {this.state.errorsPassword !== "" ? (
                 <span className="error_msg">{this.state.errorsPassword}</span>

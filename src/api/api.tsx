@@ -4,7 +4,7 @@ import jwt_decode from "jwt-decode";
 import { LoginRequestByEmail, LoginRequestByUsername } from '../interfaces/Security.interface';
 
 export const api= axios.create({
-    baseURL:'http://localhost:49840',
+    baseURL:'https://pokedex-react-typescript.herokuapp.com',
     responseType: 'json' 
 }) 
 
