@@ -1,4 +1,22 @@
-# Getting Started with Create React App
+# Pokedex React App
+This project was built with the intention of show you how to use Redux Saga with Typescript and how to persist a pagination from the UI using localStorage.
+
+## View all pokemons 
+<img src="screenshots/viewPokemons.png" alt="View all Pokemons"/>
+
+## Pagination 
+<img src="screenshots/pagination.png" alt="Pagination"/>
+
+## View Abilities 
+<img src="screenshots/abilities.png" alt="Abilities"/>
+
+## View Places  
+<img src="screenshots/encounter.png" alt="Encounter"/>
+
+## View Evolutions  
+<img src="screenshots/viewEvolutions.png" alt="Evolutions"/>
+
+### Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -14,10 +32,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
