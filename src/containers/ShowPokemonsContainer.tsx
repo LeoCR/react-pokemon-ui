@@ -21,7 +21,6 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   const [pokemonsDetails, setPokemonsDetails] = useState<
     PokemonDetailsResponse[]
   >([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPagination, setTotalPagination] = useState<Array<number>>([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
@@ -79,13 +78,11 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
     }
   }, []);
   const setPokemonsCallback = useCallback((page: number) => {
-    setIsLoading(true);
     dispatch(clearPokemons());
     dispatch(clearPokemonDetails());
     dispatch(loadPokemons(page * 10));
     if (pokemonsDetailsProps && pokemonsDetailsProps.length > 9) {
       setPokemonsDetails(pokemonsDetailsProps);
-      setIsLoading(false);
     }
   }, []);
   const setPagination = (index: number) => {
@@ -139,14 +136,8 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
     }
   };
   useEffect(() => {
-    setIsLoading(true);
     setPokemonsDetails(pokemonsDetailsProps as PokemonDetailsResponse[]);
-    setIsLoading(false);
-  }, [
-    JSON.stringify(pokemonsDetails),
-    isLoading,
-    JSON.stringify(pokemonsDetailsProps),
-  ]);
+  }, [JSON.stringify(pokemonsDetails), JSON.stringify(pokemonsDetailsProps)]);
   const viewPokemon = (pokemon: PokemonDetailsResponse) => {
     dispatch(setPokemon(pokemon as PokemonDetailsResponse));
     if (pokemon.name) {
@@ -210,7 +201,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   return useMemo(
     () => (
       <div className="pokemons_container">
-        {isLoading === false && pokemonsDetails.length > 0 ? (
+        {pokemonsDetails.length > 0 ? (
           <>
             {pokemonsDetails
               .filter(

@@ -4,7 +4,6 @@ import TabPanel from "../Layout/TabPane";
 interface PokemonEvolutionsProps {
   pokemonEvolutions: PokemonDetailsResponse[];
   value: number;
-  isLoading: boolean;
 }
 const PokemonEvolutions = (props: PokemonEvolutionsProps) => {
   const [evolutions, setEvolutions] = useState(props.pokemonEvolutions);
@@ -14,7 +13,7 @@ const PokemonEvolutions = (props: PokemonEvolutionsProps) => {
   return (
     <TabPanel value={props.value} index={0} dir={"ltr"}>
       <ul style={{ listStyle: "none" }}>
-        {evolutions && props.isLoading === false
+        {evolutions.length > 0
           ? evolutions.map((pokemon: PokemonDetailsResponse, index: number) => {
               const frontDefaultImage =
                 pokemon.sprites && pokemon.sprites.front_default

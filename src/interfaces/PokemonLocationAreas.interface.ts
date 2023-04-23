@@ -22,5 +22,4 @@ export interface PokemonLocationAreasResponse {
 export interface PokemonAreasProps {
   pokemonAreas: PokemonLocationAreasResponse[];
   value: number;
-  isLoading: boolean;
 }

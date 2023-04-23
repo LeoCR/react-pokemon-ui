@@ -49,7 +49,7 @@ const ViewPokemonDetailsContainer: React.FC<
   const [pokemonEvolutionsState, setPokemonEvolutionsState] = useState<
     PokemonDetailsResponse[]
   >([]);
-  const [isLoading, setIsLoading] = useState(true);
+
   const [pokemonAreas, setPokemonAreas] =
     useState<PokemonLocationAreasResponse[]>();
   const [tabValue, setTabValue] = React.useState(0);
@@ -148,7 +148,6 @@ const ViewPokemonDetailsContainer: React.FC<
         }
         await setPokemonsDetailsData(pokemons as PokemonDetailsResponse[]);
       }
-      setIsLoading(false);
     }
   };
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -206,15 +205,10 @@ const ViewPokemonDetailsContainer: React.FC<
 
                 <PokemonEvolutions
                   value={tabValue}
-                  isLoading={isLoading}
                   pokemonEvolutions={pokemonEvolutionsState}
                 />
                 {pokemonAreas ? (
-                  <PokemonAreas
-                    value={tabValue}
-                    isLoading={isLoading}
-                    pokemonAreas={pokemonAreas}
-                  />
+                  <PokemonAreas value={tabValue} pokemonAreas={pokemonAreas} />
                 ) : (
                   <TabPanel value={tabValue} index={1} dir={"rtl"}>
                     Loading Pokemon Areas
