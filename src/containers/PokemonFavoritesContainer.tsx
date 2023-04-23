@@ -31,8 +31,8 @@ export const PokemonFavoritesContainer: React.FC<
           await fetchPokemonDetails(pokemonName, (res) => {
             finalResult.push(res);
           });
-          setPokemonsDetails(finalResult as PokemonDetailsResponse[]);
         }
+        setPokemonsDetails(finalResult as PokemonDetailsResponse[]);
       };
       fetchData();
     }
@@ -73,7 +73,13 @@ export const PokemonFavoritesContainer: React.FC<
           )
         )
       ) : (
-        <>Loading...</>
+        <>
+          <div className="spinner-grow text-danger" role="status">
+            <span className="sr-only">Loading Favorites...</span>
+          </div>
+          <div className="spinner-grow text-success" role="status"></div>
+          <div className="spinner-grow text-primary" role="status"></div>
+        </>
       )}
     </div>
   );

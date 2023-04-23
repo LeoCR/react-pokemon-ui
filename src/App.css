@@ -72,3 +72,14 @@ button:focus {
   background: #ca1f2f !important;
   color: #ffffff !important;
 }
+footer {
+  background: #0b63af !important;
+  margin-top: -16px;
+}
+main {
+  background: url("./assets/img/background_art_for_pokemon.jpg") no-repeat
+    center center;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 900px;
+}

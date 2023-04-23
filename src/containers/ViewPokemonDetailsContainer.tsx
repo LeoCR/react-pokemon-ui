@@ -211,7 +211,9 @@ const ViewPokemonDetailsContainer: React.FC<
                   <PokemonAreas value={tabValue} pokemonAreas={pokemonAreas} />
                 ) : (
                   <TabPanel value={tabValue} index={1} dir={"rtl"}>
-                    Loading Pokemon Areas
+                    <div className="spinner-grow text-danger" role="status">
+                      <span className="sr-only">Loading Pokemon Areas...</span>
+                    </div>
                   </TabPanel>
                 )}
                 <PokemonAbilities
@@ -234,7 +236,13 @@ const ViewPokemonDetailsContainer: React.FC<
                 />
               </React.Fragment>
             ) : (
-              "Loading..."
+              <>
+                <div className="spinner-grow text-danger" role="status">
+                  <span className="sr-only">Loading, please wait...</span>
+                </div>
+                <div className="spinner-grow text-success" role="status"></div>
+                <div className="spinner-grow text-primary" role="status"></div>
+              </>
             )}
           </Container>
         </Paper>

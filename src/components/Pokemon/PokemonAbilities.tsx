@@ -52,7 +52,13 @@ const PokemonAbilities: React.FC<IPokemonAbilities> = (
             }
           })
         ) : (
-          <>Loading Abilities...</>
+          <>
+            <div className="spinner-grow text-danger" role="status">
+              <span className="sr-only">Loading Abilities...</span>
+            </div>
+            <div className="spinner-grow text-success" role="status"></div>
+            <div className="spinner-grow text-primary" role="status"></div>
+          </>
         )}
       </ul>
     </TabPanel>

@@ -5,7 +5,15 @@ import "./Pokemon.css";
 
 const Pokemon: React.FC<PokemonProps> = (props) => {
   if (!props.details) {
-    return <React.Fragment>Loading...</React.Fragment>;
+    return (
+      <React.Fragment>
+        <div className="spinner-grow text-danger" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+        <div className="spinner-grow text-success" role="status"></div>
+        <div className="spinner-grow text-primary" role="status"></div>
+      </React.Fragment>
+    );
   }
   const frontDefaultImage =
     props.details &&

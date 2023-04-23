@@ -14,6 +14,7 @@ import Login from "./components/UserManagement/Login";
 import Header from "./components/Layout/Header";
 import SearchContainer from "./containers/SearchContainer";
 import { PokemonFavoritesContainer } from "./containers/PokemonFavoritesContainer";
+import { Footer } from "./components/Layout/Footer";
 
 interface AppProps {
   user: {
@@ -63,42 +64,45 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
     }
   }, []);
   return (
-    <div className="app">
-      <Snackbar
-        open={severity === "warning" ? false : open}
-        autoHideDuration={6000}
-        // onClose={handleClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert onClose={handleClose} severity={severity}>
-          {message}
-        </Alert>
-      </Snackbar>
-      <Router>
-        <Header validToken={props.user.validToken} />
-        <Switch>
-          <Route
-            path="/pokemons/favorites"
-            exact
-            component={PokemonFavoritesContainer}
-          />
-          <Route path="/" exact component={ShowPokemonsContainer} />
-          <Route path="/pokemons" exact component={ShowPokemonsContainer} />
-          <Route
-            path="/pokemons/:page"
-            exact
-            component={ShowPokemonsContainer}
-          />
-          <Route
-            path="/pokemon/:pokemon"
-            exact
-            component={ViewPokemonDetailsContainer}
-          />
-          <Route path="/search" exact component={SearchContainer} />
-          <Route exact path="/login" component={Login} />
-        </Switch>
-      </Router>
-    </div>
+    <>
+      <main className="app">
+        <Snackbar
+          open={severity === "warning" ? false : open}
+          autoHideDuration={6000}
+          // onClose={handleClose}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert onClose={handleClose} severity={severity}>
+            {message}
+          </Alert>
+        </Snackbar>
+        <Router>
+          <Header validToken={props.user.validToken} />
+          <Switch>
+            <Route
+              path="/pokemons/favorites"
+              exact
+              component={PokemonFavoritesContainer}
+            />
+            <Route path="/" exact component={ShowPokemonsContainer} />
+            <Route path="/pokemons" exact component={ShowPokemonsContainer} />
+            <Route
+              path="/pokemons/:page"
+              exact
+              component={ShowPokemonsContainer}
+            />
+            <Route
+              path="/pokemon/:pokemon"
+              exact
+              component={ViewPokemonDetailsContainer}
+            />
+            <Route path="/search" exact component={SearchContainer} />
+            <Route exact path="/login" component={Login} />
+          </Switch>
+        </Router>
+      </main>
+      <Footer />
+    </>
   );
 };
 const mapStateToProps = (state: IStore) => ({

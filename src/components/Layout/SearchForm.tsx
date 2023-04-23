@@ -60,7 +60,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
           endAdornment: <React.Fragment></React.Fragment>,
           type: "text",
         }}
-        style={{ maxWidth: "340px", float: "left" }}
+        style={{ maxWidth: "435px", float: "left" }}
       />
       {pokemonName !== "" ? (
         <Button

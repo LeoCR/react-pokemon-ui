@@ -153,7 +153,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
         >
           <nav
             id="pagination-bottom"
-            style={{ maxWidth: "580px", margin: "0 auto" }}
+            style={{ maxWidth: "580px", margin: "10px auto" }}
           >
             <ul className="pagination">
               <li className="page-item">
@@ -225,7 +225,13 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
             {getPagination()}
           </>
         ) : (
-          "Loading,please wait..."
+          <>
+            <div className="spinner-grow text-danger" role="status">
+              <span className="sr-only">Loading , please wait...</span>
+            </div>
+            <div className="spinner-grow text-success" role="status"></div>
+            <div className="spinner-grow text-primary" role="status"></div>
+          </>
         )}
       </div>
     ),
