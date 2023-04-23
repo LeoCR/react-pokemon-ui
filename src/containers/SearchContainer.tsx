@@ -18,7 +18,6 @@ const SearchContainer = (props: SearchContainerProps) => {
           <PokemonOverview
             pokemon={pokemon!}
             viewPokemon={() => props.history.push("/pokemon/" + pokemon!.name)}
-            currentTime={Date.now()}
           />
         ) : severity === "error" ? (
           <p

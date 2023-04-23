@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import $ from "jquery";
 import { Link, withRouter } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -130,7 +130,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
         $("#page-item-" + index).addClass("active");
       }, 300);
       setCurrentPage(index);
-      setPokemonsCallback(index - 1);
+      setPokemonsCallback(index);
     } catch (error) {
       console.error(
         "An error occurs in ShowDesserts.getPage() , but dont worry about it",
@@ -142,7 +142,11 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
     setIsLoading(true);
     setPokemonsDetails(pokemonsDetailsProps as PokemonDetailsResponse[]);
     setIsLoading(false);
-  }, [pokemonsDetails, isLoading, pokemonsDetailsProps]);
+  }, [
+    JSON.stringify(pokemonsDetails),
+    isLoading,
+    JSON.stringify(pokemonsDetailsProps),
+  ]);
   const viewPokemon = (pokemon: PokemonDetailsResponse) => {
     dispatch(setPokemon(pokemon as PokemonDetailsResponse));
     if (pokemon.name) {
@@ -202,32 +206,39 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
       </React.Fragment>
     );
   };
-  let currentTime = Date.now();
 
-  const renderedPokemons =
-    pokemonsDetails.length > 0
-      ? pokemonsDetails
-          .filter(
-            (pokemon: PokemonDetailsResponse, index: number) =>
-              index ===
-              pokemonsDetails.findIndex((other) => pokemon.name === other.name)
-          )
-          .map((pokemon: PokemonDetailsResponse, index: number) => (
-            <PokemonOverview
-              key={pokemon.name}
-              pokemon={pokemonsDetails[index]}
-              viewPokemon={() =>
-                viewPokemon(pokemonsDetails[index] as PokemonDetailsResponse)
-              }
-              currentTime={currentTime}
-            />
-          ))
-      : "";
-  return (
-    <div className="pokemons_container">
-      {isLoading === false ? renderedPokemons : "Loading,please wait..."}
-      {isLoading === false ? getPagination() : ""}
-    </div>
+  return useMemo(
+    () => (
+      <div className="pokemons_container">
+        {isLoading === false && pokemonsDetails.length > 0 ? (
+          <>
+            {pokemonsDetails
+              .filter(
+                (pokemon: PokemonDetailsResponse, index: number) =>
+                  index ===
+                  pokemonsDetails.findIndex(
+                    (other) => pokemon.name === other.name
+                  )
+              )
+              .map((pokemon: PokemonDetailsResponse, index: number) => (
+                <PokemonOverview
+                  key={pokemon.name}
+                  pokemon={pokemonsDetails[index]}
+                  viewPokemon={() =>
+                    viewPokemon(
+                      pokemonsDetails[index] as PokemonDetailsResponse
+                    )
+                  }
+                />
+              ))}
+            {getPagination()}
+          </>
+        ) : (
+          "Loading,please wait..."
+        )}
+      </div>
+    ),
+    [JSON.stringify(pokemonsDetails)]
   );
 };
 

@@ -19,7 +19,9 @@ export default function (
     case FAVORITES.ADD:
       return {
         ...state,
-        names: state.names.concat(action.pokemon),
+        names: !state.names.includes(action.pokemon)
+          ? state.names.concat(action.pokemon)
+          : [...state.names],
       };
     default:
       return state;

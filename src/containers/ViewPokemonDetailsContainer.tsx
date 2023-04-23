@@ -157,19 +157,15 @@ const ViewPokemonDetailsContainer: React.FC<
   const onClickBack = () => {
     history.go(-1);
   };
-  let hasPokemons;
-  try {
-    hasPokemons =
-      pokemonDetails &&
-      pokemonDetailsProps &&
-      pokemonDetailsProps.sprites &&
-      pokemonDetailsProps.sprites.front_default &&
-      pokemonDetailsProps.name &&
-      pokemonDetails.sprites &&
-      pokemonDetails.sprites.front_default;
-  } catch (error) {
-    console.error("An error occurs ViewPokemonDetailsContainer", error);
-  }
+  const hasPokemons =
+    pokemonDetails &&
+    pokemonDetailsProps &&
+    pokemonDetailsProps?.sprites &&
+    pokemonDetailsProps?.sprites?.front_default &&
+    pokemonDetailsProps?.name &&
+    pokemonDetails?.sprites &&
+    pokemonDetails?.sprites?.front_default;
+
   return (
     <>
       <Button
@@ -183,19 +179,15 @@ const ViewPokemonDetailsContainer: React.FC<
       {
         <Paper className={"paperDetails"}>
           <Container maxWidth="sm" style={{ padding: "30px 0px" }}>
-            {hasPokemons &&
-            pokemonDetailsProps &&
-            pokemonDetailsProps.sprites &&
-            pokemonDetailsProps.sprites.front_default &&
-            pokemonDetailsProps.name ? (
+            {hasPokemons ? (
               <React.Fragment>
                 <h2 style={{ textTransform: "capitalize" }}>
                   {pokemonDetails.name}
                 </h2>
                 <img
-                  src={pokemonDetailsProps.sprites.front_default}
-                  alt={pokemonDetailsProps.name}
-                  title={pokemonDetailsProps.name}
+                  src={pokemonDetailsProps?.sprites?.front_default as string}
+                  alt={pokemonDetailsProps?.name}
+                  title={pokemonDetailsProps?.name}
                 />
                 <AppBar position="static" color="default">
                   <Tabs
@@ -244,7 +236,7 @@ const ViewPokemonDetailsContainer: React.FC<
                 <Dialog
                   isOpen={open}
                   setOpen={setOpen}
-                  pokemonName={pokemonDetailsProps.name}
+                  pokemonName={pokemonDetailsProps?.name as string}
                 />
               </React.Fragment>
             ) : (
