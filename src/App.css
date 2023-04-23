@@ -61,6 +61,14 @@ body {
 .btnAddToMyFavorites {
   margin: 30px 10px !important;
 }
+.btnAddToMyFavorites:focus,
+button:focus {
+  outline: none !important;
+}
 .paperDetails {
   min-height: "650px";
+}
+.MuiTabs-flexContainer button.Mui-selected {
+  background: #ca1f2f !important;
+  color: #ffffff !important;
 }

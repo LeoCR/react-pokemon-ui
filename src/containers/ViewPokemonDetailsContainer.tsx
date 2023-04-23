@@ -22,6 +22,7 @@ import {
 import { IStore } from "../store/store";
 import PokemonAbilities from "../components/Pokemon/PokemonAbilities";
 import { ViewPokemonDetailsContainerProps } from "../types/ViewPokemonDetailsContainer.types";
+import { Dialog } from "../components/Layout/Dialog";
 
 const a11yProps = (index: number) => {
   return {
@@ -34,6 +35,7 @@ const ViewPokemonDetailsContainer: React.FC<
   ViewPokemonDetailsContainerProps
 > = ({ match, history }) => {
   const dispatch = useDispatch();
+  const [open, setOpen] = React.useState(false);
   const pokemonDetailsProps = useSelector(
     (state: IStore) => state.pokemons.pokemon
   );
@@ -169,7 +171,7 @@ const ViewPokemonDetailsContainer: React.FC<
     console.error("An error occurs ViewPokemonDetailsContainer", error);
   }
   return (
-    <React.Fragment>
+    <>
       <Button
         variant="contained"
         color="secondary"
@@ -230,9 +232,20 @@ const ViewPokemonDetailsContainer: React.FC<
                   value={tabValue}
                   abilities={pokemonDetailsProps.abilities}
                 />
-                <Button variant="contained" className="btnAddToMyFavorites">
+                <Button
+                  variant="contained"
+                  className="btnAddToMyFavorites"
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                >
                   Add to My Favorites
                 </Button>
+                <Dialog
+                  isOpen={open}
+                  setOpen={setOpen}
+                  pokemonName={pokemonDetailsProps.name}
+                />
               </React.Fragment>
             ) : (
               "Loading..."
@@ -240,7 +253,7 @@ const ViewPokemonDetailsContainer: React.FC<
           </Container>
         </Paper>
       }
-    </React.Fragment>
+    </>
   );
 };
 export default withRouter(React.memo(ViewPokemonDetailsContainer));
