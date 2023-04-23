@@ -22,11 +22,7 @@ const PokemonEvolutions = (props: PokemonEvolutionsProps) => {
               const pokemonName = pokemon.name ? pokemon.name : "";
               return (
                 <li
-                  key={
-                    pokemonName + "-" + pokemon.id
-                      ? pokemon.id
-                      : 0 + "-" + index
-                  }
+                  key={pokemonName}
                   style={{
                     float: "left",
                     width: "100%",

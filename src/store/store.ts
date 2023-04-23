@@ -36,6 +36,9 @@ export interface IStore {
     severity?: "error" | "warning" | "success";
     message: null | string;
   };
+  favorites: {
+    names: string[];
+  };
 }
 
 let storageState = {};
@@ -49,6 +52,15 @@ export const store = () => {
     composeWithDevTools(applyMiddleware(...middleware))
   );
   sagaMiddleware.run(rootSaga);
+  store.subscribe(() => {
+    const state = store.getState();
+    if (state.favorites.names.length > 0) {
+      localStorage.setItem(
+        "favorites",
+        JSON.stringify([...state.favorites.names])
+      );
+    }
+  });
   return store;
 };
 

@@ -11,35 +11,6 @@ interface HeaderProps extends RouteComponentProps {
   validToken: boolean;
 }
 const Header = (props: HeaderProps) => {
-  const { user } = props;
-  const userIsAuthenticated = (
-    <div className="collapse navbar-collapse" id="mobile-nav">
-      <ul className="navbar-nav mr-auto">
-        <li className="nav-item">
-          <Link className="nav-link" to="/pokemons">
-            Pokemons
-          </Link>
-        </li>
-      </ul>
-
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <Link className="nav-link " to="/pokemons">
-            <i className="fas.fa-user-circle.mr-1" />
-            {user?.fullName}
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link " to="/pokemons">
-            <i className="fas.fa-user-circle.mr-1" />
-            My Favorites
-          </Link>
-        </li>
-      </ul>
-    </div>
-  );
-  let headerLinks = userIsAuthenticated;
-
   return (
     <React.Fragment>
       <nav className="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
@@ -52,7 +23,24 @@ const Header = (props: HeaderProps) => {
           >
             <span className="navbar-toggler-icon" />
           </button>
-          {headerLinks}
+          <div className="collapse navbar-collapse" id="mobile-nav">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/pokemons">
+                  Pokemons
+                </Link>
+              </li>
+            </ul>
+
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item">
+                <Link className="nav-link " to="/pokemons/favorites">
+                  <i className="fas.fa-user-circle.mr-1" />
+                  My Favorites
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
       <SearchForm {...props} />

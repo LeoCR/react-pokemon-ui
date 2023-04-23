@@ -1,13 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { RouteComponentProps, withRouter } from "react-router";
+import { withRouter } from "react-router";
 import PokemonOverview from "../components/Pokemon/PokemonOverview";
 import { IStore } from "../store/store";
 import useQuery from "../utils/useQuery";
+import { SearchContainerProps } from "../interfaces/Search.interface";
 
-interface SearchContainerProps
-  extends RouteComponentProps,
-    React.FunctionComponent {}
 const SearchContainer = (props: SearchContainerProps) => {
   let query = useQuery();
   const { pokemon, severity } = useSelector((state: IStore) => state.search);

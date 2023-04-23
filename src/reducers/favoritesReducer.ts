@@ -9,7 +9,10 @@ interface FavoritesReducer {
   names: string[];
 }
 const initialState: FavoritesReducer = {
-  names: [],
+  names:
+    localStorage.getItem("favorites") !== null
+      ? JSON.parse(localStorage.getItem("favorites")!)
+      : [],
 };
 export default function (
   state = initialState,

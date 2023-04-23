@@ -12,8 +12,8 @@ import { setJWTToken } from "./utils/setJWTToken";
 import { logout, setUserData } from "./actions/securityActions";
 import Login from "./components/UserManagement/Login";
 import Header from "./components/Layout/Header";
-
 import SearchContainer from "./containers/SearchContainer";
+import { PokemonFavoritesContainer } from "./containers/PokemonFavoritesContainer";
 
 interface AppProps {
   user: {
@@ -77,6 +77,11 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
       <Router>
         <Header validToken={props.user.validToken} />
         <Switch>
+          <Route
+            path="/pokemons/favorites"
+            exact
+            component={PokemonFavoritesContainer}
+          />
           <Route path="/" exact component={ShowPokemonsContainer} />
           <Route path="/pokemons" exact component={ShowPokemonsContainer} />
           <Route
