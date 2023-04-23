@@ -24,20 +24,24 @@ export const fetchPokemons = async (page: number) => {
     });
   return pokemons;
 };
-export const fetchPokemonDetails = async (name: string = "pikachu",cb?:(pokemonDetailsResponse:PokemonDetailsResponse)=>void) => {
+export const fetchPokemonDetails = async (
+  name: string = "pikachu",
+  cb?: (pokemonDetailsResponse: PokemonDetailsResponse) => void
+) => {
   let pokemonDetails: PokemonDetailsResponse = {};
   await apiPokemon.get("/api/v2/pokemon/" + name.toLowerCase()).then((res) => {
     pokemonDetails = res.data;
     return res.data;
   });
-  if(cb){
-    return cb(pokemonDetails)
+  if (cb) {
+    return cb(pokemonDetails);
   }
   return pokemonDetails;
 };
 
 export const fetchPokemonEvolutionsChainURL = async (
-  pokemonName: string = "pikachu",cb?: (chainUrl:string) => void
+  pokemonName: string = "pikachu",
+  cb?: (chainUrl: string) => void
 ) => {
   let pokemonEvolutionsChainUrl = "";
   await apiPokemon
@@ -48,19 +52,22 @@ export const fetchPokemonEvolutionsChainURL = async (
       }
       return res.data;
     });
-  if(cb){
-    return cb(pokemonEvolutionsChainUrl)
-  } 
+  if (cb) {
+    return cb(pokemonEvolutionsChainUrl);
+  }
   return pokemonEvolutionsChainUrl;
 };
-export const fetchPokemonEvolutions = async (urlChain: string = "",cb?:(evolutionChain:PokemonEvolutionChain)=>void) => {
+export const fetchPokemonEvolutions = async (
+  urlChain: string = "",
+  cb?: (evolutionChain: PokemonEvolutionChain) => void
+) => {
   let pokemonEvolutions: PokemonEvolutionChain = {};
   await apiPokemon.get<PokemonEvolutionChain>(urlChain).then((res) => {
     pokemonEvolutions = res.data;
     return res.data;
   });
-  if(cb){
-    return cb(pokemonEvolutions)
+  if (cb) {
+    return cb(pokemonEvolutions);
   }
   return pokemonEvolutions;
 };

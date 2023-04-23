@@ -230,7 +230,9 @@ const ViewPokemonDetailsContainer: React.FC<
                   value={tabValue}
                   abilities={pokemonDetailsProps.abilities}
                 />
-                <Button variant="contained">Add to My Favorites</Button>
+                <Button variant="contained" className="btnAddToMyFavorites">
+                  Add to My Favorites
+                </Button>
               </React.Fragment>
             ) : (
               "Loading..."
