@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import TabPanel from "../Layout/TabPane";
 import { useSelector } from "react-redux";
+import TabPanel from "../Layout/TabPane";
 import {
   PokemonAreasProps,
   PokemonLocationAreasResponse,

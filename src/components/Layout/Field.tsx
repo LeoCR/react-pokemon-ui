@@ -1,10 +1,7 @@
 import React from "react";
 import { TextField, TextFieldProps } from "@mui/material";
 
-
-
 export const Field = (props: TextFieldProps) => {
-
   return (
     <TextField
       {...props}
@@ -12,9 +9,7 @@ export const Field = (props: TextFieldProps) => {
         width: "100%",
         float: "left",
         background: "#fff",
-        /* "&::-ms-clear": {
-          display: "none",
-        }, */
+        ...props.style,
       }}
       variant="outlined"
     />

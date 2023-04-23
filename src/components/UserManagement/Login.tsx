@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { Container, FormControl, Button } from "@mui/material";
 import { loginByEmail, loginByUsername } from "../../actions/securityActions";
 import isEmail from "../../utils/isEmail";
@@ -10,7 +11,6 @@ import {
   User,
 } from "../../interfaces/Security.interface";
 import { IStore } from "../../store/store";
-import {  Redirect } from "react-router-dom";
 interface LoginProps {
   user?: User;
   onLogin?: () => void;
@@ -102,11 +102,11 @@ export class Login extends React.Component<LoginProps, LoginState> {
         this.props.loginByUsername(LoginRequestByUsername);
       }
     }
-  }; 
+  };
   render() {
     return (
       <React.Fragment>
-        {this.props.user && this.props.user.validToken===false ? (
+        {this.props.user && this.props.user.validToken === false ? (
           <Container maxWidth="sm" id="container_login">
             <FormControl>
               <Field
@@ -147,7 +147,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
             </Button>
           </Container>
         ) : (
-          <Redirect to={'/pokemons'} />
+          <Redirect to={"/pokemons"} />
         )}
       </React.Fragment>
     );

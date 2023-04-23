@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-import Field from "./Field";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import Field from "./Field";
 import {
   searchPokemon,
   clearSearchPokemonResults,
 } from "../../actions/pokemonActions";
 import { SearchFormProps } from "../../types/SearchForm.types";
-import { IStore } from "../../store/store";
 
 const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
-  const { pokemon, error } = useSelector((state: IStore) => state.search);
   const [pokemonName, setPokemonName] = useState<string>("");
   const dispatch = useDispatch();
   const findPokemon = (pkmnName: string) => {
@@ -32,7 +30,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
     e.preventDefault();
     dispatch(clearSearchPokemonResults());
     setPokemonName("");
-    history.go(-2)
+    history.go(-2);
   };
   const submitSearchForm = (event: React.FormEvent) => {
     event.preventDefault();
@@ -51,9 +49,8 @@ const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
       </Button>
       <Field
         id="standard-basic"
-        label="Search Pokemon"
         type="search"
-        variant="outlined"
+        variant="standard"
         value={pokemonName}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           onChagePokemonName(e)
@@ -63,7 +60,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
           endAdornment: <React.Fragment></React.Fragment>,
           type: "text",
         }}
-        style={{ maxWidth: "443px", float: "left" }}
+        style={{ maxWidth: "340px", float: "left" }}
       />
       {pokemonName !== "" ? (
         <Button

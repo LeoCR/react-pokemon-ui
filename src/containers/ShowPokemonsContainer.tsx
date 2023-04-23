@@ -206,18 +206,22 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
 
   const renderedPokemons =
     pokemonsDetails.length > 0
-      ? pokemonsDetails.map(
-          (pokemon: PokemonDetailsResponse, index: number) => (
+      ? pokemonsDetails
+          .filter(
+            (pokemon: PokemonDetailsResponse, index: number) =>
+              index ===
+              pokemonsDetails.findIndex((other) => pokemon.name === other.name)
+          )
+          .map((pokemon: PokemonDetailsResponse, index: number) => (
             <PokemonOverview
-              key={pokemon.name+'-'+index}
+              key={pokemon.name + "-" + index}
               pokemon={pokemonsDetails[index]}
               viewPokemon={() =>
                 viewPokemon(pokemonsDetails[index] as PokemonDetailsResponse)
               }
               currentTime={currentTime}
             />
-          )
-        )
+          ))
       : "";
   return (
     <div className="pokemons_container">

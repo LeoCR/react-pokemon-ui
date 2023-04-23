@@ -1,7 +1,7 @@
 body {
   background: #f2f2e5;
 }
-.hide{
+.hide {
   display: none im !important;
 }
 .pokemon_name {
@@ -56,14 +56,17 @@ body {
 }
 
 .btnBack {
-    margin: "3% 20%",
+  margin: "3% 20%";
 }
 .btnAddToMyFavorites {
-    background: "#4caf50";
-    color: "#FFFFFF";
-    float: "right";
-    margin: "30px 10px";
+  background: "#4caf50";
+  color: "#FFFFFF";
+  float: "right";
+  margin: "30px 10px";
 }
 .paperDetails {
-    min-height: "650px",
+  min-height: "650px";
+}
+.input:-internal-autofill-selected {
+  background: red;
 }

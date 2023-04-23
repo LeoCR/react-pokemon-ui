@@ -1,10 +1,9 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import { AxiosResponse } from "axios";
+import { Action } from "redux";
 import { fetchPokemonDetails } from "../api/apiPokemon";
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 import { POKEMON } from "../constants/pokemonsTypes";
-import { Action } from "redux";
-import { setPokemonDetails } from "../actions/pokemonActions";
 
 interface PokemonSearchPayload {
   name: string;

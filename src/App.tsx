@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Alert, Snackbar } from "@mui/material";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { ShowPokemonsContainer } from "./containers/ShowPokemonsContainer";
-import { SecuredRoute } from "./components/Security/SecuredRoute";
 import ViewPokemonDetailsContainer from "./containers/ViewPokemonDetailsContainer";
 import { IStore } from "./store/store";
 import "./App.css";
@@ -15,9 +15,9 @@ import Header from "./components/Layout/Header";
 
 import SearchContainer from "./containers/SearchContainer";
 
-interface AppProps  {
-  user:{
-    validToken:boolean
+interface AppProps {
+  user: {
+    validToken: boolean;
   };
 }
 interface AuthToken {
@@ -29,13 +29,13 @@ const jwtToken =
     ? localStorage.getItem("jwtToken")
     : null;
 
-export const App:React.FC<AppProps>= (props: AppProps) => {
-  const dispatch = useDispatch(); 
+export const App: React.FC<AppProps> = (props: AppProps) => {
+  const dispatch = useDispatch();
   const { error, severity, message } = useSelector(
     (state: IStore) => state.search
   );
   const [open, setOpen] = React.useState(false);
-  
+
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
       return;
@@ -61,7 +61,7 @@ export const App:React.FC<AppProps>= (props: AppProps) => {
         dispatch(logout());
       }
     }
-  }, []); 
+  }, []);
   return (
     <div className="app">
       <Snackbar
@@ -77,35 +77,19 @@ export const App:React.FC<AppProps>= (props: AppProps) => {
       <Router>
         <Header validToken={props.user.validToken} />
         <Switch>
-          <Route
-            path="/pokemons/"
-            exact
-            component={ShowPokemonsContainer}
-            /* validToken={props.user.validToken} */
-          />
+          <Route path="/" exact component={ShowPokemonsContainer} />
+          <Route path="/pokemons" exact component={ShowPokemonsContainer} />
           <Route
             path="/pokemons/:page"
             exact
             component={ShowPokemonsContainer}
-            /* validToken={props.user.validToken} */
           />
           <Route
             path="/pokemon/:pokemon"
             exact
             component={ViewPokemonDetailsContainer}
-            /* validToken={props.user.validToken} */
           />
-          <Route
-            path="/search"
-            exact
-            component={SearchContainer}
-           /*  validToken={props.user.validToken} */
-          />
-          <Route
-            exact
-            path="/"
-            render={() => <React.Fragment></React.Fragment>}
-          />
+          <Route path="/search" exact component={SearchContainer} />
           <Route exact path="/login" component={Login} />
         </Switch>
       </Router>

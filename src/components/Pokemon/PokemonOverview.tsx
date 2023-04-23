@@ -1,7 +1,7 @@
 import React from "react";
+import { Button } from "@mui/material";
 import { PokemonDetailsResponse } from "../../interfaces/PokemonDetails.interface";
 import Pokemon from "./Pokemon";
-import { Button } from "@mui/material";
 
 export interface PokemonOverviewProps {
   pokemon: PokemonDetailsResponse;

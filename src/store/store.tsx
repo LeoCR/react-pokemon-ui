@@ -1,12 +1,12 @@
 import { applyMiddleware, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
+import thunk from "redux-thunk";
 import { Pokemon } from "../interfaces/Pokemon.interface";
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 import { User } from "../interfaces/Security.interface";
 import rootReducer from "../reducers";
 import rootSaga from "../sagas";
-import thunk from "redux-thunk";
 
 export interface IStore {
   user?: {

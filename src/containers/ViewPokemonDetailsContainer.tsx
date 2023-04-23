@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Paper, Container, AppBar, Tabs, Tab, Button } from "@mui/material";
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -148,9 +149,6 @@ const ViewPokemonDetailsContainer: React.FC<
       setIsLoading(false);
     }
   };
-  const handleChangeIndex = (index: number) => {
-    setTabValue(index);
-  };
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setTabValue(newValue);
   };
@@ -232,9 +230,7 @@ const ViewPokemonDetailsContainer: React.FC<
                   value={tabValue}
                   abilities={pokemonDetailsProps.abilities}
                 />
-                <Button className={"btnAddToMyFavorites"}>
-                  Add to My Favorites
-                </Button>
+                <Button variant="contained">Add to My Favorites</Button>
               </React.Fragment>
             ) : (
               "Loading..."
