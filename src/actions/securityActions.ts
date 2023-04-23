@@ -7,7 +7,7 @@ import {
   GET_USER_ERRORS,
   LOGIN_BY_EMAIL,
   LOGIN_BY_USERNAME,
-} from "../constants/userTypes";
+} from "../constants/userTypesConstants";
 import { api } from "../api/api";
 import {
   LoginRequestByEmail,

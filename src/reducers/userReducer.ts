@@ -5,7 +5,7 @@ import {
   LOGIN_BY_USERNAME,
   LOGOUT,
   SET_CURRENT_USER,
-} from "../constants/userTypes";
+} from "../constants/userTypesConstants";
 import { setJWTToken } from "../utils/setJWTToken";
 interface UserActions extends Action {
   response: object;

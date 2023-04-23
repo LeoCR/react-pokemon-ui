@@ -30,7 +30,7 @@ const PokemonAbilities: React.FC<IPokemonAbilities> = (
                 alt={ability.ability.name}
                 style={{
                   float: "left",
-                  maxWidth: "20px",
+                  maxWidth: "50px",
                   margin: "5px",
                   position: "relative",
                 }}

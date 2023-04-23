@@ -2,7 +2,10 @@ import { AxiosResponse } from "axios";
 import { Action } from "redux";
 import { put, call } from "redux-saga/effects";
 import { loginByUsernameRequest, loginByEmailRequest } from "../api/api";
-import { LOGIN_BY_EMAIL, LOGIN_BY_USERNAME } from "../constants/userTypes";
+import {
+  LOGIN_BY_EMAIL,
+  LOGIN_BY_USERNAME,
+} from "../constants/userTypesConstants";
 import {
   LoginRequestByEmail,
   LoginRequestByUsername,

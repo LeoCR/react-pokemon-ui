@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { DialogProps } from "../../types/Dialog.types";
+import { useDispatch } from "react-redux";
+import { addPokemonToFavorites } from "../../actions/favoriteActions";
 
 export const Dialog: React.FC<DialogProps> = ({
   isOpen,
@@ -17,10 +19,16 @@ export const Dialog: React.FC<DialogProps> = ({
   pokemonName,
 }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const addPokemon = (pokemon: string) => {
+    console.log("addPokemon", pokemon);
+    dispatch(addPokemonToFavorites(pokemon));
   };
 
   return (
@@ -44,7 +52,13 @@ export const Dialog: React.FC<DialogProps> = ({
           <Button onClick={handleClose} variant="outlined">
             Disagree
           </Button>
-          <Button onClick={handleClose} variant="contained">
+          <Button
+            onClick={() => {
+              addPokemon(pokemonName);
+              handleClose();
+            }}
+            variant="contained"
+          >
             Agree
           </Button>
         </DialogActions>

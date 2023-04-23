@@ -3,7 +3,7 @@ import { AxiosResponse } from "axios";
 import { Action } from "redux";
 import { fetchPokemonDetails } from "../api/apiPokemon";
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
-import { POKEMON } from "../constants/pokemonsTypes";
+import { POKEMON } from "../constants/pokemonsConstants";
 
 interface PokemonSearchPayload {
   name: string;

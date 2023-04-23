@@ -1,4 +1,8 @@
-import { POKEMON, POKEMONS, POKEMON_DETAILS } from "../constants/pokemonsTypes";
+import {
+  POKEMON,
+  POKEMONS,
+  POKEMON_DETAILS,
+} from "../constants/pokemonsConstants";
 import { PokemonsResponse } from "../interfaces/Pokemon.interface";
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 

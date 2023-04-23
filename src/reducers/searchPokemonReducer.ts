@@ -1,6 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { Action } from "redux";
-import { POKEMON } from "../constants/pokemonsTypes";
+import { POKEMON } from "../constants/pokemonsConstants";
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 
 interface PokemonsDetailsActions extends Action {

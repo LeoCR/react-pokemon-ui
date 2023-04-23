@@ -214,7 +214,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
           )
           .map((pokemon: PokemonDetailsResponse, index: number) => (
             <PokemonOverview
-              key={pokemon.name + "-" + index}
+              key={pokemon.name}
               pokemon={pokemonsDetails[index]}
               viewPokemon={() =>
                 viewPokemon(pokemonsDetails[index] as PokemonDetailsResponse)

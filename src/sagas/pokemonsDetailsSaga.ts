@@ -1,5 +1,5 @@
 import { put, call, take, fork } from "redux-saga/effects";
-import { POKEMONS } from "../constants/pokemonsTypes";
+import { POKEMONS } from "../constants/pokemonsConstants";
 import { fetchPokemonDetails } from "../api/apiPokemon";
 import {
   setPokemonDetailsError,

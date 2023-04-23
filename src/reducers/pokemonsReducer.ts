@@ -1,32 +1,35 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { Action } from "redux";
-import { POKEMONS } from "../constants/pokemonsTypes";
+import { POKEMONS } from "../constants/pokemonsConstants";
 import { Pokemon, PokemonInfo } from "../interfaces/Pokemon.interface";
-import {PokemonEvolutionChain} from "../interfaces/PokemonEvolutions.interface"
-export interface PokemonsReducer{
-  isLoading:boolean,
-  pokemons:Pokemon[],
-  page:number,
-  pokemon:PokemonInfo[],
-  pokemonEvolutions:PokemonEvolutionChain[]
-  error:null|object
+import { PokemonEvolutionChain } from "../interfaces/PokemonEvolutions.interface";
+export interface PokemonsReducer {
+  isLoading: boolean;
+  pokemons: Pokemon[];
+  page: number;
+  pokemon: PokemonInfo[];
+  pokemonEvolutions: PokemonEvolutionChain[];
+  error: null | object;
 }
-interface PokemonActions extends Action{
-  pokemon:PokemonInfo[],
-  pokemonEvolutions:PokemonEvolutionChain[]
-  page:number
-  pokemons:Pokemon[],
-  error:null|object
+interface PokemonActions extends Action {
+  pokemon: PokemonInfo[];
+  pokemonEvolutions: PokemonEvolutionChain[];
+  page: number;
+  pokemons: Pokemon[];
+  error: null | object;
 }
-const initialState:PokemonsReducer= {
+const initialState: PokemonsReducer = {
   isLoading: false,
   pokemons: [],
   page: 0,
   pokemon: [],
   pokemonEvolutions: [],
-  error:null
+  error: null,
 };
-export default function (state = initialState, action: PokemonActions):PokemonsReducer{
+export default function (
+  state = initialState,
+  action: PokemonActions
+): PokemonsReducer {
   switch (action.type) {
     case POKEMONS.SET_POKEMON:
       return {
