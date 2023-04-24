@@ -59,7 +59,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
             }
           }
           if (page2 > 0) {
-            history.push("/pokemons/" + page2);
+            history.push("/react-pokemon-ui/pokemons/" + page2);
           }
         } else {
           setPokemonsCallback(0);
@@ -142,7 +142,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   const viewPokemon = (pokemon: PokemonDetailsResponse) => {
     dispatch(setPokemon(pokemon as PokemonDetailsResponse));
     if (pokemon.name) {
-      history.push("/pokemon/" + pokemon.name);
+      history.push("/react-pokemon-ui/pokemon/" + pokemon.name);
     }
   };
   const getPagination = () => {
@@ -159,7 +159,9 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
             <ul className="pagination">
               <li className="page-item">
                 <Link
-                  to={`/pokemons/${currentPage - 1 > 0 ? currentPage - 1 : 1}`}
+                  to={`/react-pokemon-ui/pokemons/${
+                    currentPage - 1 > 0 ? currentPage - 1 : 1
+                  }`}
                   className="page-link"
                   onClick={() => getPage(currentPage - 1)}
                 >
@@ -174,7 +176,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
                       key={key}
                     >
                       <Link
-                        to={`/pokemons/${index}`}
+                        to={`/react-pokemon-ui/pokemons/${index}`}
                         className="page-link"
                         onClick={() => getPage(index)}
                       >
@@ -185,7 +187,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
                 : ""}
               <li className="page-item">
                 <Link
-                  to={`/pokemons/${currentPage + 1}`}
+                  to={`/react-pokemon-ui/pokemons/${currentPage + 1}`}
                   className="page-link"
                   onClick={() => getPage(currentPage + 1)}
                 >

@@ -15,7 +15,9 @@ const SearchContainer = (props: SearchContainerProps) => {
         {pokemon && "name" in pokemon && query.get("pokemon") ? (
           <PokemonOverview
             pokemon={pokemon!}
-            viewPokemon={() => props.history.push("/pokemon/" + pokemon!.name)}
+            viewPokemon={() =>
+              props.history.push("/react-pokemon-ui/pokemon/" + pokemon!.name)
+            }
           />
         ) : severity === "error" ? (
           <p

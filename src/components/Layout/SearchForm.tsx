@@ -15,7 +15,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
   const findPokemon = (pkmnName: string) => {
     console.log("pkmnName", pkmnName);
     history.push({
-      pathname: "/search",
+      pathname: "/react-pokemon-ui/search",
       search: "?pokemon=" + pkmnName,
     });
     dispatch(searchPokemon(pkmnName.toLowerCase()));

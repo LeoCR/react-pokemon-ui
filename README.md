@@ -1,20 +1,34 @@
 # Pokedex React App
+
 This project was built with the intention of show you how to use Redux Saga with Typescript and how to persist a pagination from the UI using localStorage.
 
-## View all pokemons 
-<img src="screenshots/viewPokemons.png" alt="View all Pokemons"/>
+## View all pokemons
 
-## Pagination 
-<img src="screenshots/pagination.png" alt="Pagination"/>
+<img src="screenshots/01.png" alt="View all Pokemons"/>
 
-## View Abilities 
-<img src="screenshots/abilities.png" alt="Abilities"/>
+## Pokemon Evolutions
 
-## View Places  
-<img src="screenshots/encounter.png" alt="Encounter"/>
+<img src="screenshots/02-evolutions.png" alt="Pokemon Evolutions"/>
 
-## View Evolutions  
-<img src="screenshots/viewEvolutions.png" alt="Evolutions"/>
+## Pokemon Encounter Places
+
+<img src="screenshots/03-encounter.png" alt="Pokemon Encounter Places"/>
+
+## Pokemon Abilities
+
+<img src="screenshots/04-abilities.png" alt="Pokemon Abilities"/>
+
+## List your Favorites
+
+<img src="screenshots/05-favorites.png" alt="List your Favorites"/>
+
+## Delete Confirmation
+
+<img src="screenshots/06-delete-confirmation.png" alt="Delete Confirmation"/>
+
+## Pagination
+
+<img src="screenshots/07-pagination.png" alt="Pagination"/>
 
 ### Getting Started with Create React App
 
@@ -31,7 +45,6 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
-
 
 ### `npm run build`
 

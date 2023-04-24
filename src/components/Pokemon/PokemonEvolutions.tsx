@@ -54,7 +54,7 @@ const PokemonEvolutions = (props: PokemonEvolutionsProps) => {
                     {pokemonName}
                   </h3>
                   <Link
-                    to={`/pokemon/${pokemonName}`}
+                    to={`/react-pokemon-ui/pokemon/${pokemonName}`}
                     onClick={() => {
                       dispatch(setPokemon(pokemon as PokemonDetailsResponse));
                     }}

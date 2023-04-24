@@ -48,7 +48,7 @@ export const PokemonFavoritesContainer: React.FC<
   const viewPokemon = (pokemon: PokemonDetailsResponse) => {
     dispatch(setPokemon(pokemon as PokemonDetailsResponse));
     if (pokemon.name) {
-      history.push("/pokemon/" + pokemon.name);
+      history.push("/react-pokemon-ui/pokemon/" + pokemon.name);
     }
   };
   return (
@@ -77,6 +77,11 @@ export const PokemonFavoritesContainer: React.FC<
       ) : (
         <>
           <Preloader />
+          <p
+            style={{ padding: "30px", textAlign: "center", background: "#fff" }}
+          >
+            Maybe You dont have any Pokemon inside Favorites List
+          </p>
         </>
       )}
     </div>

@@ -40,7 +40,7 @@ const Header = (props: HeaderProps) => {
           >
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <Link className="nav-link" to="/pokemons">
+                <Link className="nav-link" to="/react-pokemon-ui/pokemons">
                   <img
                     src={pokemonImage}
                     alt="Pokemons"
@@ -53,7 +53,10 @@ const Header = (props: HeaderProps) => {
 
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <Link className="nav-link " to="/pokemons/favorites">
+                <Link
+                  className="nav-link "
+                  to="/react-pokemon-ui/pokemons/favorites"
+                >
                   <img
                     src={pokebalImage}
                     alt="Pokemons"
