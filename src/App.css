@@ -16,6 +16,7 @@ body {
 .pokemon_name_title {
   text-transform: capitalize;
   font-weight: 500;
+  padding-top: 15px;
 }
 .pokemon_container {
   text-align: center;
@@ -58,7 +59,6 @@ body {
 }
 .pokeball-img,
 .pokemon_image {
-  margin: 0 auto !important;
   text-align: center;
 }
 #container_login {
