@@ -84,7 +84,22 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
               exact
               component={PokemonFavoritesContainer}
             />
+            <Route
+              path="/react-pokemon-ui/pokemons/favorites"
+              exact
+              component={PokemonFavoritesContainer}
+            />
             <Route path="/" exact component={ShowPokemonsContainer} />
+            <Route
+              path="/react-pokemon-ui/"
+              exact
+              component={ShowPokemonsContainer}
+            />
+            <Route
+              path="/react-pokemon-ui/pokemons"
+              exact
+              component={ShowPokemonsContainer}
+            />
             <Route path="/pokemons" exact component={ShowPokemonsContainer} />
             <Route
               path="/pokemons/:page"
@@ -92,9 +107,24 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
               component={ShowPokemonsContainer}
             />
             <Route
+              path="/react-pokemon-ui/pokemons/:page"
+              exact
+              component={ShowPokemonsContainer}
+            />
+            <Route
               path="/pokemon/:pokemon"
               exact
               component={ViewPokemonDetailsContainer}
+            />
+            <Route
+              path="/react-pokemon-ui/pokemon/:pokemon"
+              exact
+              component={ViewPokemonDetailsContainer}
+            />
+            <Route
+              path="/react-pokemon-ui/search"
+              exact
+              component={SearchContainer}
             />
             <Route path="/search" exact component={SearchContainer} />
             <Route exact path="/login" component={Login} />
