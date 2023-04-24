@@ -13,6 +13,8 @@ interface HeaderProps extends RouteComponentProps {
   validToken: boolean;
 }
 const Header = (props: HeaderProps) => {
+  const [isNavOpen, setIsNavOpen] = React.useState<boolean>(false);
+
   return (
     <React.Fragment>
       <nav className="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
@@ -22,10 +24,20 @@ const Header = (props: HeaderProps) => {
             type="button"
             data-toggle="collapse"
             data-target="#mobile-nav"
+            onClick={() => {
+              setIsNavOpen(!isNavOpen);
+            }}
           >
             <span className="navbar-toggler-icon" />
           </button>
-          <div className="collapse navbar-collapse" id="mobile-nav">
+          <div
+            className={
+              isNavOpen === true
+                ? " show collapse navbar-collapse"
+                : "collapse navbar-collapse"
+            }
+            id="mobile-nav"
+          >
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
                 <Link className="nav-link" to="/pokemons">
