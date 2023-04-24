@@ -76,12 +76,19 @@ export const PokemonFavoritesContainer: React.FC<
         )
       ) : (
         <>
-          <Preloader />
-          <p
-            style={{ padding: "30px", textAlign: "center", background: "#fff" }}
-          >
-            Maybe You dont have any Pokemon inside Favorites List
-          </p>
+          {favoritesProps.length === 0 ? (
+            <p
+              style={{
+                padding: "30px",
+                textAlign: "center",
+                background: "#fff",
+              }}
+            >
+              Maybe You dont have any Pokemon inside Favorites List
+            </p>
+          ) : (
+            <Preloader />
+          )}
         </>
       )}
     </div>

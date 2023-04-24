@@ -59,6 +59,8 @@ export const store = () => {
         "favorites",
         JSON.stringify([...state.favorites.names])
       );
+    } else if (state.favorites.names.length === 0) {
+      localStorage.setItem("favorites", JSON.stringify([]));
     }
   });
   return store;

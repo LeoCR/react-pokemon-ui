@@ -3,9 +3,12 @@ import React, { useMemo } from "react";
 import { Button } from "@mui/material";
 import { PokemonDetailsResponse } from "../../interfaces/PokemonDetails.interface";
 import Pokemon from "./Pokemon";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deletePokemon } from "../../actions/favoriteActions";
 import { Dialog } from "../Layout/Dialog";
+import { IStore } from "../../store/store";
+import { useHistory } from "react-router-dom";
+export type PokemonFavoritesContainerParams = {};
 
 export interface PokemonOverviewProps {
   pokemon: PokemonDetailsResponse;
@@ -16,11 +19,14 @@ const PokemonOverview: React.FC<PokemonOverviewProps> = (
   props: PokemonOverviewProps
 ) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  const favoritesProps = useSelector((state: IStore) => state.favorites.names);
 
   const callback = () => {
     dispatch(deletePokemon(props.pokemon.name as string));
-    return;
+    setIsOpen(!isOpen);
+    history.push("/react-pokemon-ui/pokemons");
   };
   return useMemo(
     () => (
@@ -82,7 +88,14 @@ const PokemonOverview: React.FC<PokemonOverviewProps> = (
         )}
       </div>
     ),
-    [JSON.stringify(props.pokemon), isOpen, setIsOpen, callback]
+    [
+      JSON.stringify(props.pokemon),
+      JSON.stringify(favoritesProps),
+      isOpen,
+      setIsOpen,
+      callback,
+      history,
+    ]
   );
 };
 export default PokemonOverview;
