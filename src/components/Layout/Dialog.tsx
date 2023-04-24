@@ -17,6 +17,8 @@ export const Dialog: React.FC<DialogProps> = ({
   isOpen,
   setOpen,
   pokemonName,
+  message,
+  callback,
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -44,8 +46,10 @@ export const Dialog: React.FC<DialogProps> = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            If you agree {pokemonName} will be inserted in your list of
-            favorites
+            {message !== undefined
+              ? message
+              : ` If you agree ${pokemonName} will be inserted in your list of
+            favorites`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -54,8 +58,12 @@ export const Dialog: React.FC<DialogProps> = ({
           </Button>
           <Button
             onClick={() => {
-              addPokemon(pokemonName);
-              handleClose();
+              if (typeof callback === "function") {
+                return callback();
+              } else {
+                addPokemon(pokemonName);
+                handleClose();
+              }
             }}
             variant="contained"
           >

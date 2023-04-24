@@ -8,6 +8,7 @@ import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 import { fetchPokemonDetails } from "../api/apiPokemon";
 import PokemonOverview from "../components/Pokemon/PokemonOverview";
 import { setPokemon } from "../actions/pokemonActions";
+import { Preloader } from "../components/Layout/Preloader";
 
 export const PokemonFavoritesContainer: React.FC<
   PokemonFavoritesContainerProps
@@ -75,13 +76,7 @@ export const PokemonFavoritesContainer: React.FC<
         )
       ) : (
         <>
-          <div className="spinner-grow text-danger" role="status">
-            <span className="sr-only">Loading Favorites...</span>
-          </div>
-          <div className="spinner-grow text-success" role="status"></div>
-          <div className="spinner-grow text-primary" role="status"></div>
-          <div className="spinner-grow text-info" role="status"></div>
-          <div className="spinner-grow text-light" role="status"></div>
+          <Preloader />
         </>
       )}
     </div>

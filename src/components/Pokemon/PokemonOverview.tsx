@@ -5,6 +5,7 @@ import { PokemonDetailsResponse } from "../../interfaces/PokemonDetails.interfac
 import Pokemon from "./Pokemon";
 import { useDispatch } from "react-redux";
 import { deletePokemon } from "../../actions/favoriteActions";
+import { Dialog } from "../Layout/Dialog";
 
 export interface PokemonOverviewProps {
   pokemon: PokemonDetailsResponse;
@@ -15,6 +16,12 @@ const PokemonOverview: React.FC<PokemonOverviewProps> = (
   props: PokemonOverviewProps
 ) => {
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
+  const callback = () => {
+    dispatch(deletePokemon(props.pokemon.name as string));
+    return;
+  };
   return useMemo(
     () => (
       <div className="pokemon_container" key={props.pokemon.name as string}>
@@ -44,7 +51,8 @@ const PokemonOverview: React.FC<PokemonOverviewProps> = (
               variant="contained"
               style={{ margin: "0 10px" }}
               onClick={() => {
-                dispatch(deletePokemon(props.pokemon.name as string));
+                console.log("!isOpen", !isOpen);
+                setIsOpen(!isOpen);
               }}
             >
               <svg
@@ -60,13 +68,22 @@ const PokemonOverview: React.FC<PokemonOverviewProps> = (
               </svg>
               Delete
             </Button>
+            <Dialog
+              isOpen={isOpen}
+              setOpen={setIsOpen}
+              callback={callback}
+              pokemonName={props.pokemon.name as string}
+              message={`If you agree, you are going to delete ${
+                props.pokemon.name as string
+              } from your list of favorites`}
+            />
           </>
         ) : (
           <></>
         )}
       </div>
     ),
-    [JSON.stringify(props.pokemon)]
+    [JSON.stringify(props.pokemon), isOpen, setIsOpen, callback]
   );
 };
 export default PokemonOverview;
