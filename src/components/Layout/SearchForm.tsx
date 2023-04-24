@@ -60,14 +60,14 @@ const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
           endAdornment: <React.Fragment></React.Fragment>,
           type: "text",
         }}
-        style={{ maxWidth: "435px", float: "left" }}
+        className="search_field"
       />
       {pokemonName !== "" ? (
         <Button
           variant="contained"
           color="secondary"
-          style={{ minHeight: "55px", float: "right" }}
           onClick={(e: React.MouseEvent<HTMLElement>) => clearInput(e)}
+          className="clear_btn"
         >
           <ClearIcon />
         </Button>

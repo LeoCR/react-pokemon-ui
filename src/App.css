@@ -105,3 +105,19 @@ main {
   background-attachment: fixed;
   min-height: 900px;
 }
+.search_field {
+  max-width: 435px;
+  float: left;
+}
+.clear_btn {
+  min-height: 55px;
+  float: right;
+}
+@media screen and (max-width: 750px) {
+  .search_field {
+    max-width: 230px;
+  }
+  .clear_btn {
+    margin-right: 95px !important;
+  }
+}
