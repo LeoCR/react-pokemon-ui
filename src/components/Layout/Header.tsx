@@ -4,6 +4,8 @@ import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import { User } from "../../interfaces/Security.interface";
 import { IStore } from "../../store/store";
 import SearchForm from "./SearchForm";
+import pokebalImage from "../../assets/img/original_pokeball.png";
+import pokemonImage from "../../assets/img/free_bouncy_quilava.gif";
 import "./Header.css";
 
 interface HeaderProps extends RouteComponentProps {
@@ -27,6 +29,11 @@ const Header = (props: HeaderProps) => {
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
                 <Link className="nav-link" to="/pokemons">
+                  <img
+                    src={pokemonImage}
+                    alt="Pokemons"
+                    style={{ width: "30px" }}
+                  />
                   Pokemons
                 </Link>
               </li>
@@ -35,7 +42,11 @@ const Header = (props: HeaderProps) => {
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
                 <Link className="nav-link " to="/pokemons/favorites">
-                  <i className="fas.fa-user-circle.mr-1" />
+                  <img
+                    src={pokebalImage}
+                    alt="Pokemons"
+                    style={{ width: "30px" }}
+                  />
                   My Favorites
                 </Link>
               </li>
