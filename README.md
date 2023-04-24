@@ -4,31 +4,31 @@ This project was built with the intention of show you how to use Redux Saga with
 
 ## View all pokemons
 
-<img src="screenshots/01.png" alt="View all Pokemons"/>
+<img src="screenshots/01.PNG" alt="View all Pokemons"/>
 
 ## Pokemon Evolutions
 
-<img src="screenshots/02-evolutions.png" alt="Pokemon Evolutions"/>
+<img src="screenshots/02-evolutions.PNG" alt="Pokemon Evolutions"/>
 
 ## Pokemon Encounter Places
 
-<img src="screenshots/03-encounter.png" alt="Pokemon Encounter Places"/>
+<img src="screenshots/03-encounter.PNG" alt="Pokemon Encounter Places"/>
 
 ## Pokemon Abilities
 
-<img src="screenshots/04-abilities.png" alt="Pokemon Abilities"/>
+<img src="screenshots/04-abilities.PNG" alt="Pokemon Abilities"/>
 
 ## List your Favorites
 
-<img src="screenshots/05-favorites.png" alt="List your Favorites"/>
+<img src="screenshots/05-favorites.PNG" alt="List your Favorites"/>
 
 ## Delete Confirmation
 
-<img src="screenshots/06-delete-confirmation.png" alt="Delete Confirmation"/>
+<img src="screenshots/06-delete-confirmation.PNG" alt="Delete Confirmation"/>
 
 ## Pagination
 
-<img src="screenshots/07-pagination.png" alt="Pagination"/>
+<img src="screenshots/07-pagination.PNG" alt="Pagination"/>
 
 ### Getting Started with Create React App
 
