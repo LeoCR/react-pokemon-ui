@@ -1,6 +1,6 @@
 # Pokedex React App
 
-This project was built with the intention of show you how to use Redux Saga with Typescript and how to persist a pagination from the UI using localStorage.
+This project was built with the intention of understand how Redux Saga work with Typescript.
 
 ## View all pokemons
 
