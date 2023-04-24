@@ -1,3 +1,6 @@
+* {
+  font-family: "Quicksand", sans-serif;
+}
 body {
   background: #f2f2e5;
 }
@@ -6,6 +9,13 @@ body {
 }
 .pokemon_name {
   text-transform: capitalize;
+  text-align: center;
+  padding-top: 40px;
+  font-weight: 500;
+}
+.pokemon_name_title {
+  text-transform: capitalize;
+  font-weight: 500;
 }
 .pokemon_container {
   text-align: center;
@@ -15,7 +25,7 @@ body {
   border-left: 1px solid #8e8e8e;
   border-right: 1px solid #8e8e8e;
   border-top: 1px solid #8e8e8e;
-  height: 120px;
+  height: 160px;
   background: #ffffff;
 }
 .pokemons_container {
@@ -38,7 +48,19 @@ body {
   margin: -38px 0 0 0;
   position: relative;
 }
-
+.pokemon_overview_container {
+  text-align: center;
+  margin: 0 auto;
+  background: url("./assets/img/pokemon_grass_background.jpg") no-repeat center
+    center;
+  background-size: contain;
+  background-attachment: fixed;
+}
+.pokeball-img,
+.pokemon_image {
+  margin: 0 auto !important;
+  text-align: center;
+}
 #container_login {
   margin-top: 15%;
   padding: 30px;

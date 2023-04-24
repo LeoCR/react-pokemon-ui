@@ -179,47 +179,53 @@ const ViewPokemonDetailsContainer: React.FC<
         <Paper className={"paperDetails"}>
           <Container maxWidth="sm" style={{ padding: "30px 0px" }}>
             {hasPokemons ? (
-              <React.Fragment>
-                <h2 style={{ textTransform: "capitalize" }}>
-                  {pokemonDetails.name}
-                </h2>
-                <img
-                  src={pokemonDetailsProps?.sprites?.front_default as string}
-                  alt={pokemonDetailsProps?.name}
-                  title={pokemonDetailsProps?.name}
-                />
-                <AppBar position="static" color="default">
-                  <Tabs
-                    value={tabValue}
-                    onChange={handleChange}
-                    indicatorColor="secondary"
-                    textColor="primary"
-                    variant="fullWidth"
-                    aria-label="full width tabs example"
-                  >
-                    <Tab label="Evolutions" {...a11yProps(0)} />
-                    <Tab label="Encounter" {...a11yProps(1)} />
-                    <Tab label="Abilities" {...a11yProps(2)} />
-                  </Tabs>
-                </AppBar>
+              <>
+                <div className="pokemon_overview_container">
+                  <h2 className="pokemon_name">{pokemonDetails.name}</h2>
+                  <img
+                    src={pokemonDetailsProps?.sprites?.front_default as string}
+                    alt={pokemonDetailsProps?.name}
+                    title={pokemonDetailsProps?.name}
+                    className="pokemon_image"
+                  />
+                  <AppBar position="static" color="default">
+                    <Tabs
+                      value={tabValue}
+                      onChange={handleChange}
+                      indicatorColor="secondary"
+                      textColor="primary"
+                      variant="fullWidth"
+                      aria-label="full width tabs example"
+                    >
+                      <Tab label="Evolutions" {...a11yProps(0)} />
+                      <Tab label="Encounter" {...a11yProps(1)} />
+                      <Tab label="Abilities" {...a11yProps(2)} />
+                    </Tabs>
+                  </AppBar>
 
-                <PokemonEvolutions
-                  value={tabValue}
-                  pokemonEvolutions={pokemonEvolutionsState}
-                />
-                {pokemonAreas ? (
-                  <PokemonAreas value={tabValue} pokemonAreas={pokemonAreas} />
-                ) : (
-                  <TabPanel value={tabValue} index={1} dir={"rtl"}>
-                    <div className="spinner-grow text-danger" role="status">
-                      <span className="sr-only">Loading Pokemon Areas...</span>
-                    </div>
-                  </TabPanel>
-                )}
-                <PokemonAbilities
-                  value={tabValue}
-                  abilities={pokemonDetailsProps.abilities}
-                />
+                  <PokemonEvolutions
+                    value={tabValue}
+                    pokemonEvolutions={pokemonEvolutionsState}
+                  />
+                  {pokemonAreas ? (
+                    <PokemonAreas
+                      value={tabValue}
+                      pokemonAreas={pokemonAreas}
+                    />
+                  ) : (
+                    <TabPanel value={tabValue} index={1} dir={"rtl"}>
+                      <div className="spinner-grow text-danger" role="status">
+                        <span className="sr-only">
+                          Loading Pokemon Areas...
+                        </span>
+                      </div>
+                    </TabPanel>
+                  )}
+                  <PokemonAbilities
+                    value={tabValue}
+                    abilities={pokemonDetailsProps.abilities}
+                  />
+                </div>
                 <Button
                   variant="contained"
                   className="btnAddToMyFavorites"
@@ -234,7 +240,7 @@ const ViewPokemonDetailsContainer: React.FC<
                   setOpen={setOpen}
                   pokemonName={pokemonDetailsProps?.name as string}
                 />
-              </React.Fragment>
+              </>
             ) : (
               <>
                 <div className="spinner-grow text-danger" role="status">

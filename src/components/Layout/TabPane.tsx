@@ -24,6 +24,7 @@ export const TabPanel = (props: TabPanelProps) => {
         position: "relative",
         width: "100%",
         boxShadow: "inset 0px 0px 6px 0px #888888",
+        background: "#fff",
       }}
     >
       {value === index && (

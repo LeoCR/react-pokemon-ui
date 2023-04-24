@@ -26,21 +26,14 @@ const PokemonAreas = (props: PokemonAreasProps) => {
       <ul style={{ listStyle: "decimal" }}>
         {pokemonAreasState.length > 0
           ? pokemonAreasState.map(
-              (pokemonArea: PokemonLocationAreasResponse, index: number) => {
+              (pokemonArea: PokemonLocationAreasResponse) => {
                 if (
                   pokemonArea.location_area &&
                   pokemonArea.location_area.name
                 ) {
-                  const RandomNumber = Math.random();
                   return (
                     <li
-                      key={
-                        index +
-                        "_" +
-                        pokemonArea.location_area.name +
-                        "_" +
-                        RandomNumber
-                      }
+                      key={pokemonArea.location_area.name}
                       style={{
                         float: "left",
                         position: "relative",
@@ -72,6 +65,8 @@ const PokemonAreas = (props: PokemonAreasProps) => {
                       </p>
                     </li>
                   );
+                } else {
+                  return <>There is no Areas to find this pokemon</>;
                 }
               }
             )

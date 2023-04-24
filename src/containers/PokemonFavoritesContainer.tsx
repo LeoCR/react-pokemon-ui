@@ -69,6 +69,7 @@ export const PokemonFavoritesContainer: React.FC<
               viewPokemon={() =>
                 viewPokemon(pokemonsDetails[index] as PokemonDetailsResponse)
               }
+              hasDelete={true}
             />
           )
         )

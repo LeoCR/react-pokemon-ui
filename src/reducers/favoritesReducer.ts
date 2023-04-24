@@ -26,6 +26,14 @@ export default function (
           ? state.names.concat(action.pokemon)
           : [...state.names],
       };
+    case FAVORITES.DELETE:
+      return {
+        ...state,
+        names: state.names.filter(
+          (pokemon) =>
+            action.pokemon.toLocaleLowerCase() !== pokemon.toLowerCase()
+        ),
+      };
     default:
       return state;
   }
