@@ -13,6 +13,7 @@ import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 import { IStore } from "../store/store";
 import PokemonOverview from "../components/Pokemon/PokemonOverview";
 import { ShowPokemonsContainerProps } from "../types/ShowPoemonsContainer.types";
+import { Preloader } from "../components/Layout/Preloader";
 
 export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   match,
@@ -226,11 +227,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
           </>
         ) : (
           <>
-            <div className="spinner-grow text-danger" role="status">
-              <span className="sr-only">Loading , please wait...</span>
-            </div>
-            <div className="spinner-grow text-success" role="status"></div>
-            <div className="spinner-grow text-primary" role="status"></div>
+            <Preloader />
           </>
         )}
       </div>

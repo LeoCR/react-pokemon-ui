@@ -5,6 +5,7 @@ import { PokemonDetailsResponse } from "../../interfaces/PokemonDetails.interfac
 import TabPanel from "../Layout/TabPane";
 import { useDispatch } from "react-redux";
 import { setPokemon } from "../../actions/pokemonActions";
+import { Preloader } from "../Layout/Preloader";
 interface PokemonEvolutionsProps {
   pokemonEvolutions: PokemonDetailsResponse[];
   value: number;
@@ -25,55 +26,55 @@ const PokemonEvolutions = (props: PokemonEvolutionsProps) => {
                 ? pokemon.sprites.front_default
                 : "";
             const pokemonName = pokemon.name ? pokemon.name : "";
-            return (
-              <li
-                key={pokemonName}
-                style={{
-                  float: "left",
-                  width: "100%",
-                }}
-              >
-                <img
-                  src={frontDefaultImage}
-                  alt={pokemonName}
+            if (frontDefaultImage !== "") {
+              return (
+                <li
+                  key={pokemonName}
                   style={{
                     float: "left",
-                  }}
-                />
-                <h3
-                  style={{
-                    textTransform: "capitalize",
-                    maxWidth: "200px",
-                    float: "left",
-                    margin: "20px 10px",
-                    color: "#000",
+                    width: "100%",
                   }}
                 >
-                  {pokemonName}
-                </h3>
-                <Link
-                  to={`/pokemon/${pokemonName}`}
-                  onClick={() => {
-                    dispatch(setPokemon(pokemon as PokemonDetailsResponse));
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    style={{ margin: "20px", float: "right" }}
+                  <img
+                    src={frontDefaultImage}
+                    alt={pokemonName}
+                    style={{
+                      float: "left",
+                    }}
+                  />
+                  <h3
+                    style={{
+                      textTransform: "capitalize",
+                      maxWidth: "200px",
+                      float: "left",
+                      margin: "20px 10px",
+                      color: "#000",
+                    }}
                   >
-                    View
-                  </Button>
-                </Link>
-              </li>
-            );
+                    {pokemonName}
+                  </h3>
+                  <Link
+                    to={`/pokemon/${pokemonName}`}
+                    onClick={() => {
+                      dispatch(setPokemon(pokemon as PokemonDetailsResponse));
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      style={{ margin: "20px", float: "right" }}
+                    >
+                      View
+                    </Button>
+                  </Link>
+                </li>
+              );
+            } else {
+              return <>This Pokemon doesn't have any Evolutions.</>;
+            }
           })
         ) : (
           <>
-            <div className="spinner-grow text-danger" role="status">
-              <span className="sr-only">Loading Evolutions...</span>
-            </div>
-            <div className="spinner-grow text-success" role="status"></div>
-            <div className="spinner-grow text-primary" role="status"></div>
+            <Preloader />
           </>
         )}
       </ul>

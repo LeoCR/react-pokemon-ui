@@ -1,17 +1,14 @@
 import React from "react";
 import { PokemonProps } from "../../types/Pokemon.types";
 import Pokeball from "../../assets/img/pokeball.png";
+import { Preloader } from "../Layout/Preloader";
 
 const Pokemon: React.FC<PokemonProps> = (props) => {
   if (!props.details) {
     return (
-      <React.Fragment>
-        <div className="spinner-grow text-danger" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-        <div className="spinner-grow text-success" role="status"></div>
-        <div className="spinner-grow text-primary" role="status"></div>
-      </React.Fragment>
+      <>
+        <Preloader />
+      </>
     );
   }
   const frontDefaultImage =

@@ -23,6 +23,7 @@ import { IStore } from "../store/store";
 import PokemonAbilities from "../components/Pokemon/PokemonAbilities";
 import { ViewPokemonDetailsContainerProps } from "../types/ViewPokemonDetailsContainer.types";
 import { Dialog } from "../components/Layout/Dialog";
+import { Preloader } from "../components/Layout/Preloader";
 
 const a11yProps = (index: number) => {
   return {
@@ -214,11 +215,7 @@ const ViewPokemonDetailsContainer: React.FC<
                     />
                   ) : (
                     <TabPanel value={tabValue} index={1} dir={"rtl"}>
-                      <div className="spinner-grow text-danger" role="status">
-                        <span className="sr-only">
-                          Loading Pokemon Areas...
-                        </span>
-                      </div>
+                      <Preloader />
                     </TabPanel>
                   )}
                   <PokemonAbilities
@@ -243,11 +240,7 @@ const ViewPokemonDetailsContainer: React.FC<
               </>
             ) : (
               <>
-                <div className="spinner-grow text-danger" role="status">
-                  <span className="sr-only">Loading, please wait...</span>
-                </div>
-                <div className="spinner-grow text-success" role="status"></div>
-                <div className="spinner-grow text-primary" role="status"></div>
+                <Preloader />
               </>
             )}
           </Container>

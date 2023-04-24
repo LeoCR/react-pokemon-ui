@@ -5,6 +5,7 @@ import {
   IPokemonAbilities,
 } from "../../interfaces/PokemonDetails.interface";
 import IconAttack from "../../assets/img/icon_attack.svg";
+import { Preloader } from "../Layout/Preloader";
 
 const PokemonAbilities: React.FC<IPokemonAbilities> = (
   props: IPokemonAbilities
@@ -49,15 +50,13 @@ const PokemonAbilities: React.FC<IPokemonAbilities> = (
                   </p>
                 </li>
               );
+            } else {
+              return <>There is no Abilities for this Pokemon.</>;
             }
           })
         ) : (
           <>
-            <div className="spinner-grow text-danger" role="status">
-              <span className="sr-only">Loading Abilities...</span>
-            </div>
-            <div className="spinner-grow text-success" role="status"></div>
-            <div className="spinner-grow text-primary" role="status"></div>
+            <Preloader />
           </>
         )}
       </ul>
