@@ -84,7 +84,7 @@ export const PokemonFavoritesContainer: React.FC<
                 background: "#fff",
               }}
             >
-              Maybe You dont have any Pokemon inside Favorites List
+              You dont have any Pokemon inside Favorites List
             </p>
           ) : (
             <Preloader />
