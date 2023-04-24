@@ -1,13 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { withRouter } from "react-router";
+import { useNavigate } from "react-router-dom";
 import PokemonOverview from "../components/Pokemon/PokemonOverview";
 import { IStore } from "../store/store";
 import useQuery from "../utils/useQuery";
-import { SearchContainerProps } from "../interfaces/Search.interface";
 
-const SearchContainer = (props: SearchContainerProps) => {
+const SearchContainer = () => {
   let query = useQuery();
+  const navigate = useNavigate();
   const { pokemon, severity } = useSelector((state: IStore) => state.search);
   return (
     <React.Fragment>
@@ -16,7 +16,7 @@ const SearchContainer = (props: SearchContainerProps) => {
           <PokemonOverview
             pokemon={pokemon!}
             viewPokemon={() =>
-              props.history.push("/react-pokemon-ui/pokemon/" + pokemon!.name)
+              navigate("/react-pokemon-ui/pokemon/" + pokemon!.name)
             }
           />
         ) : severity === "error" ? (
@@ -36,4 +36,4 @@ const SearchContainer = (props: SearchContainerProps) => {
     </React.Fragment>
   );
 };
-export default withRouter(React.memo(SearchContainer));
+export default React.memo(SearchContainer);

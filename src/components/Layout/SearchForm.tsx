@@ -8,13 +8,15 @@ import {
   clearSearchPokemonResults,
 } from "../../actions/pokemonActions";
 import { SearchFormProps } from "../../types/SearchForm.types";
+import { useNavigate } from "react-router-dom";
 
-const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
+const SearchForm: React.FC<SearchFormProps> = () => {
   const [pokemonName, setPokemonName] = useState<string>("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const findPokemon = (pkmnName: string) => {
     console.log("pkmnName", pkmnName);
-    history.push({
+    navigate({
       pathname: "/react-pokemon-ui/search",
       search: "?pokemon=" + pkmnName,
     });
@@ -30,7 +32,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ match, history }) => {
     e.preventDefault();
     dispatch(clearSearchPokemonResults());
     setPokemonName("");
-    history.go(-2);
+    navigate(-2);
   };
   const submitSearchForm = (event: React.FormEvent) => {
     event.preventDefault();

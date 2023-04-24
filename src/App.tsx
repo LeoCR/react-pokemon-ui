@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Alert, Snackbar } from "@mui/material";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { ShowPokemonsContainer } from "./containers/ShowPokemonsContainer";
@@ -10,7 +10,6 @@ import { IStore } from "./store/store";
 import "./App.css";
 import { setJWTToken } from "./utils/setJWTToken";
 import { logout, setUserData } from "./actions/securityActions";
-import Login from "./components/UserManagement/Login";
 import Header from "./components/Layout/Header";
 import SearchContainer from "./containers/SearchContainer";
 import { PokemonFavoritesContainer } from "./containers/PokemonFavoritesContainer";
@@ -76,60 +75,50 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
             {message}
           </Alert>
         </Snackbar>
-        <Router>
-          <Header validToken={props.user.validToken} />
-          <Switch>
+        {/* */}
+        <BrowserRouter>
+          <>
+            <Header validToken={props.user.validToken} />
+          </>
+          <Routes>
             <Route
               path="/pokemons/favorites"
-              exact
-              component={PokemonFavoritesContainer}
+              element={<PokemonFavoritesContainer />}
             />
             <Route
               path="/react-pokemon-ui/pokemons/favorites"
-              exact
-              component={PokemonFavoritesContainer}
+              element={<PokemonFavoritesContainer />}
             />
-            <Route path="/" exact component={ShowPokemonsContainer} />
+            <Route path="/" element={<ShowPokemonsContainer />} />
             <Route
               path="/react-pokemon-ui/"
-              exact
-              component={ShowPokemonsContainer}
+              element={<ShowPokemonsContainer />}
             />
             <Route
               path="/react-pokemon-ui/pokemons"
-              exact
-              component={ShowPokemonsContainer}
+              element={<ShowPokemonsContainer />}
             />
-            <Route path="/pokemons" exact component={ShowPokemonsContainer} />
-            <Route
-              path="/pokemons/:page"
-              exact
-              component={ShowPokemonsContainer}
-            />
+            <Route path="/pokemons" element={<ShowPokemonsContainer />} />
+            <Route path="/pokemons/:page" element={<ShowPokemonsContainer />} />
             <Route
               path="/react-pokemon-ui/pokemons/:page"
-              exact
-              component={ShowPokemonsContainer}
+              element={<ShowPokemonsContainer />}
             />
             <Route
               path="/pokemon/:pokemon"
-              exact
-              component={ViewPokemonDetailsContainer}
+              element={<ViewPokemonDetailsContainer />}
             />
             <Route
               path="/react-pokemon-ui/pokemon/:pokemon"
-              exact
-              component={ViewPokemonDetailsContainer}
+              element={<ViewPokemonDetailsContainer />}
             />
             <Route
               path="/react-pokemon-ui/search"
-              exact
-              component={SearchContainer}
+              element={<SearchContainer />}
             />
-            <Route path="/search" exact component={SearchContainer} />
-            <Route exact path="/login" component={Login} />
-          </Switch>
-        </Router>
+            <Route path="/search" element={<SearchContainer />} />
+          </Routes>
+        </BrowserRouter>
       </main>
       <Footer />
     </>

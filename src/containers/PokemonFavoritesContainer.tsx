@@ -9,17 +9,19 @@ import { fetchPokemonDetails } from "../api/apiPokemon";
 import PokemonOverview from "../components/Pokemon/PokemonOverview";
 import { setPokemon } from "../actions/pokemonActions";
 import { Preloader } from "../components/Layout/Preloader";
+import { useNavigate } from "react-router-dom";
 
 export const PokemonFavoritesContainer: React.FC<
   PokemonFavoritesContainerProps
-> = ({ history }) => {
+> = () => {
   const [pokemonsDetails, setPokemonsDetails] = useState<
     PokemonDetailsResponse[]
   >([]);
   const favoritesProps = useSelector((state: IStore) => state.favorites.names);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onClickBack = () => {
-    history.go(-1);
+    navigate(-1);
   };
   useEffect(() => {
     if (
@@ -48,7 +50,7 @@ export const PokemonFavoritesContainer: React.FC<
   const viewPokemon = (pokemon: PokemonDetailsResponse) => {
     dispatch(setPokemon(pokemon as PokemonDetailsResponse));
     if (pokemon.name) {
-      history.push("/react-pokemon-ui/pokemon/" + pokemon.name);
+      navigate("/react-pokemon-ui/pokemon/" + pokemon.name);
     }
   };
   return (

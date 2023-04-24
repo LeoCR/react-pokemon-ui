@@ -2,7 +2,6 @@
 import { Paper, Container, AppBar, Tabs, Tab, Button } from "@mui/material";
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { withRouter } from "react-router-dom";
 import { setPokemon, setPokemonEvolutions } from "../actions/pokemonActions";
 import {
   fetchPokemonDetails,
@@ -24,6 +23,7 @@ import PokemonAbilities from "../components/Pokemon/PokemonAbilities";
 import { ViewPokemonDetailsContainerProps } from "../types/ViewPokemonDetailsContainer.types";
 import { Dialog } from "../components/Layout/Dialog";
 import { Preloader } from "../components/Layout/Preloader";
+import { useNavigate, useParams } from "react-router-dom";
 
 const a11yProps = (index: number) => {
   return {
@@ -32,11 +32,11 @@ const a11yProps = (index: number) => {
   };
 };
 
-const ViewPokemonDetailsContainer: React.FC<
-  ViewPokemonDetailsContainerProps
-> = ({ match, history }) => {
+const ViewPokemonDetailsContainer: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
+  const { pokemon } = useParams();
   const pokemonDetailsProps = useSelector(
     (state: IStore) => state.pokemons.pokemon
   );
@@ -57,9 +57,9 @@ const ViewPokemonDetailsContainer: React.FC<
 
   const fetchPokemonDetailsCallback = useCallback(async () => {
     try {
-      await fetchPokemonDetails(match.params.pokemon, setPokemonDetailData);
+      await fetchPokemonDetails(pokemon, setPokemonDetailData);
       await fetchPokemonEvolutionsChainURL(
-        match.params.pokemon,
+        pokemon,
         setPokemonsEvolutionsChainData
       );
     } catch (error) {
@@ -68,7 +68,7 @@ const ViewPokemonDetailsContainer: React.FC<
         error
       );
     }
-  }, [match.params.pokemon]);
+  }, [pokemon]);
   const setPokemonAreasResponse = useCallback(
     async (pokemonName: string) => {
       await fetchPokemonAreas(pokemonName).then((res) => {
@@ -94,7 +94,7 @@ const ViewPokemonDetailsContainer: React.FC<
   }, [setPokemonAreasResponse]);
 
   useEffect(() => {
-    if (match && match.params && match.params.pokemon) {
+    if (pokemon) {
       fetchPokemonDetailsCallback();
     }
   }, [fetchPokemonDetailsCallback]);
@@ -155,7 +155,7 @@ const ViewPokemonDetailsContainer: React.FC<
     setTabValue(newValue);
   };
   const onClickBack = () => {
-    history.go(-1);
+    navigate(-1);
   };
   const hasPokemons =
     pokemonDetails &&
@@ -249,4 +249,4 @@ const ViewPokemonDetailsContainer: React.FC<
     </>
   );
 };
-export default withRouter(React.memo(ViewPokemonDetailsContainer));
+export default React.memo(ViewPokemonDetailsContainer);

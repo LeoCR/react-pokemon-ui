@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import $ from "jquery";
-import { Link, withRouter } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   loadPokemons,
@@ -12,16 +12,14 @@ import {
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 import { IStore } from "../store/store";
 import PokemonOverview from "../components/Pokemon/PokemonOverview";
-import { ShowPokemonsContainerProps } from "../types/ShowPoemonsContainer.types";
 import { Preloader } from "../components/Layout/Preloader";
 
-export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
-  match,
-  history,
-}) => {
+export const ShowPokemonsContainer: React.FC = () => {
   const [pokemonsDetails, setPokemonsDetails] = useState<
     PokemonDetailsResponse[]
   >([]);
+  const navigate = useNavigate();
+  const { page } = useParams();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPagination, setTotalPagination] = useState<Array<number>>([
     1, 2, 3, 4, 5,
@@ -33,8 +31,8 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   useEffect(() => {
     try {
       let page2 = 0;
-      if (match.params.page) {
-        page2 = parseInt(match.params.page);
+      if (page) {
+        page2 = parseInt(page);
         if (isNaN(page2) === false && page2 > 1) {
           setPokemonsCallback(page2);
           if (totalPagination.includes(page2)) {
@@ -59,7 +57,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
             }
           }
           if (page2 > 0) {
-            history.push("/react-pokemon-ui/pokemons/" + page2);
+            navigate("/react-pokemon-ui/pokemons/" + page2);
           }
         } else {
           setPokemonsCallback(0);
@@ -142,7 +140,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   const viewPokemon = (pokemon: PokemonDetailsResponse) => {
     dispatch(setPokemon(pokemon as PokemonDetailsResponse));
     if (pokemon.name) {
-      history.push("/react-pokemon-ui/pokemon/" + pokemon.name);
+      navigate("/react-pokemon-ui/pokemon/" + pokemon.name);
     }
   };
   const getPagination = () => {
@@ -238,4 +236,4 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   );
 };
 
-export default withRouter(ShowPokemonsContainer);
+export default ShowPokemonsContainer;

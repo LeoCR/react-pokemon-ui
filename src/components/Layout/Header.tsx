@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { User } from "../../interfaces/Security.interface";
 import { IStore } from "../../store/store";
 import SearchForm from "./SearchForm";
@@ -8,7 +8,7 @@ import pokebalImage from "../../assets/img/original_pokeball.png";
 import pokemonImage from "../../assets/img/free_bouncy_quilava.gif";
 import "./Header.css";
 
-interface HeaderProps extends RouteComponentProps {
+interface HeaderProps {
   user?: User;
   validToken: boolean;
 }
@@ -69,11 +69,11 @@ const Header = (props: HeaderProps) => {
           </div>
         </div>
       </nav>
-      <SearchForm {...props} />
+      <SearchForm />
     </React.Fragment>
   );
 };
 const mapStateToProps = (state: IStore) => ({
   user: state.user,
 });
-export default connect(mapStateToProps, null)(withRouter(Header));
+export default connect(mapStateToProps, null)(Header);

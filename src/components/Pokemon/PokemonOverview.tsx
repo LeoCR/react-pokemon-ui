@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { deletePokemon } from "../../actions/favoriteActions";
 import { Dialog } from "../Layout/Dialog";
 import { IStore } from "../../store/store";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 export type PokemonFavoritesContainerParams = {};
 
 export interface PokemonOverviewProps {
@@ -19,14 +20,14 @@ const PokemonOverview: React.FC<PokemonOverviewProps> = (
   props: PokemonOverviewProps
 ) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history = useNavigate();
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const favoritesProps = useSelector((state: IStore) => state.favorites.names);
 
   const callback = () => {
     dispatch(deletePokemon(props.pokemon.name as string));
     setIsOpen(!isOpen);
-    history.push("/react-pokemon-ui/pokemons");
+    history("/react-pokemon-ui/pokemons");
   };
   return useMemo(
     () => (
