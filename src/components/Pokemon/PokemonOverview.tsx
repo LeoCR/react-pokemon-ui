@@ -30,7 +30,7 @@ const PokemonOverview: React.FC<PokemonOverviewProps> = (
           variant="contained"
           color="secondary"
           onClick={() => props.viewPokemon(props.pokemon)}
-          style={{ margin: "0 10px" }}
+          className="btn_overview"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,9 +49,8 @@ const PokemonOverview: React.FC<PokemonOverviewProps> = (
           <>
             <Button
               variant="contained"
-              style={{ margin: "0 10px" }}
+              className="btn_overview"
               onClick={() => {
-                console.log("!isOpen", !isOpen);
                 setIsOpen(!isOpen);
               }}
             >

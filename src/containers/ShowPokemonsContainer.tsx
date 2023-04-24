@@ -24,7 +24,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   >([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPagination, setTotalPagination] = useState<Array<number>>([
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+    1, 2, 3, 4, 5,
   ]);
   const dispatch = useDispatch();
   const pokemonsDetailsProps = useSelector(
@@ -40,7 +40,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
           if (totalPagination.includes(page2)) {
             setTimeout(() => {
               $("#page-item-" + page2).addClass("active");
-            }, 1400);
+            }, 1800);
           } else {
             if (localStorage.getItem("pagination") !== null) {
               const newPagination = [];
@@ -54,7 +54,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
                 setTotalPagination(newPagination as Array<number>);
                 setTimeout(() => {
                   $("#page-item-" + page2).addClass("active");
-                }, 1400);
+                }, 1900);
               }
             }
           }
@@ -65,7 +65,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
           setPokemonsCallback(0);
           setTimeout(() => {
             $("#page-item-1").addClass("active");
-          }, 1400);
+          }, 1900);
         }
       } else {
         $("#page-item-1").addClass("active");
@@ -81,29 +81,29 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
   const setPokemonsCallback = useCallback((page: number) => {
     dispatch(clearPokemons());
     dispatch(clearPokemonDetails());
-    dispatch(loadPokemons(page * 10));
-    if (pokemonsDetailsProps && pokemonsDetailsProps.length > 9) {
+    dispatch(loadPokemons(page * 4));
+    if (pokemonsDetailsProps && pokemonsDetailsProps.length > 3) {
       setPokemonsDetails(pokemonsDetailsProps);
     }
   }, []);
   const setPagination = (index: number) => {
     const newPagination = [];
-    if (index === totalPagination[10]) {
+    if (index === totalPagination[4]) {
       newPagination.push(index);
       let ind = index + 1;
       do {
         newPagination.push(ind);
         ind++;
-      } while (ind <= totalPagination[10] + 10);
+      } while (ind <= totalPagination[4] + 4);
       setTotalPagination(newPagination);
       localStorage.setItem("pagination", JSON.stringify(newPagination));
     }
     if (
-      (index === totalPagination[0] && index >= 11) ||
+      (index === totalPagination[0] && index >= 5) ||
       (index < totalPagination[0] && !totalPagination.includes(index))
     ) {
       for (
-        let newIndex = totalPagination[0] - 10;
+        let newIndex = totalPagination[0] - 4;
         newIndex <= totalPagination[0];
         newIndex++
       ) {
@@ -126,7 +126,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
       }
       setTimeout(() => {
         $("#page-item-" + index).addClass("active");
-      }, 300);
+      }, 1800);
       setCurrentPage(index);
       setPokemonsCallback(index);
     } catch (error) {
@@ -163,7 +163,7 @@ export const ShowPokemonsContainer: React.FC<ShowPokemonsContainerProps> = ({
                   className="page-link"
                   onClick={() => getPage(currentPage - 1)}
                 >
-                  Previous
+                  Prev
                 </Link>
               </li>
               {totalPagination.length > 0

@@ -113,11 +113,23 @@ main {
   min-height: 55px;
   float: right;
 }
+.pagination {
+  margin-left: 120px;
+}
+.btn_overview {
+  margin: 0 10px !important;
+}
 @media screen and (max-width: 750px) {
   .search_field {
     max-width: 230px;
   }
   .clear_btn {
     margin-right: 95px !important;
+  }
+  .pagination {
+    margin-left: 3px;
+  }
+  .btn_overview {
+    margin: 5px 10px !important;
   }
 }
