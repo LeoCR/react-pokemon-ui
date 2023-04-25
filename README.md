@@ -2,6 +2,9 @@
 
 This project was built with the intention of understand how Redux Saga work with Typescript.
 
+# Demo
+<a href="https://leonardoaranibar.co.cr/react-pokemon-ui/" target="_blank" title="Pokedex Demo">https://leonardoaranibar.co.cr/react-pokemon-ui/</a>
+
 ## View all pokemons
 
 <img src="screenshots/01.PNG" alt="View all Pokemons"/>
