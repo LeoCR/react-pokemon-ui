@@ -12,6 +12,7 @@ import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 import { IStore } from "../store/store";
 import PokemonOverview from "../components/Pokemon/PokemonOverview";
 import { Preloader } from "../components/Layout/Preloader";
+import { motion } from "framer-motion";
 
 export const ShowPokemonsContainer: React.FC = () => {
   const [pokemonsDetails, setPokemonsDetails] = useState<
@@ -20,9 +21,11 @@ export const ShowPokemonsContainer: React.FC = () => {
   const navigate = useNavigate();
   const { page } = useParams();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPagination, setTotalPagination] = useState<Array<number>>([
-    1, 2, 3, 4, 5,
-  ]);
+  const [totalPagination, setTotalPagination] = useState<Array<number>>(
+    localStorage.getItem("pagination") !== null
+      ? (JSON.parse(localStorage.getItem("pagination")!) as Array<number>)
+      : [1, 2, 3, 4, 5]
+  );
   const dispatch = useDispatch();
   const { pokemonsDetails: pokemonsDetailsProps, isLoading } = useSelector(
     (state: IStore) => state.pokemonsDetails
@@ -71,6 +74,8 @@ export const ShowPokemonsContainer: React.FC = () => {
       } else {
         document.querySelector("#page-item-1")?.classList.add("active");
         setPokemonsCallback(page2);
+        setTotalPagination([1, 2, 3, 4, 5]);
+        //localStorage.removeItem("pagination");
       }
     } catch (error) {
       console.error(
@@ -82,8 +87,8 @@ export const ShowPokemonsContainer: React.FC = () => {
   const setPokemonsCallback = (page: number) => {
     dispatch(clearPokemons());
     dispatch(clearPokemonDetails());
-    dispatch(loadPokemons(page * 4));
-    if (pokemonsDetailsProps && pokemonsDetailsProps.length > 3) {
+    dispatch(loadPokemons(page * 10));
+    if (pokemonsDetailsProps && pokemonsDetailsProps.length > 9) {
       setPokemonsDetails(pokemonsDetailsProps);
     }
   };
@@ -161,8 +166,18 @@ export const ShowPokemonsContainer: React.FC = () => {
 
   return useMemo(
     () => (
-      <div className="pokemons_container">
-        {pokemonsDetails.length > 0 && isLoading === false ? (
+      <motion.div
+        className="pokemons_container"
+        initial={{ opacity: 0, width: 0 }}
+        animate={{ opacity: 1, width: "100%" }}
+        exit={{
+          x: window.innerWidth,
+          transition: {
+            duration: 0.4,
+          },
+        }}
+      >
+        {pokemonsDetails?.length > 0 && isLoading === false ? (
           <>
             {pokemonsDetails
               .filter(
@@ -204,7 +219,7 @@ export const ShowPokemonsContainer: React.FC = () => {
                         Prev
                       </Link>
                     </li>
-                    {totalPagination.length > 0
+                    {totalPagination?.length > 0
                       ? totalPagination.map((index: number, key: number) => (
                           <li
                             className="page-item page-nav"
@@ -240,7 +255,7 @@ export const ShowPokemonsContainer: React.FC = () => {
             <Preloader />
           </>
         )}
-      </div>
+      </motion.div>
     ),
     [
       JSON.stringify(pokemonsDetails),
