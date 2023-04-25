@@ -56,6 +56,7 @@ body {
     center;
   background-size: contain;
   background-attachment: fixed;
+  border-radius: 50px;
 }
 .pokeball-img,
 .pokemon_image {
@@ -118,6 +119,28 @@ main {
 }
 .btn_overview {
   margin: 0 10px !important;
+}
+
+.fade-enter {
+  opacity: 0;
+  transform: translate(0, 25px);
+  z-index: 1;
+}
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transform: translate(0, 0);
+
+  transition: opacity 250ms ease-out, transform 300ms ease;
+}
+.fade-exit {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+.fade-exit.fade-exit-active {
+  opacity: 0;
+  transform: translate(0, 30px);
+
+  transition: opacity 250ms ease-out, transform 300ms ease;
 }
 @media screen and (max-width: 750px) {
   .search_field {

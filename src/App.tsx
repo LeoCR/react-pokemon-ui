@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Alert, Snackbar } from "@mui/material";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { ShowPokemonsContainer } from "./containers/ShowPokemonsContainer";
@@ -14,6 +14,7 @@ import Header from "./components/Layout/Header";
 import SearchContainer from "./containers/SearchContainer";
 import { PokemonFavoritesContainer } from "./containers/PokemonFavoritesContainer";
 import { Footer } from "./components/Layout/Footer";
+import { AnimatePresence } from "framer-motion";
 
 interface AppProps {
   user: {
@@ -31,6 +32,7 @@ const jwtToken =
 
 export const App: React.FC<AppProps> = (props: AppProps) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const { error, severity, message } = useSelector(
     (state: IStore) => state.search
   );
@@ -75,12 +77,11 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
             {message}
           </Alert>
         </Snackbar>
-        {/* */}
-        <BrowserRouter>
-          <>
-            <Header validToken={props.user.validToken} />
-          </>
-          <Routes>
+        <>
+          <Header validToken={props.user.validToken} />
+        </>
+        <AnimatePresence>
+          <Routes location={location} key={location.pathname}>
             <Route
               path="/pokemons/favorites"
               element={<PokemonFavoritesContainer />}
@@ -118,7 +119,7 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
             />
             <Route path="/search" element={<SearchContainer />} />
           </Routes>
-        </BrowserRouter>
+        </AnimatePresence>
       </main>
       <Footer />
     </>

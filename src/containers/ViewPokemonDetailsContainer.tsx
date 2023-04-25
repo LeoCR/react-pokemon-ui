@@ -20,10 +20,10 @@ import {
 } from "../interfaces/PokemonEvolutions.interface";
 import { IStore } from "../store/store";
 import PokemonAbilities from "../components/Pokemon/PokemonAbilities";
-import { ViewPokemonDetailsContainerProps } from "../types/ViewPokemonDetailsContainer.types";
 import { Dialog } from "../components/Layout/Dialog";
 import { Preloader } from "../components/Layout/Preloader";
 import { useNavigate, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const a11yProps = (index: number) => {
   return {
@@ -167,7 +167,16 @@ const ViewPokemonDetailsContainer: React.FC = () => {
     pokemonDetails?.sprites?.front_default;
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0, width: 0 }}
+      animate={{ opacity: 1, width: "100%" }}
+      exit={{
+        x: window.innerWidth,
+        transition: {
+          duration: 0.4,
+        },
+      }}
+    >
       <Button
         variant="contained"
         color="secondary"
@@ -246,7 +255,7 @@ const ViewPokemonDetailsContainer: React.FC = () => {
           </Container>
         </Paper>
       }
-    </>
+    </motion.div>
   );
 };
 export default React.memo(ViewPokemonDetailsContainer);

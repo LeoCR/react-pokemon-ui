@@ -16,6 +16,7 @@
     "@types/node": "^16.18.11",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "framer-motion": "^10.12.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.10.0",
@@ -25,12 +26,10 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@types/jquery": "^3.5.16",
     "@types/react-redux": "^7.1.25",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^0.21.4",
     "history": "^5.3.0",
-    "jquery": "^3.6.3",
     "jwt-decode": "^3.1.2",
     "react-redux": "^7.2.9",
     "react-router-dom": "^6.10.0",

@@ -1,10 +1,11 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { ThemeProvider } from '@mui/material'; 
-import { Provider } from 'react-redux';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { ThemeProvider } from "@mui/material";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import "./index.css";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
 import store from "./store/store";
 import theme from "./config/themeMUI";
 
@@ -15,7 +16,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store()}>
       <ThemeProvider theme={theme}>
-        <App/>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>
