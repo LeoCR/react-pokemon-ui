@@ -75,7 +75,7 @@ export const ShowPokemonsContainer: React.FC = () => {
         document.querySelector("#page-item-1")?.classList.add("active");
         setPokemonsCallback(page2);
         setTotalPagination([1, 2, 3, 4, 5]);
-        //localStorage.removeItem("pagination");
+        localStorage.setItem("pagination", JSON.stringify([1, 2, 3, 4, 5]));
       }
     } catch (error) {
       console.error(
