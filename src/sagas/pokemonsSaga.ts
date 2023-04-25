@@ -11,7 +11,6 @@ export function* handlePokemonsLoad() {
   try {
     const page: number = yield select(getPage);
     const pokemonsGenerated: PokemonsResponse = yield call(fetchPokemons, page);
-    console.log("pokemonsGenerated", pokemonsGenerated);
     yield put(setPokemons(pokemonsGenerated));
   } catch (error) {
     yield put(setPokemonsError(JSON.stringify(error)));
