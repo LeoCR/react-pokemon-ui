@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import $ from "jquery";
+import React, { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -13,6 +12,7 @@ import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
 import { IStore } from "../store/store";
 import PokemonOverview from "../components/Pokemon/PokemonOverview";
 import { Preloader } from "../components/Layout/Preloader";
+import { motion } from "framer-motion";
 
 export const ShowPokemonsContainer: React.FC = () => {
   const [pokemonsDetails, setPokemonsDetails] = useState<
@@ -21,12 +21,14 @@ export const ShowPokemonsContainer: React.FC = () => {
   const navigate = useNavigate();
   const { page } = useParams();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPagination, setTotalPagination] = useState<Array<number>>([
-    1, 2, 3, 4, 5,
-  ]);
+  const [totalPagination, setTotalPagination] = useState<Array<number>>(
+    localStorage.getItem("pagination") !== null
+      ? (JSON.parse(localStorage.getItem("pagination")!) as Array<number>)
+      : [1, 2, 3, 4, 5]
+  );
   const dispatch = useDispatch();
-  const pokemonsDetailsProps = useSelector(
-    (state: IStore) => state.pokemonsDetails.pokemonsDetails
+  const { pokemonsDetails: pokemonsDetailsProps, isLoading } = useSelector(
+    (state: IStore) => state.pokemonsDetails
   );
   useEffect(() => {
     try {
@@ -37,7 +39,9 @@ export const ShowPokemonsContainer: React.FC = () => {
           setPokemonsCallback(page2);
           if (totalPagination.includes(page2)) {
             setTimeout(() => {
-              $("#page-item-" + page2).addClass("active");
+              document
+                .querySelector("#page-item-" + page2)
+                ?.classList.add("active");
             }, 1800);
           } else {
             if (localStorage.getItem("pagination") !== null) {
@@ -51,7 +55,9 @@ export const ShowPokemonsContainer: React.FC = () => {
                 }
                 setTotalPagination(newPagination as Array<number>);
                 setTimeout(() => {
-                  $("#page-item-" + page2).addClass("active");
+                  document
+                    .querySelector("#page-item-" + page2)
+                    ?.classList.add("active");
                 }, 1900);
               }
             }
@@ -62,12 +68,14 @@ export const ShowPokemonsContainer: React.FC = () => {
         } else {
           setPokemonsCallback(0);
           setTimeout(() => {
-            $("#page-item-1").addClass("active");
+            document.querySelector("#page-item-1")?.classList.add("active");
           }, 1900);
         }
       } else {
-        $("#page-item-1").addClass("active");
+        document.querySelector("#page-item-1")?.classList.add("active");
         setPokemonsCallback(page2);
+        setTotalPagination([1, 2, 3, 4, 5]);
+        //localStorage.removeItem("pagination");
       }
     } catch (error) {
       console.error(
@@ -76,14 +84,14 @@ export const ShowPokemonsContainer: React.FC = () => {
       );
     }
   }, []);
-  const setPokemonsCallback = useCallback((page: number) => {
+  const setPokemonsCallback = (page: number) => {
     dispatch(clearPokemons());
     dispatch(clearPokemonDetails());
-    dispatch(loadPokemons(page * 4));
-    if (pokemonsDetailsProps && pokemonsDetailsProps.length > 3) {
+    dispatch(loadPokemons(page * 10));
+    if (pokemonsDetailsProps && pokemonsDetailsProps.length > 9) {
       setPokemonsDetails(pokemonsDetailsProps);
     }
-  }, []);
+  };
   const setPagination = (index: number) => {
     const newPagination = [];
     if (index === totalPagination[4]) {
@@ -119,11 +127,13 @@ export const ShowPokemonsContainer: React.FC = () => {
       if (index <= 0) {
         return;
       }
-      if ($(".page-nav").hasClass("active")) {
-        $(".page-nav").removeClass("active");
+      if (
+        document.querySelector("#page-item-1")?.classList.contains("active")
+      ) {
+        document.querySelector("#page-item-1")?.classList.remove("active");
       }
       setTimeout(() => {
-        $("#page-item-" + index).addClass("active");
+        document.querySelector("#page-item-" + index)?.classList.add("active");
       }, 1800);
       setCurrentPage(index);
       setPokemonsCallback(index);
@@ -135,74 +145,39 @@ export const ShowPokemonsContainer: React.FC = () => {
     }
   };
   useEffect(() => {
-    setPokemonsDetails(pokemonsDetailsProps as PokemonDetailsResponse[]);
-  }, [JSON.stringify(pokemonsDetails), JSON.stringify(pokemonsDetailsProps)]);
+    if (
+      isLoading === false &&
+      pokemonsDetailsProps &&
+      pokemonsDetailsProps?.length > 0
+    ) {
+      setPokemonsDetails(pokemonsDetailsProps as PokemonDetailsResponse[]);
+    }
+  }, [
+    JSON.stringify(pokemonsDetails),
+    JSON.stringify(pokemonsDetailsProps),
+    isLoading,
+  ]);
   const viewPokemon = (pokemon: PokemonDetailsResponse) => {
     dispatch(setPokemon(pokemon as PokemonDetailsResponse));
     if (pokemon.name) {
       navigate("/react-pokemon-ui/pokemon/" + pokemon.name);
     }
   };
-  const getPagination = () => {
-    return (
-      <React.Fragment>
-        <div
-          style={{ textAlign: "center", margin: "0 auto" }}
-          className="container"
-        >
-          <nav
-            id="pagination-bottom"
-            style={{ maxWidth: "580px", margin: "10px auto" }}
-          >
-            <ul className="pagination">
-              <li className="page-item">
-                <Link
-                  to={`/react-pokemon-ui/pokemons/${
-                    currentPage - 1 > 0 ? currentPage - 1 : 1
-                  }`}
-                  className="page-link"
-                  onClick={() => getPage(currentPage - 1)}
-                >
-                  Prev
-                </Link>
-              </li>
-              {totalPagination.length > 0
-                ? totalPagination.map((index: number, key: number) => (
-                    <li
-                      className="page-item page-nav"
-                      id={`page-item-${index}`}
-                      key={key}
-                    >
-                      <Link
-                        to={`/react-pokemon-ui/pokemons/${index}`}
-                        className="page-link"
-                        onClick={() => getPage(index)}
-                      >
-                        {index}
-                      </Link>
-                    </li>
-                  ))
-                : ""}
-              <li className="page-item">
-                <Link
-                  to={`/react-pokemon-ui/pokemons/${currentPage + 1}`}
-                  className="page-link"
-                  onClick={() => getPage(currentPage + 1)}
-                >
-                  Next
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </React.Fragment>
-    );
-  };
 
   return useMemo(
     () => (
-      <div className="pokemons_container">
-        {pokemonsDetails.length > 0 ? (
+      <motion.div
+        className="pokemons_container"
+        initial={{ opacity: 0, width: 0 }}
+        animate={{ opacity: 1, width: "100%" }}
+        exit={{
+          x: window.innerWidth,
+          transition: {
+            duration: 0.4,
+          },
+        }}
+      >
+        {pokemonsDetails?.length > 0 && isLoading === false ? (
           <>
             {pokemonsDetails
               .filter(
@@ -223,16 +198,70 @@ export const ShowPokemonsContainer: React.FC = () => {
                   }
                 />
               ))}
-            {getPagination()}
+            <React.Fragment>
+              <div
+                style={{ textAlign: "center", margin: "0 auto" }}
+                className="container"
+              >
+                <nav
+                  id="pagination-bottom"
+                  style={{ maxWidth: "580px", margin: "10px auto" }}
+                >
+                  <ul className="pagination">
+                    <li className="page-item">
+                      <Link
+                        to={`/react-pokemon-ui/pokemons/${
+                          currentPage - 1 > 0 ? currentPage - 1 : 1
+                        }`}
+                        className="page-link"
+                        onClick={() => getPage(currentPage - 1)}
+                      >
+                        Prev
+                      </Link>
+                    </li>
+                    {totalPagination?.length > 0
+                      ? totalPagination.map((index: number, key: number) => (
+                          <li
+                            className="page-item page-nav"
+                            id={`page-item-${index}`}
+                            key={key}
+                          >
+                            <Link
+                              to={`/react-pokemon-ui/pokemons/${index}`}
+                              className="page-link"
+                              onClick={() => getPage(index)}
+                            >
+                              {index}
+                            </Link>
+                          </li>
+                        ))
+                      : ""}
+                    <li className="page-item">
+                      <Link
+                        to={`/react-pokemon-ui/pokemons/${currentPage + 1}`}
+                        className="page-link"
+                        onClick={() => getPage(currentPage + 1)}
+                      >
+                        Next
+                      </Link>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </React.Fragment>
           </>
         ) : (
           <>
             <Preloader />
           </>
         )}
-      </div>
+      </motion.div>
     ),
-    [JSON.stringify(pokemonsDetails)]
+    [
+      JSON.stringify(pokemonsDetails),
+      JSON.stringify(pokemonsDetailsProps),
+      isLoading,
+    ]
   );
 };
 

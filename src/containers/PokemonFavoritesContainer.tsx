@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { PokemonFavoritesContainerProps } from "../types/PokemonFavoritesContainerProps.types";
 import { useDispatch, useSelector } from "react-redux";
 import { IStore } from "../store/store";
 import { PokemonDetailsResponse } from "../interfaces/PokemonDetails.interface";
@@ -10,10 +9,9 @@ import PokemonOverview from "../components/Pokemon/PokemonOverview";
 import { setPokemon } from "../actions/pokemonActions";
 import { Preloader } from "../components/Layout/Preloader";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
-export const PokemonFavoritesContainer: React.FC<
-  PokemonFavoritesContainerProps
-> = () => {
+export const PokemonFavoritesContainer: React.FC = () => {
   const [pokemonsDetails, setPokemonsDetails] = useState<
     PokemonDetailsResponse[]
   >([]);
@@ -54,7 +52,16 @@ export const PokemonFavoritesContainer: React.FC<
     }
   };
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, width: 0 }}
+      animate={{ opacity: 1, width: "100%" }}
+      exit={{
+        x: window.innerWidth,
+        transition: {
+          duration: 0.4,
+        },
+      }}
+    >
       <Button
         variant="contained"
         color="secondary"
@@ -93,6 +100,6 @@ export const PokemonFavoritesContainer: React.FC<
           )}
         </>
       )}
-    </div>
+    </motion.div>
   );
 };

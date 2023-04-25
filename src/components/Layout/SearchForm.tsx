@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useDispatch } from "react-redux";
@@ -7,10 +8,8 @@ import {
   searchPokemon,
   clearSearchPokemonResults,
 } from "../../actions/pokemonActions";
-import { SearchFormProps } from "../../types/SearchForm.types";
-import { useNavigate } from "react-router-dom";
 
-const SearchForm: React.FC<SearchFormProps> = () => {
+const SearchForm: React.FC = () => {
   const [pokemonName, setPokemonName] = useState<string>("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
