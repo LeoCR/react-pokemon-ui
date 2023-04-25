@@ -15,12 +15,11 @@ import { Preloader } from "../components/Layout/Preloader";
 import { motion } from "framer-motion";
 
 export const ShowPokemonsContainer: React.FC = () => {
-  const [pokemonsDetails, setPokemonsDetails] = useState<
-    PokemonDetailsResponse[]
-  >([]);
   const navigate = useNavigate();
   const { page } = useParams();
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(
+    page !== undefined ? Number(page) : 1
+  );
   const [totalPagination, setTotalPagination] = useState<Array<number>>(
     localStorage.getItem("pagination") !== null
       ? (JSON.parse(localStorage.getItem("pagination")!) as Array<number>)
@@ -88,9 +87,6 @@ export const ShowPokemonsContainer: React.FC = () => {
     dispatch(clearPokemons());
     dispatch(clearPokemonDetails());
     dispatch(loadPokemons(page * 10));
-    if (pokemonsDetailsProps && pokemonsDetailsProps.length > 9) {
-      setPokemonsDetails(pokemonsDetailsProps);
-    }
   };
   const setPagination = (index: number) => {
     const newPagination = [];
@@ -144,19 +140,7 @@ export const ShowPokemonsContainer: React.FC = () => {
       );
     }
   };
-  useEffect(() => {
-    if (
-      isLoading === false &&
-      pokemonsDetailsProps &&
-      pokemonsDetailsProps?.length > 0
-    ) {
-      setPokemonsDetails(pokemonsDetailsProps as PokemonDetailsResponse[]);
-    }
-  }, [
-    JSON.stringify(pokemonsDetails),
-    JSON.stringify(pokemonsDetailsProps),
-    isLoading,
-  ]);
+
   const viewPokemon = (pokemon: PokemonDetailsResponse) => {
     dispatch(setPokemon(pokemon as PokemonDetailsResponse));
     if (pokemon.name) {
@@ -168,32 +152,33 @@ export const ShowPokemonsContainer: React.FC = () => {
     () => (
       <motion.div
         className="pokemons_container"
-        initial={{ opacity: 0, width: 0 }}
-        animate={{ opacity: 1, width: "100%" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         exit={{
-          x: window.innerWidth,
           transition: {
             duration: 0.4,
           },
         }}
       >
-        {pokemonsDetails?.length > 0 && isLoading === false ? (
+        {pokemonsDetailsProps &&
+        pokemonsDetailsProps?.length > 0 &&
+        isLoading === false ? (
           <>
-            {pokemonsDetails
+            {pokemonsDetailsProps
               .filter(
                 (pokemon: PokemonDetailsResponse, index: number) =>
                   index ===
-                  pokemonsDetails.findIndex(
+                  pokemonsDetailsProps.findIndex(
                     (other) => pokemon.name === other.name
                   )
               )
               .map((pokemon: PokemonDetailsResponse, index: number) => (
                 <PokemonOverview
                   key={pokemon.name}
-                  pokemon={pokemonsDetails[index]}
+                  pokemon={pokemonsDetailsProps[index]}
                   viewPokemon={() =>
                     viewPokemon(
-                      pokemonsDetails[index] as PokemonDetailsResponse
+                      pokemonsDetailsProps[index] as PokemonDetailsResponse
                     )
                   }
                 />
@@ -257,11 +242,7 @@ export const ShowPokemonsContainer: React.FC = () => {
         )}
       </motion.div>
     ),
-    [
-      JSON.stringify(pokemonsDetails),
-      JSON.stringify(pokemonsDetailsProps),
-      isLoading,
-    ]
+    [JSON.stringify(pokemonsDetailsProps), isLoading]
   );
 };
 
