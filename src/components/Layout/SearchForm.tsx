@@ -23,7 +23,7 @@ const SearchForm: React.FC = () => {
   };
   const onChagePokemonName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPokemonName = e.target.value;
-    if (newPokemonName) {
+    if (newPokemonName && newPokemonName.length < 16) {
       setPokemonName(newPokemonName);
     }
   };

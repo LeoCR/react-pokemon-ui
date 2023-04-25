@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Alert, Snackbar } from "@mui/material";
 import { Route, Routes, useLocation } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { connect, useSelector, useDispatch } from "react-redux";
-import { ShowPokemonsContainer } from "./containers/ShowPokemonsContainer";
 import ViewPokemonDetailsContainer from "./containers/ViewPokemonDetailsContainer";
 import { IStore } from "./store/store";
 import "./App.css";
@@ -15,6 +14,7 @@ import SearchContainer from "./containers/SearchContainer";
 import { PokemonFavoritesContainer } from "./containers/PokemonFavoritesContainer";
 import { Footer } from "./components/Layout/Footer";
 import { AnimatePresence } from "framer-motion";
+import { Preloader } from "./components/Layout/Preloader";
 
 interface AppProps {
   user: {
@@ -29,6 +29,10 @@ const jwtToken =
   localStorage.getItem("jwtToken") !== undefined
     ? localStorage.getItem("jwtToken")
     : null;
+
+const ShowPokemonsContainer = lazy(
+  () => import("./containers/ShowPokemonsContainer")
+);
 
 export const App: React.FC<AppProps> = (props: AppProps) => {
   const dispatch = useDispatch();
@@ -90,20 +94,53 @@ export const App: React.FC<AppProps> = (props: AppProps) => {
               path="/react-pokemon-ui/pokemons/favorites"
               element={<PokemonFavoritesContainer />}
             />
-            <Route path="/" element={<ShowPokemonsContainer />} />
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<Preloader />}>
+                  <ShowPokemonsContainer />
+                </Suspense>
+              }
+            />
             <Route
               path="/react-pokemon-ui/"
-              element={<ShowPokemonsContainer />}
+              element={
+                <Suspense fallback={<Preloader />}>
+                  <ShowPokemonsContainer />
+                </Suspense>
+              }
             />
             <Route
               path="/react-pokemon-ui/pokemons"
-              element={<ShowPokemonsContainer />}
+              element={
+                <Suspense fallback={<Preloader />}>
+                  <ShowPokemonsContainer />
+                </Suspense>
+              }
             />
-            <Route path="/pokemons" element={<ShowPokemonsContainer />} />
-            <Route path="/pokemons/:page" element={<ShowPokemonsContainer />} />
+            <Route
+              path="/pokemons"
+              element={
+                <Suspense fallback={<Preloader />}>
+                  <ShowPokemonsContainer />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/pokemons/:page"
+              element={
+                <Suspense fallback={<Preloader />}>
+                  <ShowPokemonsContainer />
+                </Suspense>
+              }
+            />
             <Route
               path="/react-pokemon-ui/pokemons/:page"
-              element={<ShowPokemonsContainer />}
+              element={
+                <Suspense fallback={<Preloader />}>
+                  <ShowPokemonsContainer />
+                </Suspense>
+              }
             />
             <Route
               path="/pokemon/:pokemon"

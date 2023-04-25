@@ -31,7 +31,7 @@ const PokemonOverview: React.FC<PokemonOverviewProps> = (
   };
   return useMemo(
     () => (
-      <div className="pokemon_container" key={props.pokemon.name as string}>
+      <div className="pokemon_container">
         <Pokemon details={props.pokemon} />
         <Button
           variant="contained"

@@ -82,6 +82,10 @@ export const ShowPokemonsContainer: React.FC = () => {
         error
       );
     }
+    return () => {
+      dispatch(clearPokemons());
+      dispatch(clearPokemonDetails());
+    };
   }, []);
   const setPokemonsCallback = (page: number) => {
     dispatch(clearPokemons());
@@ -163,7 +167,7 @@ export const ShowPokemonsContainer: React.FC = () => {
         {pokemonsDetailsProps &&
         pokemonsDetailsProps?.length > 0 &&
         isLoading === false ? (
-          <>
+          <div id="pokemons_list">
             {pokemonsDetailsProps
               .filter(
                 (pokemon: PokemonDetailsResponse, index: number) =>
@@ -234,15 +238,19 @@ export const ShowPokemonsContainer: React.FC = () => {
                 </nav>
               </div>
             </React.Fragment>
-          </>
+          </div>
         ) : (
-          <>
+          <div>
             <Preloader />
-          </>
+          </div>
         )}
       </motion.div>
     ),
-    [JSON.stringify(pokemonsDetailsProps), isLoading]
+    [
+      JSON.stringify(pokemonsDetailsProps),
+      pokemonsDetailsProps?.length,
+      isLoading,
+    ]
   );
 };
 

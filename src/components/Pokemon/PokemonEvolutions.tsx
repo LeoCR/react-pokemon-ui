@@ -75,6 +75,7 @@ const PokemonEvolutions = (props: PokemonEvolutionsProps) => {
         ) : (
           <>
             <Preloader />
+            <>Maybe this Pokemon doesn't have any Evolutions.</>
           </>
         )}
       </ul>

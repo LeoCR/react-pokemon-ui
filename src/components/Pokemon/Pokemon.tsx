@@ -1,16 +1,8 @@
 import React from "react";
 import { PokemonProps } from "../../types/Pokemon.types";
 import Pokeball from "../../assets/img/pokeball.png";
-import { Preloader } from "../Layout/Preloader";
 
 const Pokemon: React.FC<PokemonProps> = (props) => {
-  if (!props.details) {
-    return (
-      <>
-        <Preloader />
-      </>
-    );
-  }
   const frontDefaultImage =
     props.details &&
     props.details.sprites &&
