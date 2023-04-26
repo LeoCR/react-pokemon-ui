@@ -35,7 +35,6 @@ export const ShowPokemonsContainer: React.FC = () => {
       if (page) {
         page2 = parseInt(page);
         if (isNaN(page2) === false && page2 > 1) {
-          setPokemonsCallback(page2);
           if (totalPagination.includes(page2)) {
             setTimeout(() => {
               document
@@ -82,15 +81,12 @@ export const ShowPokemonsContainer: React.FC = () => {
         error
       );
     }
-    return () => {
-      dispatch(clearPokemons());
-      dispatch(clearPokemonDetails());
-    };
-  }, []);
-  const setPokemonsCallback = (page: number) => {
+  }, [page]);
+  const setPokemonsCallback = async (page: number) => {
     dispatch(clearPokemons());
     dispatch(clearPokemonDetails());
     dispatch(loadPokemons(page * 10));
+    Promise.resolve(pokemonsDetailsProps);
   };
   const setPagination = (index: number) => {
     const newPagination = [];
@@ -249,6 +245,8 @@ export const ShowPokemonsContainer: React.FC = () => {
     [
       JSON.stringify(pokemonsDetailsProps),
       pokemonsDetailsProps?.length,
+      pokemonsDetailsProps,
+      page,
       isLoading,
     ]
   );

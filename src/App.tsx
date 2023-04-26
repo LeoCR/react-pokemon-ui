@@ -2,6 +2,7 @@
 import React, { Suspense, lazy } from "react";
 import { Alert, Snackbar } from "@mui/material";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import jwt_decode from "jwt-decode";
 import { connect, useSelector, useDispatch } from "react-redux";
 import ViewPokemonDetailsContainer from "./containers/ViewPokemonDetailsContainer";
@@ -13,7 +14,6 @@ import Header from "./components/Layout/Header";
 import SearchContainer from "./containers/SearchContainer";
 import { PokemonFavoritesContainer } from "./containers/PokemonFavoritesContainer";
 import { Footer } from "./components/Layout/Footer";
-import { AnimatePresence } from "framer-motion";
 import { Preloader } from "./components/Layout/Preloader";
 
 interface AppProps {
